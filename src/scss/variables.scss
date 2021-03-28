@@ -1,0 +1,22 @@
+// src/sass/variables.scss
+
+// Globals
+$body-font-family: 'Prompt', serif;
+$font-family: 'Prompt', serif;
+$font-size-root: 16px;
+$data-table-regular-row-height: 40px;
+$data-table-regular-header-height: 40px;
+
+.v-application {
+    [class*='text-'] {
+      color: #36405a;
+      font-family: $font-family, sans-serif !important;
+    }
+    font-family: $font-family, sans-serif !important;
+  }
+    .v-data-table > .v-data-table__wrapper > table > thead > tr > th{
+        font-size: 0.9rem !important;
+        font-weight: normal!important;
+  
+   }
+  
