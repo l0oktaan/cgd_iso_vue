@@ -31,7 +31,7 @@
                             color="primary"
                             dark
                         >
-                            Search
+                            ค้นหา
                         </v-btn>
                         <v-btn
                             class="ma-3"

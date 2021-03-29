@@ -93,7 +93,7 @@ export default {
       drawer: true,
       items: [
         { title: "Dashboard", icon: "mdi-monitor-dashboard", route: "/" },        
-        { title: "รายการอุปกรณ์", icon: "mdi-server", route: "/asset_hardware" },
+        { title: "รายการอุปกรณ์", icon: "mdi-server", route: "/asset_equipment" },
         { title: "รายการผู้ดูแลระบบ", icon: "mdi-account-multiple", route: "/asset_people" },
         { title: "Request for Change", icon: "mdi-stack-exchange", route: "/request_change" },
       ],

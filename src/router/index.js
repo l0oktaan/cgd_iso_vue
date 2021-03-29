@@ -4,7 +4,7 @@ import Home from "../views/Home.vue";
 import ISO from "../views/ISO.vue";
 import Login from "../views/Login.vue";
 
-import AssetHardware from "../views/AssetHardware.vue";
+import AssetEquipment from "../views/AssetEquipment.vue";
 import AssetPeople from "../views/AssetPeople.vue";
 
 import Request from "../views/Request.vue";
@@ -23,9 +23,9 @@ const routes = [
         component: ISO,
       },
       {
-        path: "/asset_hardware",
-        name: "asset_hardware",
-        component: AssetHardware,
+        path: "/asset_equipment",
+        name: "asset_equipment",
+        component: AssetEquipment,
       },
       {
         path: "/asset_people",
