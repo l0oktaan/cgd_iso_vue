@@ -11,6 +11,9 @@ import Request from "../views/Request.vue";
 import RequestChange from "../views/RequestChange.vue";
 import RequestForm from "../views/RequestForm.vue";
 import MasterData from "../views/MasterData.vue";
+
+
+import Test from "../views/Test.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -37,6 +40,11 @@ const routes = [
         path: "/master_data",
         name: "master_data",
         component: MasterData,
+      },
+      {
+        path: "/test",
+        name: "test",
+        component: Test,
       },
       {
         path: "/request_change",        
