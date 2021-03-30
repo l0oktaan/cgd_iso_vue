@@ -97,6 +97,7 @@ export default {
         { title: "รายการอุปกรณ์", icon: "mdi-server", route: "/asset_equipment" },
         { title: "รายการผู้ดูแลระบบ", icon: "mdi-account-multiple", route: "/asset_people" },
         { title: "Request for Change", icon: "mdi-stack-exchange", route: "/request_change" },
+        { title: "Test", icon: "mdi-stack-exchange", route: "/test" },
       ],
       
         // { title: "ข้อมูลหน่วยงาน", icon: "mdi-home-city", route: "/division" },
