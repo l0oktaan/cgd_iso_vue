@@ -222,6 +222,7 @@
                                     
                                         <label for="assetsFieldHandle" class="block">
                                         <div  style="cursor:pointer;">
+                                            Action Plan, Test Plan, Rollback Plan หรือเอกสารอื่น ๆ <br>
                                             <v-icon left>mdi-paperclip</v-icon> วางไฟล์ที่ต้องการ หรือ คลิก เพื่อเลือกไฟล์
                                         </div>
                                         </label>
@@ -467,7 +468,7 @@
                             <v-col cols="9">
                                 <validation-provider
                                     v-slot="{ errors }"
-                                    name="env_impack"
+                                    name="env_impact"
                                     rules="required"
                                 >                                  
                                     <!-- <v-chip-group
@@ -928,7 +929,41 @@ export default {
             detail_type: [                
                 {text: 'เรื่องทั่วไป',value: 1},
                 {text: 'เกี่ยวกับ Policy Firewall',value: 2},
-            ]
+            ],
+            form_default:{
+                title:'',
+                detail:[],
+                reason: '',
+                document_relate: [],
+                document_files: [],
+                person_relate: [],
+                change_type:0,
+                system_relate:[],
+                env_impact:[],
+                system_impact:[],
+                impact_level:1,
+                begin_date: new Date().toISOString().substr(0, 10),                
+                end_date: null,                
+                begin_time: null,
+                end_time: null,                
+            },
+            form_edit:{
+                title:'',
+                detail:[],
+                reason: '',
+                document_relate: [],
+                document_files: [],
+                person_relate: [],
+                change_type:0,
+                system_relate:[],
+                env_impact:[],
+                system_impact:[],
+                impact_level:1,
+                begin_date: new Date().toISOString().substr(0, 10),                
+                end_date: null,                
+                begin_time: null,
+                end_time: null,
+            }
         }
     },
     watch: {
