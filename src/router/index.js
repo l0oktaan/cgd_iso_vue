@@ -10,6 +10,7 @@ import AssetPeople from "../views/AssetPeople.vue";
 import Request from "../views/Request.vue";
 import RequestChange from "../views/RequestChange.vue";
 import RequestForm from "../views/RequestForm.vue";
+import MasterData from "../views/MasterData.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -32,7 +33,11 @@ const routes = [
         name: "asset_people",
         component: AssetPeople,
       },
-
+      {
+        path: "/master_data",
+        name: "master_data",
+        component: MasterData,
+      },
       {
         path: "/request_change",        
         component: Request,

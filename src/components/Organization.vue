@@ -1,14 +1,10 @@
 <template>
-    <v-container>        
-        <v-row>
-            <v-col>
-                <v-card
-                elevation="4"
-                >
+    
+            <v-card elevation="4">
                 <v-data-table
                     :headers="headers"
-                    :items="people_list"
-                    :items-per-page="15"
+                    :items="org_list"
+                    :items-per-page="10"
                     :search="search"
                     class="elevation-1"                               
                     
@@ -18,8 +14,8 @@
                             flat
                         >
                         <v-toolbar-title>
-                            <v-icon large>mdi-account-multiple</v-icon>
-                            รายการบุคลากร</v-toolbar-title> 
+                            <v-icon large>mdi-home-city</v-icon>
+                            รายการหน่วยงาน</v-toolbar-title> 
                         <v-dialog
                             v-model="dialog"
                             width="650"
@@ -42,67 +38,54 @@
                             <v-form @submit.prevent="submit">                                   
                                 <v-card class="pa-4">
                                     <v-row justify="center">
-                                        <v-col cols="12 text-center"><p><v-icon class="mr-2">mdi-account-multiple</v-icon>ข้อมูลรายการบุคลากร</p></v-col>
+                                        <v-col cols="12 text-center"><p><v-icon class="mr-2">mdi-home-city</v-icon>ข้อมูลหน่วยงาน</p></v-col>
                                     </v-row>
                                     <v-row>
-                                        <v-col cols="4 text-right">ชื่อ-นามสกุล :</v-col>
+                                        <v-col cols="4 text-right">ชื่อหน่วยงาน :</v-col>
                                         <v-col>
                                             <v-text-field      
-                                                v-model="people_edit.people_name"                                                     
+                                                v-model="org_edit.org_name"                                                     
                                                 hide-details="auto" 
                                                 outlined 
                                                 dense
                                             ></v-text-field>
                                             
                                         </v-col>
-                                    </v-row>                        
+                                    </v-row>  
                                     <v-row>
-                                        <v-col cols="4 text-right">IP Address :</v-col>
+                                        <v-col cols="4 text-right">ชื่อย่อ :</v-col>
                                         <v-col>
                                             <v-text-field      
-                                                v-model="people_edit.ip_address"                                                     
+                                                v-model="org_edit.org_name_short"                                                     
                                                 hide-details="auto" 
                                                 outlined 
                                                 dense
-                                            ></v-text-field>
-                                            
+                                            ></v-text-field>                                            
                                         </v-col>
-                                    </v-row>
+                                    </v-row>    
                                     <v-row>
-                                        <v-col cols="4 text-right">ประเภทบุคลากร :</v-col>
+                                        <v-col cols="4 text-right">ประเภทหน่วยงาน :</v-col>
                                         <v-col>
                                             <v-radio-group
-                                                v-model="people_edit.people_type"
+                                                v-model="org_edit.org_type"
                                                 row
                                                 >
                                                 <v-radio
-                                                    label="เจ้าหน้าที่กรม"
+                                                    label="หน่วยงานของกรม"
                                                     :value="1"
                                                 ></v-radio>
                                                 <v-radio
-                                                    label="เจ้าหน้าที่บริษัท"
+                                                    label="ผู้ให้บริการภายนอก"
                                                     :value="2"
                                                 ></v-radio>
                                             </v-radio-group>                                            
                                         </v-col>
-                                    </v-row>
+                                    </v-row>                  
                                     <v-row>
-                                        <v-col cols="4 text-right">หน่วยงาน :</v-col>
-                                        <v-col>
-                                            <v-text-field      
-                                                v-model="people_edit.organiz_id"                                                     
-                                                hide-details="auto" 
-                                                outlined 
-                                                dense
-                                            ></v-text-field>
-                                            
-                                        </v-col>
-                                    </v-row>
-                                    <v-row>
-                                        <v-col cols="4 text-right">Tag :</v-col>
+                                        <v-col cols="4 text-right">IP Address :</v-col>
                                         <v-col>
                                             <v-combobox multiple
-                                                v-model="people_edit.people_tags" 
+                                                v-model="org_edit.ip_address" 
                                                 dense
                                                 append-icon
                                                 chips
@@ -110,7 +93,43 @@
                                                 class="tag-input"
                                                 outlined
                                                 hide-details="auto" 
-                                                @keydown.tab.prevent="processTags($event)"
+                                                
+                                                >
+                                                <template v-slot:selection="data">
+                                                    <v-chip
+                                                        
+                                                        close
+                                                        color="primary"
+                                                        small
+                                                        label
+                                                        outlined
+                                                        :key="JSON.stringify(data.item)"
+                                                        v-bind="data.attrs"
+                                                        :input-value="data.selected"                                        
+                                                        @click:close="data.parent.selectItem(data.item)"
+                                                        >                                        
+                                                        {{ data.item }}
+                                                    </v-chip>
+                                                </template>
+                                            </v-combobox>
+                                            
+                                        </v-col>
+                                    </v-row>
+                                    
+                                   
+                                    <v-row>
+                                        <v-col cols="4 text-right">Tag :</v-col>
+                                        <v-col>
+                                            <v-combobox multiple
+                                                v-model="org_edit.org_tags" 
+                                                dense
+                                                append-icon
+                                                chips
+                                                deletable-chips
+                                                class="tag-input"
+                                                outlined
+                                                hide-details="auto" 
+                                                
                                                 >
                                                 <template v-slot:selection="data">
                                                     <v-chip
@@ -189,31 +208,33 @@
                         ></v-text-field>                
                         </v-toolbar>
                     </template>
-                    <template v-slot:item.people_name="{ item }">                        
-                        <v-icon class="mr-1" small>mdi-account</v-icon>
-                        {{ item.people_name }}
+                    <template v-slot:item.org_name="{ item }">                        
+                        <v-icon class="mr-1" small>mdi-home-city</v-icon>
+                        {{ item.org_name }}
                         
                     </template>
                     <template v-slot:item.ip_address="{ item }">
-                        <v-chip  
+                        <v-chip                              
                             color="primary"   
                             class="ma-1"
                             label
                             outlined
-                            small                            
+                            small
+                            v-for="(ip,index) in item.ip_address"               
+                            :key="index"
                             dark
                         >
-                        {{ item.ip_address }}
+                        {{ ip }}
                         </v-chip>
                     </template>
                     
-                    <template v-slot:item.people_tags="{ item }">
+                    <template v-slot:item.org_tags="{ item }">
                         <v-chip  
                             color="black"   
                             class="ma-1"
                             small
 
-                            v-for="(tags,index) in item.people_tags"               
+                            v-for="(tags,index) in item.org_tags"               
                             :key="index"
                             outlined
                         >
@@ -241,74 +262,62 @@
                         </v-icon>
                     </template>            
                     </v-data-table>
-                </v-card>
-            </v-col>
-    </v-row>
-    </v-container>
+            </v-card>
+        
 </template>
 
 <script>
 export default {
     data(){
-        return{
+        return {
             dialog: false,
             dialogDelete: false,
+            status: 'new',
+            search: '',
             headers: [
                 {
-                    text: 'ชื่อ - นามสกุล',
+                    text: 'ชื่อหน่วยงาน',
                     align: 'start',
                     // sortable: false,
-                    value: 'people_name',
+                    value: 'org_name',
                     class: ['blue darken-3', 'white--text', 'head-text']
                 },
-                { text: 'ประเภท', sortable: false, value: 'people_type', class: ['blue darken-3', 'white--text']},       
-                { text: 'IP Address', value: 'ip_address', class: ['blue darken-3', 'white--text']},                       
-                { text: 'หน่วยงาน', sortable: false, value: 'organiz_id', class: ['blue darken-3', 'white--text']},
-                { text: 'Tags', sortable: false, value: 'people_tags', class: ['blue darken-3', 'white--text']},
-                { text: 'Action', value: 'actions',class: ['blue darken-3', 'white--text']}                       
-                            
+                {
+                    text: 'ชื่อย่อ',
+                    align: 'start',
+                    // sortable: false,
+                    value: 'org_name_short',
+                    class: ['blue darken-3', 'white--text', 'head-text']
+                },
+                { text: 'ประเภท', sortable: false, value: 'org_type', class: ['blue darken-3', 'white--text']},       
+                { text: 'IP Group', value: 'ip_address', class: ['blue darken-3', 'white--text']},            
+                { text: 'Tags', sortable: false, value: 'org_tags', class: ['blue darken-3', 'white--text']},
+                { text: 'Action', value: 'actions',class: ['blue darken-3', 'white--text']}                            
             ],
-            people_list: [
-                {id:1, people_name: 'ทรงวุฒิ สัจจบุตร', ip_address : '10.10.31.85',people_type: 1, organiz_id: 1,people_tags:['security','itc']},
-                {id:2, people_name: 'สัจจบุตร ทรงวุฒิ', ip_address : '10.10.31.86',people_type: 2, organiz_id: 12,people_tags:['pcc','vender']},
+            org_list: [
+                { id:1, org_name: 'กลุ่มงานรักษาความปลอดภัยสารสนเทศ', org_name_short: 'SECD', org_type: 1, ip_address: ['10.10.31.85','10.10.31.121'], org_tags: ['securit','SECD']},
+                { id:2, org_name: 'บริษัท i-Secure จำกัด', org_name_short: 'i-secure', org_type: 2, ip_address: [], org_tags: ['security','i-secure']},
             ],
-            status: 'new',
-            people_default: {
-                people_id: 0,
-                people_name: '',
-                people_type: 0,
-                ip_address: '',
-                organiz_id: 0,
-                people_tags: []
+            org_default: {
+                org_name: '',
+                org_name_short: '',
+                org_type:0,
+                ip_address: [],
+                org_tags: []                
             },
-            people_edit: {
-                people_id: 0,
-                people_name: '',
-                people_type: 0,
-                ip_address: '',
-                organiz_id: 0,
-                people_tags: []
-            },
-            search: ''
+            org_edit: {
+                org_name: '',
+                org_name_short: '',
+                org_type:0,
+                ip_address: [],
+                org_tags: []                
+            }
         }
     },
-    methods: {
-        getFiltered(e){
-            console.log(e) //output the filtered items
-        },
-        processTags($event){ 
-            console.log($event.target.value);
-            if ($event.target.value == '0'){
-                $event.preventDefault();
-            }
-            
-        },
-        add_equip(){
-            this.dialog = true;
-        },
+    methods:{
         editItem(item){
             this.status = "edit";
-            this.people_edit = Object.assign({},item);
+            this.org_edit = Object.assign({},item);
             this.dialog = true;
         },
         deleteItem(id){
@@ -326,7 +335,7 @@ export default {
 
         },
         clear(){
-            this.people_edit = Object.assign({},this.people_default);
+            this.org_edit = Object.assign({},this.org_default);
             this.status = "new";
             this.dialog = false;
         }
@@ -334,15 +343,6 @@ export default {
 }
 </script>
 
-<style scoped>
-.v-input--selection-controls{
-    margin: 0!important;
-}
-.col{
-    padding: 8px!important;
-}
-.v-chip--select{
-    vertical-align: middle!important;
-}
-</style>>
+<style>
 
+</style>

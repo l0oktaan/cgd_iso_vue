@@ -817,7 +817,9 @@
                                         class="ma-3"
                                         rounded
                                         color="primary"
-                                        dark
+                                        
+                                        type="submit"
+                                        :disabled="invalid"
                                     >
                                         <v-icon left>
                                             mdi-content-save-outline

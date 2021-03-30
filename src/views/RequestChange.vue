@@ -1,11 +1,11 @@
 <template>
 
   <v-container>
-    <v-row>
+    <!-- <v-row>
       <v-col>
         <request-search></request-search>
       </v-col>
-    </v-row>
+    </v-row> -->
     <v-row>
       <v-col>
         <v-card
@@ -17,13 +17,15 @@
             :items-per-page="15"
             
             class="elevation-1"
-            
+            :search="search"
             v-if="request_list">
             <template v-slot:top>
                 <v-toolbar
                     flat
                 >
-                  <v-toolbar-title>รายการเปลี่ยนแปลงข้อมูล</v-toolbar-title> 
+                  <v-toolbar-title>
+                    <v-icon large>mdi-stack-exchange</v-icon>
+                    รายการเปลี่ยนแปลงข้อมูล</v-toolbar-title> 
                   <v-btn
                     class="ma-2"
                     rounded
@@ -34,8 +36,17 @@
                       mdi-plus
                     </v-icon>
                     เพิ่มรายการใหม่
-                  </v-btn>            
+                  </v-btn>  
+                  <v-spacer></v-spacer>        
+                    <v-text-field
+                        v-model="search"
+                        append-icon="mdi-magnify"
+                        label="ค้นหา"
+                        single-line
+                        hide-details
+                  ></v-text-field>          
                 </v-toolbar>
+
             </template>
             
             <template v-slot:item.create_date="{ item }">
@@ -44,7 +55,23 @@
                 
             </template>
             
-            
+            <template v-slot:item.actions="{ item }">
+                <v-icon                    
+                    class="mr-2"
+                    large
+                    color="primary"
+                    @click="editItem(item)"
+                >
+                    mdi-pencil-circle
+                </v-icon>
+                <v-icon  
+                    
+                    color="error"        
+                    @click="deleteItem(item.id)"
+                >
+                    mdi-delete
+                </v-icon>
+            </template>
             
                             
             
@@ -62,6 +89,7 @@ import RequestSearch from "../components/Request/RequestSearch"
 export default {
   data(){
     return  {
+      search: '',
       headers: [
         {
             text: 'เลขที่เอกสาร',
@@ -73,7 +101,8 @@ export default {
         { text: 'วันที่ร้องขอ', value: 'create_date', class: ['blue darken-3', 'white--text']},       
         { text: 'ชื่อเรื่อง', sortable: false, value: 'request_title', class: ['blue darken-3', 'white--text']},       
         { text: 'ผู้ร้องขอ', sortable: false, value: 'user_id', class: ['blue darken-3', 'white--text']},       
-        { text: 'สถานะ', sortable: false, value: 'status', class: ['blue darken-3', 'white--text']},       
+        { text: 'สถานะ', sortable: false, value: 'status', class: ['blue darken-3', 'white--text']},      
+        { text: 'Action', value: 'actions',class: ['blue darken-3', 'white--text']}                        
                       
       ],
       request_list: [
