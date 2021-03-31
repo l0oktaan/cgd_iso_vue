@@ -171,34 +171,9 @@
                                     </v-menu>
                                 </template>
                                 <template v-slot:item.service_port="{ item,index }">
-                                    <v-menu
-                                        v-model="menu_test"
-                                        :close-on-content-click="false"
-                                        :nudge-width="200"
-                                        offset-x
-                                        >
-                                        <template v-slot:activator="{ on, attrs }">
-                                            <v-btn                                        
-                                                    color="secondary"
-                                                    fab
-                                                    x-small
-                                                    dark    
-                                                    v-bind="attrs"
-                                                    v-on="on"                                           
-                                                >
-                                                <v-icon>
-                                                mdi-plus
-                                                </v-icon>                                        
-                                            </v-btn> 
-                                        </template>
-                                        <v-card>
-                                            <v-row>
-                                                <v-col cols="12">
-                                                    <asset-edit :items="source_list" :header="source_headers"></asset-edit>
-                                                </v-col>
-                                            </v-row>
-                                        </v-card>    
-                                    </v-menu>
+                                    
+                                    <asset-edit :items="source_list" :header="source_headers" :select="item.service_port"></asset-edit>
+                                                
                                     
                                 </template>
                             </v-data-table>

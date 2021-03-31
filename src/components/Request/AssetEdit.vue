@@ -1,6 +1,5 @@
 <template>
-    <v-menu
-        v-model="show"
+    <v-menu        
         :close-on-content-click="false"
         :nudge-width="200"
         offset-x
@@ -18,12 +17,13 @@
                 mdi-plus
                 </v-icon>                                        
             </v-btn> 
+            {{selected}}
         </template>
         <v-card>
             <v-row>
                 <v-col cols="12">
                     <v-data-table
-                    v-model="select"
+                    v-model="selected"
                     :headers="header"
                     :items="items"                                                        
                     item-key="id"
@@ -52,7 +52,7 @@
                             ></v-text-field>                
                     </v-toolbar>
                     </template>
-                </v-data-table>
+                </v-data-table>                
                 </v-col>
             </v-row>
         </v-card>    
@@ -63,11 +63,17 @@
 
 <script>
 export default {
-    props: ['header','items'],
+    props: ['header','items','select'],
+
     data(){
         return {
             search: '',
-            select:[],
+            selected:[]            
+        }
+    },
+    watch: {
+        select(){
+            this.selected = this.select;
         }
     }
 }
