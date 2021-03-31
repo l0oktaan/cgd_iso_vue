@@ -259,17 +259,18 @@ export default {
                     align: 'start',
                     // sortable: false,
                     value: 'people_name',
-                    class: ['blue darken-3', 'white--text', 'head-text']
+                    class: ['blue darken-3', 'white--text', 'head-text'],
+                    width: '20%'
                 },
-                { text: 'ประเภท', sortable: false, value: 'people_type', class: ['blue darken-3', 'white--text']},       
-                { text: 'IP Address', value: 'ip_address', class: ['blue darken-3', 'white--text']},                       
-                { text: 'หน่วยงาน', sortable: false, value: 'organiz_id', class: ['blue darken-3', 'white--text']},
+                { text: 'ประเภท', sortable: false, value: 'people_type', class: ['blue darken-3', 'white--text'],width: '10%'},       
+                { text: 'IP Address', value: 'ip_address', class: ['blue darken-3', 'white--text'],width: '15%'},                       
+                { text: 'หน่วยงาน', sortable: false, value: 'organiz_id', class: ['blue darken-3', 'white--text'],width: '15%'},
                 { text: 'Tags', sortable: false, value: 'people_tags', class: ['blue darken-3', 'white--text']},
-                { text: 'Action', value: 'actions',class: ['blue darken-3', 'white--text']}                       
+                { text: 'Action', value: 'actions',class: ['blue darken-3', 'white--text'],width: '10%'}                       
                             
             ],
             people_list: [
-                {id:1, people_name: 'ทรงวุฒิ สัจจบุตร', ip_address : '10.10.31.85',people_type: 1, organiz_id: 1,people_tags:['security','itc']},
+                {id:1, people_name: 'ทรงวุฒิ สัจจบุตร', ip_address : '10.10.31.85',people_type: 1, organiz_id: 1,people_tags:['security','itc','dsdasdasdasd','sdasdasd']},
                 {id:2, people_name: 'สัจจบุตร ทรงวุฒิ', ip_address : '10.10.31.86',people_type: 2, organiz_id: 12,people_tags:['pcc','vender']},
             ],
             status: 'new',

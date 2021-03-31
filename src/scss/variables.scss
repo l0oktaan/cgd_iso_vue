@@ -19,4 +19,7 @@ $data-table-regular-header-height: 40px;
         font-weight: normal!important;
   
    }
-  
+   #tbPolicy > .v-data-table__wrapper>table>tbody>tr>td{
+    vertical-align: top!important;
+
+}

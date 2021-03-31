@@ -6,18 +6,19 @@
         >
         <template v-slot:activator="{ on, attrs }">
             <v-btn                                        
-                    color="secondary"
+                    color="success"
                     fab
                     x-small
                     dark    
                     v-bind="attrs"
-                    v-on="on"                                           
+                    v-on="on" 
+                                                              
                 >
                 <v-icon>
                 mdi-plus
                 </v-icon>                                        
             </v-btn> 
-            {{selected}}
+            
         </template>
         <v-card>
             <v-row>
@@ -26,7 +27,7 @@
                     v-model="selected"
                     :headers="header"
                     :items="items"                                                        
-                    item-key="id"
+                    item-key="code"
                     show-select
                     class="elevation-1"
                     hide-default-footer
@@ -63,7 +64,7 @@
 
 <script>
 export default {
-    props: ['header','items','select'],
+    props: ['header','items','select','index'],
 
     data(){
         return {
@@ -71,14 +72,33 @@ export default {
             selected:[]            
         }
     },
+    mounted(){
+        
+            this.$nextTick(()=>{
+                this.selected = this.select;
+            })
+    },
     watch: {
         select(){
-            this.selected = this.select;
+            this.$nextTick(()=>{
+                this.selected = this.select;
+                
+            });            
+        },
+        selected(){
+            this.$nextTick(()=>{                
+                this.$emit('updateItem',{index:this.index,value:this.selected});
+            });  
         }
     }
 }
 </script>
 
-<style>
+<style scoped>
+.v-btn--fab.v-size--x-small{
+    height: 25px!important;
+    width: 25px!important;
+}
+</style>>
 
 </style>
