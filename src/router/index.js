@@ -11,7 +11,7 @@ import Request from "../views/Request.vue";
 import RequestChange from "../views/RequestChange.vue";
 import RequestForm from "../views/RequestForm.vue";
 import MasterData from "../views/MasterData.vue";
-
+import PolicyFirewall from "../views/PolicyFirewall.vue";
 
 import Test from "../views/Test.vue";
 Vue.use(VueRouter);
@@ -42,6 +42,11 @@ const routes = [
         component: MasterData,
       },
       {
+        path: "/policy_firewall",
+        name: "policy_firewall",
+        component: PolicyFirewall,
+      },
+      {
         path: "/test",
         name: "test",
         component: Test,
@@ -59,7 +64,12 @@ const routes = [
             path: "form",
             name: "request_form",
             component: RequestForm,
-          }
+          },
+          {
+            path: "form/:id",
+            name: "edit_request_form",
+            component: RequestForm,
+          },
           
         ]
       }      

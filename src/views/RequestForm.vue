@@ -31,7 +31,7 @@
                                 >
                                     <v-text-field
                                         dense
-                                        v-model="title"
+                                        v-model="form_edit.request_title"
                                         :rules="rules"
                                         :error-messages="errors"
                                         hide-details="auto"     
@@ -46,8 +46,7 @@
                             <v-col cols="3">
                                 <p class="topic">รายละเอียด :</p>
                             </v-col>
-                            <v-col cols="9" >
-                                
+                            <v-col cols="9" >                                
                                 <v-menu offset-y>
                                     <template v-slot:activator="{ on, attrs }">
                                             <v-btn
@@ -72,7 +71,7 @@
                                             :key="index"
                                             link
                                         >
-                                            <v-list-item-title @click="call_detail_type(item.value)" class="mymenu">
+                                            <v-list-item-title @click="create_detail(item.value)" class="mymenu">
                                                 {{ item.text }}
                                             </v-list-item-title>
                                         </v-list-item>
@@ -94,7 +93,7 @@
                                             <v-row justify="center">         
                                                 <v-col cols="12">            
                                                     <v-textarea
-                                                        v-model="detail"
+                                                        v-model="detail.request_detail"
                                                         outlined
                                                         label="รายละเอียด"
                                                         no-resize
@@ -145,14 +144,14 @@
                                     <v-alert             
                                         
                                         
-                                        color="primary"
+                                        :color="detail.id ==0 ? 'success' : 'primary'"
                                         border="left"
                                         elevation="2"
                                         colored-border
                                         :icon="'mdi-numeric-' + (index+1) + '-circle-outline'"
                                         >
                                         <v-row>
-                                            <v-col cols="10">{{detail.text}}</v-col>
+                                            <v-col cols="10">{{detail.request_detail}}</v-col>
                                             <v-col> 
                                                 <div class=text-right>
                                                     <v-btn
@@ -161,7 +160,7 @@
                                                         x-small
                                                         fab
                                                         color="indigo"
-                                                        @click="call_detail_type(1)"
+                                                        @click="edit_detail(detail)"
                                                         >
                                                         <v-icon>mdi-pencil</v-icon>
                                                     </v-btn>
@@ -171,7 +170,7 @@
                                                         dark
                                                         x-small
                                                         color="error"
-                                                        @click="detail_list.splice(index,1)"
+                                                        @click="delete_detail(detail,index)"
                                                         >
                                                         <v-icon>
                                                             mdi-close
@@ -200,7 +199,7 @@
                                 >
                                 <v-text-field
                                     dense
-                                    v-model="reason"
+                                    v-model="form_edit.request_reason"
                                     :rules="rules"
                                     hide-details="auto"          
                                     :error-messages="errors"
@@ -222,8 +221,9 @@
                                     
                                         <label for="assetsFieldHandle" class="block">
                                         <div  style="cursor:pointer;">
-                                            Action Plan, Test Plan, Rollback Plan หรือเอกสารอื่น ๆ <br>
-                                            <v-icon left>mdi-paperclip</v-icon> วางไฟล์ที่ต้องการ หรือ คลิก เพื่อเลือกไฟล์
+                                            <v-icon left>mdi-paperclip</v-icon> วางไฟล์ที่ต้องการ หรือ คลิก เพื่อเลือกไฟล์<br>
+                                            Action Plan, Test Plan, Rollback Plan หรือเอกสารอื่น ๆ 
+                                            
                                         </div>
                                         </label>
                                         
@@ -239,100 +239,21 @@
                                 
                                 <v-chip                                     
                                     small
-                                    v-for="(item,index) in document_files" 
+                                    v-for="(item,index) in file_list" 
                                     :key="index"
                                     class="ma-2"
                                     close
-                                    color="primary"                                 
-                                    @click:close="deleteFile(index)"
+                                    @click="downloadFile(item)"
+                                    :color="item.id == 0 ? 'green' : 'primary'"    
+                                    @click:close="deleteFile(item,index)"
                                     >
-                                    {{ item.name}}
+                                    {{ item.file_title }}
                                 </v-chip>
                                 
                             </v-col>
                         </v-row>
                         <v-row>    
-                            <!-- <v-col cols="3">
-                                <p class="topic">เอกสารประกอบ (ถ้ามี) :</p>
-                            </v-col>     
-                            <v-col cols="9"> -->
-                                                                       
-                                        <!-- <upload-btn
-                                            title="แนบเอกสาร"
-                                            @file-update="check_files"
-                                            color="success"
-                                            multiple
-                                           
-                                            outline
-                                            
-                                            large
-                                            noTitleUpdate
-                                            labelClass="upload"
-                                            accept="image/jpeg,image/png,application/pdf"
-                                        >
-                                            <template slot="icon-left">
-                                                <v-icon left>mdi-paperclip</v-icon>
-                                            </template>
-                                        </upload-btn> -->
-                                    
-                                        
-                                        <!-- <v-file-input
-                                            ref="doc_files"
-                                            v-model="files"
-                                            accept="image/jpeg,image/png,application/pdf"
-                                            label="เลือกไฟล์เอกสาร"
-                                            multiple
-                                            outlined
-                                            dense
-                                            :clearable="false"
-                                            @change="check_files"
-                                            
-                                            prepend-icon="mdi-camera"                          
-                                        >
-                                            template v-slot:selection="{ index,text }">
-                                                <v-chip
-                                                    small                                            
-                                                    color="primary"
-                                                    close         
-                                                    @click:close="deleteChip(index)"                                   
-                                                >
-                                                    {{ text }}
-                                                </v-chip>
-                                            </template> 
-                                        </v-file-input> -->
-                                        
-                                
-                                
-                                
-                                
-                                
-                                <!-- <v-combobox multiple
-                                    v-model="document_relate" 
-                                    :items="document_list"
-                                    dense
-                                    append-icon
-                                    chips
-                                    deletable-chips
-                                    class="tag-input"
-                                    outlined
-                                    hide-details="auto"   
-                                    label="เลือกเอกสารประกอบ หรืออื่นๆ โปรดระบุ"
-                                    >
-                                    <template v-slot:selection="data">
-                                        <v-chip
-                                            class="mt-2"
-                                            close
-                                            color="primary"                                        
-                                            :key="JSON.stringify(data.item)"
-                                            v-bind="data.attrs"
-                                            :input-value="data.selected"                                        
-                                            @click:close="data.parent.selectItem(data.item)"
-                                            >
-                                            {{ data.item.text || data.item}}
-                                        </v-chip>
-                                    </template>
-                                </v-combobox>
-                            </v-col> -->
+                            
                         </v-row>
                         <v-row>    
                             <v-col cols="3">
@@ -340,7 +261,7 @@
                             </v-col>     
                             <v-col cols="9">
                                 <v-combobox multiple
-                                    v-model="person_relate" 
+                                    v-model="form_edit.person_relate" 
                                     dense
                                     append-icon
                                     chips
@@ -379,26 +300,9 @@
                             </v-col>     
                             <v-col cols="9">
                                
-                                <!-- <v-chip-group
-                                    v-model="change_type"
-                                    column                                        
-                                                                           
-                                >
-                                    <v-chip
-                                        filter
-                                        outlined                                            
-                                    >
-                                        Normal Change
-                                    </v-chip>
-                                    <v-chip
-                                        filter
-                                        outlined
-                                    >
-                                        Emergency Change
-                                    </v-chip>                                        
-                                </v-chip-group> -->
+                                
                                 <v-radio-group 
-                                    v-model="change_type"
+                                    v-model="form_edit.change_type"
                                     row
                                     dense
                                     mandatory
@@ -432,7 +336,7 @@
                             </v-col>     
                             <v-col cols="9">
                                 <v-combobox multiple
-                                    v-model="system_relate" 
+                                    v-model="form_edit.system_relate" 
                                     :items="system_list"
                                     dense
                                     append-icon
@@ -471,54 +375,25 @@
                                     name="env_impact"
                                     rules="required"
                                 >                                  
-                                    <!-- <v-chip-group
-                                        v-model="env_impact"
-                                        column
-                                        multiple
-                                        :error-messages="errors"
-                                        
-                                    >
-                                        <v-chip
-                                            filter
-                                            outlined
-                                            
-                                        >
-                                            Production
-                                        </v-chip>
-                                        <v-chip
-                                            filter
-                                            outlined
-                                            
-                                        >
-                                            Development
-                                        </v-chip>
-                                        <v-chip
-                                            filter
-                                            outlined
-                                            
-                                        >
-                                            Test/QA
-                                        </v-chip>
-                                        
-                                    </v-chip-group> -->
+                                    
                                     <v-row>
                                         <v-col cols="4">
                                             <v-checkbox
-                                                v-model="env_impact"
+                                                v-model="form_edit.env_impact"
                                                 label="Production"
                                                 value="1"
                                             ></v-checkbox>
                                         </v-col>
                                         <v-col cols="4">
                                             <v-checkbox
-                                                v-model="env_impact"
+                                                v-model="form_edit.env_impact"
                                                 label="Development"
                                                 value="2"
                                             ></v-checkbox>
                                         </v-col>
                                         <v-col cols="4">
                                             <v-checkbox
-                                                v-model="env_impact"
+                                                v-model="form_edit.env_impact"
                                                 label="Test/QA"
                                                 value="3"
                                             ></v-checkbox>
@@ -537,7 +412,7 @@
                             </v-col>     
                             <v-col cols="9">
                                 <v-combobox multiple
-                                    v-model="system_impact" 
+                                    v-model="form_edit.system_impact" 
                                     dense
                                     append-icon
                                     chips
@@ -568,38 +443,9 @@
                             <v-col cols="3">
                                 <p class="topic">ระดับผลกระทบ :</p>
                             </v-col>     
-                            <v-col cols="9"> 
-                                <!-- <v-chip-group
-                                    v-model="impact_level"
-                                    column                                       
-                                                                           
-                                >
-                                    <v-chip
-                                        
-                                        filter
-                                        outlined  
-                                        class="high"                                          
-                                    >
-                                        สูง (High)
-                                    </v-chip>
-                                    <v-chip
-                                        filter
-                                        outlined
-                                        
-                                    >
-                                        ปานกลาง (Medium)
-                                    </v-chip> 
-                                    <v-chip
-                                        filter
-                                        outlined
-                                        
-                                        class="low" 
-                                    >
-                                        ต่ำ (Low)
-                                    </v-chip>                                        
-                                </v-chip-group>                                -->
+                            <v-col cols="9">                                                                
                                 <v-radio-group 
-                                    v-model="impact_level"
+                                    v-model="form_edit.level_impact"
                                     row
                                     dense
                                     mandatory
@@ -640,7 +486,7 @@
                                     ref="begin_date_menu"
                                     v-model="begin_date_menu"
                                     :close-on-content-click="false"
-                                    :return-value.sync="begin_date"
+                                    :return-value.sync="form_edit.begin_date"
                                     transition="scale-transition"
                                     offset-y
                                     min-width="290px"
@@ -658,7 +504,7 @@
                                         ></v-text-field>
                                     </template>
                                     <v-date-picker
-                                        v-model="begin_date"
+                                        v-model="form_edit.begin_date"
                                         no-title
                                         scrollable
                                         locale="th-TH"
@@ -674,7 +520,7 @@
                                         <v-btn
                                             text
                                             color="primary"
-                                            @click="$refs.begin_date_menu.save(begin_date)"
+                                            @click="$refs.begin_date_menu.save(form_edit.begin_date)"
                                         >
                                             ตกลง
                                         </v-btn>
@@ -686,7 +532,7 @@
                                     ref="end_date_menu"
                                     v-model="end_date_menu"
                                     :close-on-content-click="false"
-                                    :return-value.sync="end_date"
+                                    :return-value.sync="form_edit.end_date"
                                     transition="scale-transition"
                                     offset-y
                                     min-width="290px"
@@ -702,11 +548,11 @@
                                             dense
                                             clearable
                                             prepend-icon="mdi-calendar"
-                                            @click:clear="end_date=null"
+                                            @click:clear="form_edit.end_date=null"
                                         ></v-text-field>
                                     </template>
                                     <v-date-picker
-                                        v-model="end_date"
+                                        v-model="form_edit.end_date"
                                         no-title
                                         scrollable
                                         locale="th-TH"
@@ -722,7 +568,7 @@
                                         <v-btn
                                             text
                                             color="primary"
-                                            @click="$refs.end_date_menu.save(end_date)"
+                                            @click="$refs.end_date_menu.save(form_edit.end_date)"
                                         >
                                             ตกลง
                                         </v-btn>
@@ -740,7 +586,7 @@
                                             v-model="begin_time_menu"
                                             :close-on-content-click="false"
                                             :nudge-right="40"
-                                            :return-value.sync="begin_time"
+                                            :return-value.sync="form_edit.begin_time"
                                             transition="scale-transition"
                                             offset-y
                                             max-width="290px"
@@ -748,7 +594,7 @@
                                         >
                                             <template v-slot:activator="{ on, attrs }">
                                             <v-text-field
-                                                v-model="begin_time"
+                                                v-model="form_edit.begin_time"
                                                 label="ตั้งแต่เวลา"
                                                 prepend-icon="mdi-clock-time-four-outline"
                                                 readonly
@@ -757,16 +603,16 @@
                                                 outlined
                                                 dense
                                                 clearable
-                                                @click:clear="begin_time=null"
+                                                @click:clear="form_edit.begin_time=null"
                                             ></v-text-field>
                                             </template>
                                             <v-time-picker
                                                 format="24hr"
                                                 v-if="begin_time_menu"
-                                                v-model="begin_time"
+                                                v-model="form_edit.begin_time"
                                                 full-width
                                                 
-                                                @click:minute="$refs.begin_time_menu.save(begin_time)"
+                                                @click:minute="$refs.begin_time_menu.save(form_edit.begin_time)"
                                             ></v-time-picker>
                                         </v-menu>
                                     </v-col>                        
@@ -776,7 +622,7 @@
                                             v-model="end_time_menu"
                                             :close-on-content-click="false"
                                             :nudge-right="40"
-                                            :return-value.sync="end_time"
+                                            :return-value.sync="form_edit.end_time"
                                             transition="scale-transition"
                                             offset-y
                                             max-width="290px"
@@ -784,7 +630,7 @@
                                         >
                                             <template v-slot:activator="{ on, attrs }">
                                             <v-text-field
-                                                v-model="end_time"
+                                                v-model="form_edit.end_time"
                                                 label="ถึงเวลา"
                                                 prepend-icon="mdi-clock-time-four-outline"
                                                 readonly
@@ -793,16 +639,16 @@
                                                 outlined
                                                 dense
                                                 clearable
-                                                @click:clear="end_time=null"
+                                                @click:clear="form_edit.end_time=null"
                                             ></v-text-field>
                                             </template>
                                             <v-time-picker
                                                 format="24hr"
                                                 v-if="end_time_menu"
-                                                v-model="end_time"
+                                                v-model="form_edit.end_time"
                                                 full-width
                                                 
-                                                @click:minute="$refs.end_time_menu.save(end_time)"
+                                                @click:minute="$refs.end_time_menu.save(form_edit.end_time)"
                                             ></v-time-picker>
                                         </v-menu>
                                     </v-col>
@@ -810,10 +656,11 @@
                             </v-col>
                         </v-row>
                     </v-card>
+                    
                     <v-card class="mycard mb-5 mt-5"> 
                         <v-row justify="center">                            
                             <v-col cols="4">
-                                <div class="text-center">
+                                <div class="text-center">                                    
                                     <v-btn
                                         class="ma-3"
                                         rounded
@@ -839,9 +686,12 @@
                                 </div>
                             </v-col>
                         </v-row>
+                        <new-alert :alert="alert" :message="message"></new-alert>
+                        <my-alert :AlertType="show_alert"></my-alert>
                     </v-card>
                 </form>
-                </validation-observer>
+                </validation-observer>    
+                            
             </v-col>
         </v-row>
         
@@ -849,9 +699,14 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2';
+// import MyAlert from '@/components/MyAlert.vue';
+import NewAlert from '@/components/NewAlert';
+import axios from 'axios';
 import UploadButton from 'vuetify-upload-button';
 import { required, max, digits, regex} from 'vee-validate/dist/rules'
 import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
+
 setInteractionMode('eager')
 extend('required', {
 ...required,
@@ -869,31 +724,41 @@ extend('regex', {
     ...regex,
     message: 'รูปแบบข้อมูลไม่ถูกต้อง',
 })
+
 export default {
     components: {
+        'new-alert':NewAlert,
+        // 'my-alert':MyAlert,
       ValidationProvider,
       ValidationObserver,
       'upload-btn':UploadButton
-    },
-    delimiters: ['${', '}'], // Avoid Twig conflicts
-    created(){
         
     },
+    delimiters: ['${', '}'], // Avoid Twig conflicts
+    
     
     data(){
         return {
+            request_id: this.$route.params.id,
             invalid: false,
 
             detail_dialog: false,
             alert: true,
             rules: [v => v.length <= 250 || 'เกิน 250 ตัวอักษร'],
             title: '',
-            detail: '',
+            detail: null,
+            detail_item: {
+                id : 0,
+                order: 0,
+                request_detail: '',
+                type : 1,
+                description : ''  
+            },
             reason: '',
-            document_relate: [],
-            files: [],
+            
+            
             document_files: [],
-
+            file_list: [],
             document_list: [
                 {value : 1, text: 'Action Plan'},
                 {value : 2, text: 'Testing Plan'},
@@ -931,103 +796,310 @@ export default {
                 {text: 'เกี่ยวกับ Policy Firewall',value: 2},
             ],
             form_default:{
-                title:'',
-                detail:[],
-                reason: '',
+                request_title:'',                
+                request_reason: '',
                 document_relate: [],
-                document_files: [],
+                
                 person_relate: [],
                 change_type:0,
                 system_relate:[],
                 env_impact:[],
                 system_impact:[],
-                impact_level:1,
-                begin_date: new Date().toISOString().substr(0, 10),                
-                end_date: null,                
-                begin_time: null,
-                end_time: null,                
-            },
-            form_edit:{
-                title:'',
-                detail:[],
-                reason: '',
-                document_relate: [],
-                document_files: [],
-                person_relate: [],
-                change_type:0,
-                system_relate:[],
-                env_impact:[],
-                system_impact:[],
-                impact_level:1,
+                level_impact:1,
                 begin_date: new Date().toISOString().substr(0, 10),                
                 end_date: null,                
                 begin_time: null,
                 end_time: null,
-            }
+                status:1,
+                description: ''                
+            },
+            form_edit:{
+                request_title:'',                
+                request_reason: '',
+                document_relate: [],
+                
+                person_relate: [],
+                change_type:0,
+                system_relate:[],
+                env_impact:[],
+                system_impact:[],
+                level_impact:1,
+                begin_date: new Date().toISOString().substr(0, 10),                
+                end_date: null,                
+                begin_time: null,
+                end_time: null,
+                status:1,
+                description: ''
+            },
+            detail_status: 'new',
+            status: 'new',
+            alert: false,
+            message: '',
+            show_alert: ''
         }
+    },
+    mounted(){
+        this.fetchData();
     },
     watch: {
         document_files(){
-            console.log('files : ' + this.document_files.length);
+            
+        },
+        request_id(){
+            
+        },
+        alert(){
+            if (this.alert){
+                setTimeout(() => {
+                    this.alert = false
+                }, 2000);
+                
+            }
+        },
+        show_alert(){
+            if (this.show_alert != ""){
+                setTimeout(() => {
+                    this.show_alert = ""
+                }, 2000);
+                
+            }
         }
     },
     computed: {
         getBeginThaiDate(){
-            var d = new Date(this.begin_date);
+            var d = new Date(this.form_edit.begin_date);
             return d.toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' });
             //return moment(String(value)).format('LL')
         },
         getEndThaiDate(){
-            if (this.end_date){
-                var d = new Date(this.end_date);
-            return d.toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' });
-            }else{
-                return '';
+            if (this.form_edit.end_date){
+                var d = new Date(this.form_edit.end_date);
+                return d.toLocaleDateString('th-TH', { day: 'numeric', month: 'long', year: 'numeric' });
             }
+            
             
             //return moment(String(value)).format('LL')
         },
     },
     methods: {
-        save_detail(){
-            this.detail_list.push({
-                'text': this.detail,
-                'value': this.detail_list.length + 1
-            });
-            this.detail = '';
-            this.detail_dialog = false;
+        async fetchData(){
+            if (this.request_id){
+                // console.log(this.request_id);
+                this.status = 'edit'
+                await this.getRequest();
+                await this.getDetail();
+                await this.getFile();
+            }
         },
-        call_detail_type(type){
-            if (type==1){
+        async getDetail(){
+            let path = await '/api/request_forms/' + this.request_id + '/request_details';
+            try {
+                let response = await axios.get(path);
+                this.detail_list = response.data.data;
+                // for (let i=0;i<details.length;i++){
+
+                // }
+            } catch (error) {
+                
+            }
+            
+
+        },
+        async getRequest(){
+            let path = await '/api/request_forms/' + this.request_id;
+            let response = await axios.get(path);
+            let request = response.data.data;
+            this.form_edit.user_id = request.user_id;
+            this.form_edit.group_code = request.group_code;
+            this.form_edit.year = request.year;
+            this.form_edit.order_no = request.order_no;
+            this.form_edit.created_date = request.created_date;
+            this.form_edit.request_no = request.request_no;
+            this.form_edit.change_type = request.change_type;
+            this.form_edit.request_title = request.request_title;
+            this.form_edit.request_reason = request.request_reason;
+            this.form_edit.document_relate = JSON.parse(request.document_relate);
+            this.form_edit.person_relate = JSON.parse(request.person_relate);
+            this.form_edit.system_relate = JSON.parse(request.system_relate);
+            this.form_edit.env_impact = JSON.parse(request.env_impact);
+            this.form_edit.system_impact = JSON.parse(request.system_impact);
+            this.form_edit.level_impact = request.level_impact;
+            this.form_edit.begin_date = request.begin_date;
+            this.form_edit.end_date = request.end_date;
+            this.form_edit.begin_time = request.begin_time;
+            this.form_edit.end_time = request.end_time;
+            this.form_edit.status = request.status;
+            this.form_edit.description = request.description;
+            this.form_edit.updated_date = request.updated_date;
+
+
+        },
+        async getFile(){
+            let path = await `/api/request_forms/${this.request_id}/request_files`;
+            try {
+                let response = await axios.get(`${path}`);
+                this.file_list = JSON.parse(JSON.stringify(response.data.data));
+            } catch (error) {
+                
+            }
+            
+        },
+        create_detail(value){
+            if (value == 1){
+                this.detail_status = 'new';
+                this.detail = JSON.parse(JSON.stringify(this.detail_item));
+                this.detail_dialog = true;
+
+            }
+        },
+        edit_detail(detail){
+            if (detail.type==1){
+                this.detail_status = 'edit';
+                this.detail=JSON.parse(JSON.stringify(detail));
                 this.detail_dialog = true;
             }
             
         },
-        check_files(files){
-            if (files){
-                for (let i=0;i<files.length;i++){
-                    this.document_files.push(files[i]);
-                }
+        save_detail(){
+            if (this.detail_status == 'new'){
+                this.detail.order = this.detail_list.length + 1;
+                this.detail_list.push(JSON.parse(JSON.stringify(this.detail)));
+                
+            }else if (this.detail_status == 'edit'){
+                this.detail_list[this.detail_list.findIndex(x=>x.order == this.detail.order)].request_detail = this.detail.request_detail;
             }
             
-
-            //this.document_files = this.files;
+            
+            this.detail_dialog = false;
         },
-        deleteFile(index) {
-      // Prompt here with text if required
-            this.document_files.splice(index, 1)
+        delete_detail(detail,index){
+            if (detail.id == 0){
+                this.detail_list.splice(index,1)
+            }else{
+                Swal.fire({
+                    title: "กรุณายืนยันการลบรายการจากฐานข้อมูล",                
+                    icon: "warning",
+                    allowOutsideClick: false,
+                    showCancelButton: true,
+                    confirmButtonText: `ยืนยัน`,
+                    cancelButtonText: `ยกเลิก`,
+                    }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        let path = `/api/request_forms/${this.request_id}/request_details/${detail.id}`;
+                        try {
+                            axios.delete(`${path}`);   
+                            this.detail_list.splice(index,1)                 
+                            this.show_alert="success";
+                        } catch (error) {
+                            this.show_alert = "error";
+                            
+                        }
+                    } else if (result.isDenied) {
+                        // Swal.fire('Changes are not saved', '', 'info')
+                    }
+                })
+                // this.$swal({
+                //     title: "กรุณายืนยันการลบรายการจากฐานข้อมูล",                
+                //     icon: "warning",
+                //     closeOnClickOutside: false,
+                //     showCancelButton: `ยกเลิก`,
+                //     confirmButtonText: `ยืนยัน`,
+                // }).then(isConfirm =>{
+                //     if (isConfirm.isConfirmed){
+                //         let path = `/api/request_forms/${this.request_id}/request_details/${detail.id}`;
+                //         try {
+                //             axios.delete(`${path}`);   
+                //             this.detail_list.splice(index,1)                 
+                //             this.show_alert="success";
+                //         } catch (error) {
+                //             this.show_alert = "error";
+                            
+                //         }
+                //     }
+                // });
+                
+            }
         },
         
+        async delFile(id){
+            let path = await `/api/request_forms/${this.request_id}/request_files/${id}`;
+            try {
+                let response = await axios.delete(`${path}`);
+                await this.getFile();
+                this.show_alert = await "success";
+                
+            } catch (error) {
+                this.show_alert = await "error";
+            }
+        },
+        async deleteFile(item,index) {
+      // Prompt here with text if required
+            // this.form_edit.document_relate.splice(index, 1)
+            // this.form_edit.document_files.splice(index, 1)
+            if (item.id == 0){
+                this.file_list.splice(index,1);
+            }else{
+                Swal.fire({
+                    title: "กรุณายืนยันการลบรายการจากฐานข้อมูล",                
+                    icon: "warning",
+                    allowOutsideClick: false,
+                    showCancelButton: true,
+                    confirmButtonText: `ยืนยัน`,
+                    cancelButtonText: `ยกเลิก`,
+                    }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        this.delFile(item.id);
+                    } else if (result.isDenied) {
+                        // Swal.fire('Changes are not saved', '', 'info')
+                    }
+                })
+                
+                
+            }
+        },
+        downloadFile(item){
+            if (item.id !=0 ){
+                let path = `/api/request_forms/${this.request_id}/request_files/${item.id}`;
+                axios({
+                    url : `${path}`,
+                    methods : 'GET',
+                    responseType : 'blob'
+                })
+                .then(response=>{
+                    var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+                    //console.log('file url :' + fileURL);
+                    //return
+                    var fileLink = document.createElement('a');
+                    fileLink.href = fileURL;
+                    let filename = item.file_title;
+                    fileLink.setAttribute('download', filename);
+                    document.body.appendChild(fileLink);
+                    window.open(fileLink, "_blank");
+                    // fileLink.click();
+                    })
+                .catch(error=>{
+
+                })
+            }
+        },
         onChange() {
             let files = [...this.$refs.file.files];
             if (files){
                 for (let i=0;i<files.length;i++){
-                    console.log(files[i].type);
+                    
                     if (files[i].type === 'image/jpeg' || files[i].type === 'image/png' || files[i].type === 'application/pdf'){
-                        this.document_files.push(files[i]);
-                    }                    
-                }
-                
+                        // this.document_files.push(files[i]);
+                        // this.form_edit.document_relate.push(files[i].name);
+                        let file = {
+                            id:0,
+                            file_title: files[i].name,
+                            file_content: files[i]
+                        }
+                        this.file_list.push(file);
+                    }
+                }              
                 
             }
         },
@@ -1059,6 +1131,134 @@ export default {
         reset(){
             // this.$router.go(-1);
             this.$router.push('/request_change');
+        },
+        async submit(){
+            if (!this.detail_list || this.detail_list.length == 0){
+                this.show_alert = "no_detail";
+                return;
+            }
+            if (this.status == 'new'){
+                let path = '/api/request_forms';
+                try {
+                    let response = await axios.post(path,{
+                    user_id : 1,
+                    group_code : 'SECD',
+                    year : 2564,
+                    order_no : 0,
+                    created_date : new Date().toISOString().substr(0, 10),
+                    request_no : '',
+                    change_type : this.form_edit.change_type,
+                    request_title : this.form_edit.request_title,
+                    request_reason : this.form_edit.request_reason,
+                    document_relate : JSON.stringify(this.form_edit.document_relate),
+                    person_relate : JSON.stringify(this.form_edit.person_relate),
+                    system_relate : JSON.stringify(this.form_edit.system_relate),
+                    env_impact : JSON.stringify(this.form_edit.env_impact),
+                    system_impact : JSON.stringify(this.form_edit.system_impact),
+                    level_impact : this.form_edit.level_impact,
+                    begin_date : this.form_edit.begin_date,
+                    end_date : this.form_edit.end_date,
+                    begin_time : this.form_edit.begin_time,
+                    end_time : this.form_edit.end_time,
+                    status : 1,
+                    description : this.form_edit.description,
+                    updated_date : new Date().toISOString().substr(0, 10),
+                    
+                })
+                    this.request_id = await response.data.data.id;
+                    this.status = await 'edit';
+                    this.show_alert="success";
+                    await this.uploadDetail();
+                    await this.uploadFile();
+                    await this.fetchData();
+                } catch (error) {
+                   
+                    this.show_alert = "error";
+                }
+                
+            }else if (this.status == 'edit'){
+                let path = "/api/request_forms/" + this.request_id;
+                try {
+                    let response = await axios.put(path,{                    
+                        change_type : this.form_edit.change_type,
+                        request_title : this.form_edit.request_title,
+                        request_reason : this.form_edit.request_reason,
+                        document_relate : JSON.stringify(this.form_edit.document_relate),
+                        person_relate : JSON.stringify(this.form_edit.person_relate),
+                        system_relate : JSON.stringify(this.form_edit.system_relate),
+                        env_impact : JSON.stringify(this.form_edit.env_impact),
+                        system_impact : JSON.stringify(this.form_edit.system_impact),
+                        level_impact : this.form_edit.level_impact,
+                        begin_date : this.form_edit.begin_date,
+                        end_date : this.form_edit.end_date,
+                        begin_time : this.form_edit.begin_time,
+                        end_time : this.form_edit.end_time,
+                        status : 1,
+                        description : this.form_edit.description,
+                        updated_date : new Date().toISOString().substr(0, 10)
+                    })
+                    this.show_alert="success";
+                    await this.uploadDetail();
+                    await this.uploadFile();
+                    await this.fetchData();
+                } catch (error) {
+                    
+                    this.show_alert = "error";
+                }
+                 
+
+            }
+
+        },
+        async uploadFile(){
+            let path = `/api/request_forms/${this.request_id}/request_files`;
+            try {
+                for (let i=0;i<this.file_list.length;i++){
+                    let formData = new FormData();
+                    if (this.file_list[i].id == 0){
+                        
+                        formData.append('file',this.file_list[i].file_content);
+                        formData.append('file_title',this.file_list[i].file_title);
+                        let response = axios.post(`${path}`,formData,
+                            {
+                                headers: {
+                                    'Content-Type': 'multipart/form-data'
+                                },
+                                // onUploadProgress: function( progressEvent ) {
+                                //     this.uploadPercentage = parseInt( Math.round( ( progressEvent.loaded / progressEvent.total ) * 100 ));
+                                // }.bind(this)
+                            })
+
+                            
+                    }
+                }
+            } catch (error) {
+                this.show_alert = "error";
+            }
+            
+        },
+        async uploadDetail(){
+            let path = "/api/request_forms/" + this.request_id + "/request_details";
+            let details = [];
+            let response = null;
+            for (let i=0;i<this.detail_list.length;i++){
+                if (this.detail_list[i].id == 0){
+                    response = await axios.post(path,{
+                        order : this.detail_list[i].order,
+                        type : this.detail_list[i].type,
+                        request_detail : this.detail_list[i].request_detail                    
+                        })
+                   //details.push(JSON.parse(JSON.stringify(response.data.data)));
+                }else if (this.detail_list[i].id > 0){
+                    
+                    response = await axios.put(path+'/'+this.detail_list[i].id,{                        
+                        request_detail : this.detail_list[i].request_detail                    
+                        })
+                    //details.push(JSON.parse(JSON.stringify(response.data.data)));
+                }
+                
+            }
+            
         }
     
         

@@ -96,6 +96,7 @@ export default {
         { title: "Master Data", icon: "mdi-vector-link", route: "/master_data" },     
         { title: "รายการอุปกรณ์", icon: "mdi-server", route: "/asset_equipment" },
         { title: "รายการผู้ดูแลระบบ", icon: "mdi-account-multiple", route: "/asset_people" },
+        { title: "รายการ Policy Firewall", icon: "mdi-wall", route: "/policy_firewall" },
         { title: "Request for Change", icon: "mdi-stack-exchange", route: "/request_change" },
         { title: "Test", icon: "mdi-stack-exchange", route: "/test" },
       ],
