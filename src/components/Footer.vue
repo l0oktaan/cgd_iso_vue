@@ -2,7 +2,7 @@
 <v-footer
     dark
     padless
-    
+    app
     absolute
   >
     <v-card
@@ -30,7 +30,7 @@
       </v-card-title> -->
 
       <v-card-text class="py-2 white--text text-center">
-        <strong>CGD</strong>
+        <p>ศูนย์เทคโนโลยีสารสนเทศและการสื่อสาร กรมบัญชีกลาง</p>
       </v-card-text>
     </v-card>
   </v-footer>  

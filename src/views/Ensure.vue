@@ -15,8 +15,7 @@
             :headers="headers"
             :items="request_list"
             :items-per-page="15"
-            :loading="loadTable"
-            loading-text="Loading... Please wait"
+            
             class="elevation-1"
             :search="search"
             >
@@ -26,18 +25,8 @@
                 >
                   <v-toolbar-title>
                     <v-icon large>mdi-stack-exchange</v-icon>
-                    รายการเปลี่ยนแปลงข้อมูล</v-toolbar-title> 
-                  <v-btn
-                    class="ma-2"
-                    rounded
-                    color="success"
-                    @click="create_request"
-                  >
-                    <v-icon left>
-                      mdi-plus
-                    </v-icon>
-                    เพิ่มรายการใหม่
-                  </v-btn>  
+                    {{'รายการเปลี่ยนแปลงข้อมูล' + getStatus(status)}}</v-toolbar-title> 
+                    
                   <v-spacer></v-spacer>        
                     <v-text-field
                         v-model="search"
@@ -79,18 +68,14 @@
                 >
                     mdi-pencil-circle
                 </v-icon>
-                <v-icon  
+                <!-- <v-icon  
                     :disabled = "item.status > 1"
                     color="error"        
                     @click="deleteItem(item.id)"
                 >
                     mdi-delete
-                </v-icon>
+                </v-icon> -->
             </template>
-            
-                            
-            
-        
         </v-data-table>
         </v-card>
         
@@ -111,6 +96,7 @@ export default {
   
   data(){
     return  {
+      status: 7,
       search: '',
       headers: [
         { text: 'เรื่อง', sortable: false, value: 'request_title', class: ['blue darken-3', 'white--text'],width: '30%'},
@@ -133,8 +119,7 @@ export default {
         // { request_no : 'SDG1-2564/002', create_date: '2021-03-25',request_title : 'ขอเปิดปิดระบบเพื่อ update firmware F5',user_id: 'songwut.saj', status: 'ระหว่างพิจารณา' },
         // { request_no : 'SDG1-2564/001', create_date: '2021-03-24',request_title : 'ขอเปิด policy firewall ระบบเงินเดือน',user_id: 'songwut.saj', status: 'รอรับรอง' }
       ],
-      show_alert: '',
-      loadTable: true
+      show_alert: ''
     }
   },
   mounted(){
@@ -143,9 +128,8 @@ export default {
   methods: {
     async fetchData(){
       await this.$store.dispatch('get_request_list');
-      
-      this.request_list = await this.$store.getters.request_list;
-      this.loadTable = await false;
+      let list = await this.$store.getters.request_list;
+      this.request_list = await list.filter(x=>x.status==this.status);
     },
     getThaiDate(item){
       if (item){

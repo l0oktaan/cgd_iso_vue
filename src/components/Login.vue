@@ -7,15 +7,28 @@
     transition="fade-transition"
   >
     <v-row>
-      <v-col xs="0" sm="6">
-        <div class="logo">
-        </div>
+      <v-col class="text-center" xs="0" sm="6">
+        
+            <div class="logo d-flex flex-column align-center">
+              <v-img
+                
+                style="text-align:text-center"
+               contain
+               width="150"
+               height="150"
+                src="@/assets/cgd.png"
+            ></v-img>
+            
+            </div>
+          
+        
+        
       </v-col>
       <v-col xs="12" sm="6">
         <v-container>
           <v-row justify="center">
-            <v-col cols="6">
-              <h2 class="pt-10 text-center">เข้าสู่ระบบ</h2>
+            <v-col cols="12">
+              <h2 class="pt-10 text-center">Request for Change System</h2>
             </v-col>
           </v-row>
           <v-row>

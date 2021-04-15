@@ -1,12 +1,12 @@
 <template>
-    <v-container>
+ <div>
         <v-row justify="center">
             <v-col>
                 <h4 class="text-center">แบบบันทึกการร้องขอการเปลี่ยนแปลงหรือแก้ไขระบบ (Request for Change)</h4>
             </v-col>
         </v-row>
         <v-row>
-            <v-col cols="12">
+            <v-col cols="9">
                 <validation-observer
                     ref="observer"
                     v-slot="{ invalid }"
@@ -111,6 +111,7 @@
                                                         dark                
                                                         dense
                                                         @click="save_detail"
+                                                        v-if="form_edit.status == 1"
                                                     >
                                                         <v-icon left>
                                                             mdi-content-save-outline
@@ -170,6 +171,7 @@
                                                         dark
                                                         x-small
                                                         color="error"
+                                                        v-if="form_edit.status == 1"
                                                         @click="delete_detail(detail,index)"
                                                         >
                                                         <v-icon>
@@ -377,25 +379,25 @@
                                 >                                  
                                     
                                     <v-row>
-                                        <v-col cols="4">
+                                        <v-col cols="4">                                            
                                             <v-checkbox
                                                 v-model="form_edit.env_impact"
                                                 label="Production"
-                                                value="1"
+                                                :value="1"
                                             ></v-checkbox>
                                         </v-col>
                                         <v-col cols="4">
                                             <v-checkbox
                                                 v-model="form_edit.env_impact"
                                                 label="Development"
-                                                value="2"
+                                                :value="2"
                                             ></v-checkbox>
                                         </v-col>
                                         <v-col cols="4">
                                             <v-checkbox
                                                 v-model="form_edit.env_impact"
                                                 label="Test/QA"
-                                                value="3"
+                                                :value="3"
                                             ></v-checkbox>
                                         </v-col>
                                         <v-spacer></v-spacer>
@@ -657,15 +659,28 @@
                         </v-row>
                     </v-card>
                     
-                    <v-card class="mycard mb-5 mt-5"> 
+                    <v-card class="mycard mb-10 mt-5" > 
                         <v-row justify="center">                            
-                            <v-col cols="4">
-                                <div class="text-center">                                    
+                            <v-col cols="12">
+                                <div class="text-center"> 
+                                    <v-btn
+                                        v-if="form_edit.status==1"
+                                        class="ma-3"
+                                        rounded
+                                        color="success"                                       
+                                        @click="send_request"
+                                        :disabled="form_edit.status != 1"
+                                    >
+                                        <v-icon left>
+                                            mdi-send
+                                        </v-icon>
+                                        ส่ง
+                                    </v-btn>                                   
                                     <v-btn
                                         class="ma-3"
                                         rounded
                                         color="primary"
-                                        
+                                        v-if="form_edit.status<=1"
                                         type="submit"
                                         :disabled="invalid"
                                     >
@@ -693,15 +708,19 @@
                 </validation-observer>    
                             
             </v-col>
+            <v-col cols="3">
+                <request-flow></request-flow>
+            </v-col>
         </v-row>
-        
-  </v-container>
+  </div>         
+  
 </template>
 
 <script>
 import Swal from 'sweetalert2';
 // import MyAlert from '@/components/MyAlert.vue';
 import NewAlert from '@/components/NewAlert';
+import RequestFlow from '@/components/Request/RequestFlow';
 import axios from 'axios';
 import UploadButton from 'vuetify-upload-button';
 import { required, max, digits, regex} from 'vee-validate/dist/rules'
@@ -731,7 +750,8 @@ export default {
         // 'my-alert':MyAlert,
       ValidationProvider,
       ValidationObserver,
-      'upload-btn':UploadButton
+      'upload-btn':UploadButton,
+      'request-flow' : RequestFlow
         
     },
     delimiters: ['${', '}'], // Avoid Twig conflicts
@@ -810,7 +830,7 @@ export default {
                 end_date: null,                
                 begin_time: null,
                 end_time: null,
-                status:1,
+                status:0,
                 description: ''                
             },
             form_edit:{
@@ -828,7 +848,7 @@ export default {
                 end_date: null,                
                 begin_time: null,
                 end_time: null,
-                status:1,
+                status:0,
                 description: ''
             },
             detail_status: 'new',
@@ -1129,8 +1149,8 @@ export default {
             event.currentTarget.classList.remove('bg-green-300');
         },
         reset(){
-            // this.$router.go(-1);
-            this.$router.push('/request_change');
+            this.$router.go(-1);
+            // this.$router.push('/request_change');
         },
         async submit(){
             if (!this.detail_list || this.detail_list.length == 0){
@@ -1207,6 +1227,20 @@ export default {
                 }
                  
 
+            }
+
+        },
+        async send_request(){
+            let path = "/api/request_forms/" + this.request_id;
+            try{
+                let response = await axios.put(path,{
+                    status: 2
+                })
+                
+                this.show_alert = await "success";
+                await this.fetchData();
+            } catch (error) {                    
+                this.show_alert = "error";
             }
 
         },

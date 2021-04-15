@@ -67,7 +67,7 @@
     </v-list> -->
     <v-list shaped dense>
       <v-list-item
-        v-for="item in items"
+        v-for="item in navs.group_1"
         :key="item.title"
         router
         :to="item.route"
@@ -83,6 +83,67 @@
         </v-list-item-content>
       </v-list-item>
     </v-list>
+    <v-divider></v-divider>
+    <v-list shaped dense>
+      <v-list-item
+        v-for="item in navs.group_2"
+        :key="item.title"
+        router
+        :to="item.route"
+        active-class="border"
+        link
+      >
+        <v-list-item-icon>
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+    <v-divider></v-divider>
+    <v-list shaped dense v-if="false">
+      <v-list-item
+        
+        v-for="item in navs.group_3"
+        :key="item.title"
+        router
+        :to="item.route"
+        active-class="border"
+        link
+      >
+        <v-list-item-icon>
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+    <v-list shaped dense>
+      <v-list-item
+        v-for="item in navs.group_4"
+        :key="item.title"
+        router
+        :to="item.route"
+        active-class="border"
+        link
+      >
+        <v-list-item-icon>
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>
+            {{ item.title }}
+            
+            <v-chip class="text-right" color="error" x-small v-if="item.route=='/considers'" >1</v-chip>
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
   </v-navigation-drawer>
 </template>
 
@@ -91,11 +152,39 @@ export default {
   data() {
     return {
       drawer: true,
+      navs: 
+        {
+          group_1: [
+            { title: "Dashboard", icon: "mdi-monitor-dashboard", route: "/" },   
+            { title: "ผู้ดูแลระบบ", icon: "mdi-account-tie", route: "/admin" },   
+          ],
+        
+          group_2: [
+            { title: "Master Data", icon: "mdi-vector-link", route: "/master_data" },     
+            { title: "รายการอุปกรณ์", icon: "mdi-server", route: "/asset_equipment" },
+            { title: "รายการบุคลากร", icon: "mdi-account-multiple", route: "/asset_people" },
+            { title: "รายการ Policy Firewall", icon: "mdi-wall", route: "/policy_firewall" },
+          ],
+        
+          group_3: [
+            { title: "การร้องขอการเปลี่ยนแปลง", icon: "mdi-stack-exchange", route: "/request_change" },
+          ],
+          group_4: [
+            { title: "การร้องขอการเปลี่ยนแปลง", icon: "mdi-stack-exchange", route: "/request_change" },
+            // { title: "การรับรองการร้องขอ", icon: "mdi-check-decagram", route: "/ensures" },
+            { title: "การพิจารณาการร้องขอ", icon: "mdi-shield-check", route: "/considers" },
+            { title: "การตรวจสอบผล", icon: "mdi-shield-check", route: "/checks" },
+            // { title: "การอนุมัติการ้องขอ", icon: "mdi-check-bold", route: "/approves" },
+            // { title: "การดำเนินการเปลี่ยนแปลง", icon: "mdi-cog", route: "/operators" },
+            // { title: "การติดตามผล", icon: "mdi-cog", route: "/follows" },
+          ]
+        }
+      ,
       items: [
         { title: "Dashboard", icon: "mdi-monitor-dashboard", route: "/" },   
         { title: "Master Data", icon: "mdi-vector-link", route: "/master_data" },     
         { title: "รายการอุปกรณ์", icon: "mdi-server", route: "/asset_equipment" },
-        { title: "รายการผู้ดูแลระบบ", icon: "mdi-account-multiple", route: "/asset_people" },
+        { title: "รายการบุคลากร", icon: "mdi-account-multiple", route: "/asset_people" },
         { title: "รายการ Policy Firewall", icon: "mdi-wall", route: "/policy_firewall" },
         { title: "Request for Change", icon: "mdi-stack-exchange", route: "/request_change" },
         { title: "Test", icon: "mdi-stack-exchange", route: "/test" },
@@ -134,7 +223,10 @@ export default {
   color: #1976d2!important;
 }
 .v-list-group__items>.v-list-item{
-  padding-left: 50px!important;
+  padding-left: 10px!important;
   
+}
+.v-list-item__icon:first-child{
+  margin-right: 15px!important;
 }
 </style>

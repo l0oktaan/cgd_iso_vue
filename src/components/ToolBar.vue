@@ -7,10 +7,12 @@
       <v-spacer></v-spacer>
       <v-toolbar-title>
           <v-avatar>
-            <v-img class="logo" src="images/logo.jpg"></v-img>
+            <v-img class="ma-3" height="45" contain src="@/assets/logo.png"></v-img>
           </v-avatar>
       </v-toolbar-title>
-      <v-toolbar-title><strong>CGD ISO/IEC 27001 System</strong></v-toolbar-title>
+      <v-toolbar-title>
+        <strong>Request for Change System</strong>
+      </v-toolbar-title>
 
       <v-spacer></v-spacer>
 
@@ -29,7 +31,9 @@
       <template v-slot:activator="{ on, attrs }">
         <v-avatar v-bind="attrs"
           v-on="on">
-            <v-img src="images/avatar.jpg"></v-img>
+            
+              <v-icon large>mdi-account-circle</v-icon>
+            
         </v-avatar>
       </template>
 

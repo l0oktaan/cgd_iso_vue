@@ -56,8 +56,7 @@
                 </v-col>
             </v-row>
         </v-card>    
-    </v-menu>
-                
+    </v-menu>              
             
 </template>
 
@@ -67,12 +66,12 @@ export default {
 
     data(){
         return {
+            
             search: '',
             selected:[]            
         }
     },
-    mounted(){
-        
+    mounted(){        
             this.$nextTick(()=>{
                 this.selected = this.select;
             })

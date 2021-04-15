@@ -4,11 +4,11 @@
             <v-data-table
                 id="tbPolicyTemplate"
                 :headers="headers"
-                :items="policy_template_list"
+                :items="policy_list"
                 :items-per-page="10"
                 :search="search"
-                class="elevation-1"    
-                                                                            
+                class="elevation-1"
+                :loading="loadTable"
             >
             <template v-slot:top>
                 <v-toolbar
@@ -22,7 +22,7 @@
                     <v-dialog
                         transition="dialog-bottom-transition"
                         persistent
-                        max-width="1100"
+                        max-width="1200"
                         v-model="policy_dialog"
                     >
                         
@@ -32,10 +32,17 @@
                                     <span> รายละเอียด Policy Firewall</span>
                                 </v-card-title>                      
                                 <v-card-text class="mt-4">
-                                    <request-firewall 
-                                    ref="request_firewall"
-                                        :edit_policy="policy_edit.policy_list"
-                                    ></request-firewall>
+                                    <!-- <policy-detail 
+                                        ref="request_firewall"
+                                        :edit_policy="policy_edit"
+                                        :policy_status="policy_status"
+                                    ></policy-detail> -->
+                                    <policy-detail
+                                        ref="request_firewall"
+                                        :policy_id="policy_id"
+                                        @close_dialog="close_dialog"
+                                    >
+                                    </policy-detail>                                    
                                 </v-card-text>
                                 <v-card-actions class="justify-end">
                                 <v-btn
@@ -55,7 +62,7 @@
                         class="ma-2"
                         rounded
                         color="success" 
-                        @click="policy_dialog=true"                                               
+                        @click="addPolicy"                                               
                     >
                         <v-icon left>
                             mdi-plus
@@ -72,48 +79,10 @@
                     ></v-text-field>                
             </v-toolbar>
             </template>
-            <!-- <template v-slot:item.policy_list.source="{ item,index }">                            
-
-            <v-row v-for="(s,i) in item.source" :key="i">
-                        <v-col>{{s.asset}}</v-col>
-                        <v-col>
-                            <p v-for="(ip,x) in s.ip_address" 
-                                :key="x"
-                            >
-                                {{ip}}
-                            </p>
-                        </v-col>
-                    </v-row>
+            <template v-slot:item.updated_date="{ item,index }">                            
+                {{getThaiDate(item.updated_date)}}
             </template>
-                <template v-slot:item.policy_list.destination="{ item,index }">
-                    <v-row v-for="(s,i) in item.destination" :key="i">
-                        <v-col>{{s.asset}}</v-col>
-                        <v-col>
-                            <p v-for="(ip,x) in s.ip_address" 
-                                :key="x"
-                                >
-                                    {{ip}}
-                                </p>
-                            </v-col>
-                    </v-row>
-                </template>
-                <template v-slot:item.service_port="{ item,index }">                                    
-                    <div>
-                        <v-chip                                                       
-                        
-                            color="black"
-                            small
-                            outlined
-                            v-for="(port,index) in item.service_port"
-                            :key="index"
-                            >     
-                            <v-icon left>
-                                mdi-label
-                            </v-icon>                                   
-                            {{ port }}
-                        </v-chip>
-                    </div>                                  
-                </template> -->
+                
                 <template v-slot:item.actions="{ item,index }">
                 <v-icon                    
                     class="mr-2"
@@ -138,10 +107,43 @@
 </template>
 
 <script>
-import RequestFirewall from '../components/Request/RequestFirewall.vue'
+
+import PolicyDetail from '../components/PolicyDetail'
+import Swal from 'sweetalert2';
+
+import NewAlert from '@/components/NewAlert';
+import axios from 'axios'
+import { required, max, digits, regex, excluded} from 'vee-validate/dist/rules'
+import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
+setInteractionMode('eager')
+extend('required', {
+...required,
+message: 'กรุณาใส่ข้อมูล',
+})
+extend('excluded', {
+...excluded,
+message: 'กรุณาเลือกข้อมูล',
+})
+extend('max', {
+...max,
+message: 'ความยาวไม่เกิน {length} ตัวอักษร',
+})
+extend('digits', {
+    ...digits,
+    message: 'ใส่ได้เฉพาะตัวเลข และจำนวน {length} หลัก',
+})
+extend('regex', {
+    ...regex,
+    message: 'รูปแบบข้อมูลไม่ถูกต้อง',
+})
 export default {
     components:{
-        'request-firewall' : RequestFirewall
+        'policy-detail' : PolicyDetail,
+        'new-alert':NewAlert,
+        // 'my-alert':MyAlert,
+        ValidationProvider,
+        ValidationObserver
+
     },
     
     data(){
@@ -162,70 +164,73 @@ export default {
                     align: 'start',                    
                     value: 'policy_name',
                     class: ['blue darken-3', 'white--text', 'head-text'],
+                    width: '50%'
+                },
+                {
+                    text: 'ผู้ปรับปรุง',
+                    align: 'start',                    
+                    value: 'updated_by',
+                    class: ['blue darken-3', 'white--text', 'head-text'],
                     width: '20%'
                 },
-                // {                    
-                //     text: 'Source',
-                //     align: 'start',
-                //     sortable: false,
-                //     value: 'source',
-                //     class: ['blue darken-3', 'white--text', 'head-text'],
-                //     width: '25%'
-                // },
-                // { text: 'Destination',align: 'start', sortable: false, value: 'destination', class: ['blue darken-3', 'white--text'],width: '25%'},       
-                // { text: 'Service/Port',align: 'start', sortable: false, value: 'service_port', class: ['blue darken-3', 'white--text'],width: '15%'},                       
                 { text: 'Action',align: 'center', sortable: false, value: 'actions',class: ['blue darken-3', 'white--text'],width: '20%'}                       
                             
             ],
-            policy_template_list: [
-                {
-                    id:1,
-                    policy_name:'การพัฒนาระบบ ewithdraw',
-                    policy_list:[
-                        {
-                            source:[
-                                {
-                                    id:1,
-                                    asset_type: 1,
-                                    asset: 'ทรงวุฒิ สัจจบุตร',
-                                    ip_address: ['10.10.10.100','10.10.11.100'],
-                                    tags: ['admin','ewithdraw']
-                                }
-                            ],
-                            destination:[
-                                {
-                                    id:1,
-                                    asset_type: 1,
-                                    asset: 'app server',
-                                    ip_address: ['10.10.10.10'],
-                                    service_port:['22','443'],
-                                    tags: ['app_server','ewithdraw']
-                                }
-                            ],
-                            service_port:[
-                                '22','443'
-                            ],
-                        }
-                    ],
-                    
-                    updated_date: '2021-03-31'
-                }
-            ],
-            policy_edit: []
+            policy_template_list: [],
+            policy_edit: [],
+            policy_list: [],
+            policy_id: null,
+            group_id: 1,
+            show_alert: '',
+            policy_status: 'new',
+            loadTable: true,
+            user: this.$store.getters.user
         }
     },
+    mounted(){
+        this.fetchData()
+    },
     methods:{
+        async fetchData(){
+            let path = await `/api/groups/${this.group_id}/policies`;
+            let response = await axios.get(`${path}`);
+            this.policy_list = await response.data.data;
+            this.loadTable = await false;
+        },
         editPolicy(item,index){
+            // this.policy_status = 'edit';
+            // this.$nextTick(()=>{
+            //     this.policy_edit = JSON.parse(JSON.stringify(item));
+            // this.policy_dialog =true;
+            // })
             this.$nextTick(()=>{
-                this.policy_edit = JSON.parse(JSON.stringify(item));
-            this.policy_dialog =true;
+                this.policy_id = item.id;
+            console.log('id ' + this.policy_id);
+            this.policy_dialog = true;
             })
+            
+            
+        },
+        addPolicy(){
+            this.policy_id= 0;
+            this.policy_dialog = true;
             
         },
         close_dialog(){
             this.$refs.request_firewall.clearAll();
+            this.policy_edit= [],
+            this.policy_id = null;
+            this.fetchData();
             this.policy_dialog = false;
-        }
+        },
+        getThaiDate(item){
+            if (item){
+                var d = new Date(item);
+            return d.toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
+            }else{
+                return "";
+            }            
+        },
     }
 }
 </script>

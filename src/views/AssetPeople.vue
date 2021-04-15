@@ -11,7 +11,7 @@
                     :items-per-page="15"
                     :search="search"
                     class="elevation-1"                               
-                    
+                    :loading="loadTable"
                     >
                     <template v-slot:top>
                         <v-toolbar
@@ -39,6 +39,10 @@
                                 เพิ่มรายการใหม่
                                 </v-btn>
                             </template>
+                            <validation-observer
+                                ref="observer"
+                                v-slot="{ invalid }"
+                            >
                             <v-form @submit.prevent="submit">                                   
                                 <v-card class="pa-4">
                                     <v-row justify="center">
@@ -47,25 +51,82 @@
                                     <v-row>
                                         <v-col cols="4 text-right">ชื่อ-นามสกุล :</v-col>
                                         <v-col>
+                                            <validation-provider
+                                                v-slot="{ errors }"
+                                                name="people_name"
+                                                rules="required"
+                                            >
                                             <v-text-field      
                                                 v-model="people_edit.people_name"                                                     
                                                 hide-details="auto" 
                                                 outlined 
                                                 dense
+                                                :error-messages="errors"
+                                                data-vv-name="people_name"
                                             ></v-text-field>
-                                            
+                                            </validation-provider>
                                         </v-col>
-                                    </v-row>                        
+                                    </v-row>
                                     <v-row>
-                                        <v-col cols="4 text-right">IP Address :</v-col>
+                                        <v-col cols="4 text-right">ชื่อ AD :</v-col>
                                         <v-col>
+                                            <validation-provider
+                                                v-slot="{ errors }"
+                                                name="ldap_name"
+                                                rules="required"
+                                            >
                                             <v-text-field      
-                                                v-model="people_edit.ip_address"                                                     
+                                                v-model="people_edit.ldap_name"                                                     
                                                 hide-details="auto" 
                                                 outlined 
                                                 dense
+                                                :error-messages="errors"
+                                                data-vv-name="ldap_name"
                                             ></v-text-field>
+                                            </validation-provider>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row>
+                                        <v-col cols="4 text-right">IP Address :</v-col>
+                                        <v-col>
+                                            <validation-provider
+                                                v-slot="{ errors }"
+                                                name="ip_address"
+                                                rules="required"
+                                            >
                                             
+                                            <v-combobox multiple
+                                                v-model="people_edit.ip_address" 
+                                                dense
+                                                append-icon
+                                                chips
+                                                deletable-chips
+                                                class="tag-input"
+                                                outlined
+                                                hide-details="auto" 
+                                                @keydown.tab.prevent="processTags($event)"
+                                                :error-messages="errors"
+                                                data-vv-name="ip_address"
+                                                >
+                                                <template v-slot:selection="data">
+                                                    <v-chip
+                                                        
+                                                        close
+                                                        color="primary"
+                                                        small
+                                                        outlined
+                                                        :key="JSON.stringify(data.item)"
+                                                        v-bind="data.attrs"
+                                                        :input-value="data.selected"                                        
+                                                        @click:close="data.parent.selectItem(data.item)"
+                                                        
+                                                        >     
+                                                                                          
+                                                        {{ data.item }}
+                                                    </v-chip>
+                                                </template>
+                                            </v-combobox>
+                                            </validation-provider>
                                         </v-col>
                                     </v-row>
                                     <v-row>
@@ -74,6 +135,7 @@
                                             <v-radio-group
                                                 v-model="people_edit.people_type"
                                                 row
+                                                @change="changeType"
                                                 >
                                                 <v-radio
                                                     label="เจ้าหน้าที่กรม"
@@ -88,14 +150,24 @@
                                     </v-row>
                                     <v-row>
                                         <v-col cols="4 text-right">หน่วยงาน :</v-col>
-                                        <v-col>
-                                            <v-text-field      
-                                                v-model="people_edit.organiz_id"                                                     
-                                                hide-details="auto" 
-                                                outlined 
+                                        <v-col>      
+                                            <validation-provider
+                                                v-slot="{ errors }"
+                                                name="org_name"
+                                                rules="required|excluded:0"
+                                            >                                                                                
+                                            <v-select
+                                                outlined
                                                 dense
-                                            ></v-text-field>
-                                            
+                                                
+                                                v-model="people_edit.org_name"
+                                                :items="group_list_show"
+                                                item-text="text"
+                                                item-value="text" 
+                                                :error-messages="errors"
+                                                data-vv-name="org_name"                                                                                              
+                                            ></v-select>  
+                                            </validation-provider>                                        
                                         </v-col>
                                     </v-row>
                                     <v-row>
@@ -134,14 +206,15 @@
                                             </v-combobox>                                
                                         </v-col>
                                     </v-row>
-                                    <v-row>
-                                        
+                                    <v-row>                                        
                                         <v-col cols="12 text-center">
                                             <v-btn
                                                     class="ma-3"
                                                     rounded
                                                     color="primary"
-                                                    dark
+                                                    
+                                                    type="submit"
+                                                    :disabled="invalid"
                                                 >
                                                     <v-icon left>
                                                         mdi-content-save-outline
@@ -167,6 +240,7 @@
                                     </v-row>
                                 </v-card>
                             </v-form>
+                            </validation-observer>
                         </v-dialog>
                         <v-dialog v-model="dialogDelete" max-width="500px">
                             <v-card>
@@ -194,6 +268,11 @@
                         {{ item.people_name }}
                         
                     </template>
+                    <template v-slot:item.people_type="{ item }">                        
+                        
+                        {{ item.people_type == 1 ? 'เจ้าหน้าที่กรม' : 'เจ้าหน้าที่บริษัท' }}
+                        
+                    </template>
                     <template v-slot:item.ip_address="{ item }">
                         <v-chip  
                             color="primary"   
@@ -202,8 +281,10 @@
                             outlined
                             small                            
                             dark
+                            v-for="(ip,index) in getArray(item.ip_address)" 
+                            :key="index"
                         >
-                        {{ item.ip_address }}
+                        {{ ip }}
                         </v-chip>
                     </template>
                     
@@ -213,7 +294,7 @@
                             class="ma-1"
                             small
 
-                            v-for="(tags,index) in item.people_tags"               
+                            v-for="(tags,index) in getArray(item.people_tags)" 
                             :key="index"
                             outlined
                         >
@@ -224,31 +305,75 @@
                         </v-chip>
                     </template>
                     <template v-slot:item.actions="{ item }">
-                        <v-icon                    
-                            class="mr-2"
-                            large
+                        <v-btn
+                            class="mr-2"                                            
+                            outlined
+                            x-small
+                            fab
                             color="primary"
                             @click="editItem(item)"
-                        >
-                            mdi-pencil-circle
-                        </v-icon>
-                        <v-icon  
+                            >
+                            <v-icon>mdi-pencil</v-icon>
+                        </v-btn>
+                        <v-btn     
+                                                                
+                            fab
+                            dark
+                            x-small
+                            color="error"
                             
-                            color="error"        
                             @click="deleteItem(item.id)"
-                        >
-                            mdi-delete
-                        </v-icon>
+                            >
+                            <v-icon>
+                                mdi-close
+                            </v-icon>
+                        </v-btn>
+                        
                     </template>            
                     </v-data-table>
                 </v-card>
             </v-col>
+            <my-alert :AlertType="show_alert"></my-alert>
     </v-row>
     </v-container>
 </template>
 
 <script>
+import Swal from 'sweetalert2';
+
+import NewAlert from '@/components/NewAlert';
+import axios from 'axios'
+import { required, max, digits, regex, excluded} from 'vee-validate/dist/rules'
+import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
+setInteractionMode('eager')
+extend('required', {
+...required,
+message: 'กรุณาใส่ข้อมูล',
+})
+extend('excluded', {
+...excluded,
+message: 'กรุณาเลือกข้อมูล',
+})
+extend('max', {
+...max,
+message: 'ความยาวไม่เกิน {length} ตัวอักษร',
+})
+extend('digits', {
+    ...digits,
+    message: 'ใส่ได้เฉพาะตัวเลข และจำนวน {length} หลัก',
+})
+extend('regex', {
+    ...regex,
+    message: 'รูปแบบข้อมูลไม่ถูกต้อง',
+})
 export default {
+    components: {
+        'new-alert':NewAlert,
+        // 'my-alert':MyAlert,
+      ValidationProvider,
+      ValidationObserver    
+        
+    },
     data(){
         return{
             dialog: false,
@@ -262,38 +387,111 @@ export default {
                     class: ['blue darken-3', 'white--text', 'head-text'],
                     width: '20%'
                 },
+                {
+                    text: 'AD',
+                    align: 'start',
+                    // sortable: false,
+                    value: 'ldap_name',
+                    class: ['blue darken-3', 'white--text', 'head-text'],
+                    width: '10%'
+                },
                 { text: 'ประเภท', sortable: false, value: 'people_type', class: ['blue darken-3', 'white--text'],width: '10%'},       
                 { text: 'IP Address', value: 'ip_address', class: ['blue darken-3', 'white--text'],width: '15%'},                       
-                { text: 'หน่วยงาน', sortable: false, value: 'organiz_id', class: ['blue darken-3', 'white--text'],width: '15%'},
+                { text: 'หน่วยงาน', sortable: false, value: 'org_name', class: ['blue darken-3', 'white--text'],width: '20%'},
                 { text: 'Tags', sortable: false, value: 'people_tags', class: ['blue darken-3', 'white--text']},
                 { text: 'Action', value: 'actions',class: ['blue darken-3', 'white--text'],width: '10%'}                       
                             
             ],
-            people_list: [
-                {id:1, people_name: 'ทรงวุฒิ สัจจบุตร', ip_address : '10.10.31.85',people_type: 1, organiz_id: 1,people_tags:['security','itc','dsdasdasdasd','sdasdasd']},
-                {id:2, people_name: 'สัจจบุตร ทรงวุฒิ', ip_address : '10.10.31.86',people_type: 2, organiz_id: 12,people_tags:['pcc','vender']},
-            ],
+            people_list: [],
+            group_list: [],
+            group_list_show: [],
             status: 'new',
             people_default: {
                 people_id: 0,
                 people_name: '',
-                people_type: 0,
+                ldap_name: '',
+                people_type: 1,
                 ip_address: '',
-                organiz_id: 0,
-                people_tags: []
+                org_name: '',
+                people_tags: [],
+                description: ''
             },
             people_edit: {
                 people_id: 0,
                 people_name: '',
-                people_type: 0,
-                ip_address: '',
-                organiz_id: 0,
-                people_tags: []
+                ldap_name: '',
+                people_type: 1,
+                ip_address: [],
+                org_name: '',
+                people_tags: [],
+                description: ''
             },
-            search: ''
+            search: '',
+            group_id: 1,
+            show_alert: '',
+            loadTable: true
+
         }
     },
+    mounted(){
+        this.getGroupList();
+        this.fetchData();
+    },
+    
     methods: {
+        changeType(e){
+            this.group_list_show = this.group_list.filter(x=>x.type == e);
+            //console.log('change type :' + e);
+        },
+        invalid(){
+            console.log('check')
+            this.people_edit.group_id > 0;
+        },
+        async getGroupList(){
+            
+            let path = await `/api/groups`;
+            let response = await axios.get(`${path}`);
+            let group = await response.data.data;
+            console.log('get group :' + group.length);
+            let list = [];
+            list.push(
+                {
+                    text: 'เลือกหน่วยงาน',
+                    value: 0,
+                    type: 0
+                }
+            )
+            
+            for (let i=0;i<group.length;i++){
+                list.push(
+                    {
+                        text: group[i].group_name,
+                        value: group[i].id,
+                        type: group[i].group_type
+                    }
+                )
+            }
+            this.group_list = JSON.parse(JSON.stringify(list));
+            this.group_list_show = this.group_list.filter(x=>x.type == 1);
+        },
+        getArray(item){
+            try {
+                return JSON.parse(item);    
+            } catch (error) {
+                return [];
+            }
+            
+        },
+        async fetchData(){
+            let path = await `/api/groups/${this.group_id}/asset_peoples`;
+            try {
+                let response = await axios.get(path);
+                this.people_list = await response.data.data;
+                this.loadTable = await false;
+            } catch (error) {
+                console.log(error);
+            }
+        },
         getFiltered(e){
             console.log(e) //output the filtered items
         },
@@ -309,12 +507,47 @@ export default {
         },
         editItem(item){
             this.status = "edit";
-            this.people_edit = Object.assign({},item);
+            // this.people_edit = Object.assign({},item);
+            this.people_edit.id = item.id;
+            this.people_edit.people_name = item.people_name;
+            this.people_edit.ldap_name = item.ldap_name;
+            this.people_edit.ip_address = JSON.parse(item.ip_address);
+            this.people_edit.people_type = item.people_type;
+            this.people_edit.org_name = item.org_name;            
+            this.people_edit.people_tags = JSON.parse(item.people_tags);
+            this.people_edit.description = item.description;
             this.dialog = true;
         },
         deleteItem(id){
-            this.equip_id = id;
-            this.dialogDelete = true;
+            
+            Swal.fire({
+                title: "กรุณายืนยันการลบรายการจากฐานข้อมูล",                
+                icon: "warning",
+                allowOutsideClick: false,
+                showCancelButton: true,
+                confirmButtonText: `ยืนยัน`,
+                cancelButtonText: `ยกเลิก`,
+                }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    let path = `/api/groups/${this.group_id}/asset_peoples/${id}`;
+                    axios.delete(`${path}`)
+                    .then(resposne=>{
+                        this.show_alert = "success"
+                        this.fetchData();
+                        this.clear();
+                    })
+                    .catch(error=>{
+                        this.show_alert = "error"
+                    })
+                } else if (result.isDenied) {
+                    // Swal.fire('Changes are not saved', '', 'info')
+                }
+            })
+            
+
+            
+
         },
         deleteItemConfirm(id){
 
@@ -323,12 +556,52 @@ export default {
             // this.dialogDelete = false
             this.clear();
         },
-        submit(){
-
+        async submit(){
+            let path = await `/api/groups/${this.group_id}/asset_peoples`;
+            console.log(this.status);
+            if (this.status == 'new'){ 
+                try {
+                    let response = await axios.post(`${path}`,{                        
+                        "people_name" : this.people_edit.people_name,
+                        "ldap_name" : this.people_edit.ldap_name,
+                        "people_type" : this.people_edit.people_type,
+                        "ip_address" : JSON.stringify(this.people_edit.ip_address),
+                        "org_name" : this.people_edit.org_name,
+                        "people_tags" : JSON.stringify(this.people_edit.people_tags),
+                        "description" : this.people_edit.description                        
+                    })
+                    this.show_alert = await 'success';
+                    await this.fetchData();
+                    await this.clear();
+                    
+                } catch (error) {
+                    this.show_alert = 'error';
+                }
+            }else if (this.status == 'edit'){
+                try {
+                    await axios.put(`${path}/${this.people_edit.id}`,{
+                        "people_name" : this.people_edit.people_name,
+                        "ldap_name" : this.people_edit.ldap_name,
+                        "people_type" : this.people_edit.people_type,
+                        "ip_address" : JSON.stringify(this.people_edit.ip_address),
+                        "org_name" : this.people_edit.org_name,
+                        "people_tags" : JSON.stringify(this.people_edit.people_tags),
+                        "description" : this.people_edit.description
+                    })
+                    this.show_alert = await 'success';
+                    await this.fetchData();
+                    await this.clear();
+                    
+                    
+                } catch (error) {
+                    
+                }
+            }
         },
         clear(){
             this.people_edit = Object.assign({},this.people_default);
             this.status = "new";
+            this.group_list_show = this.group_list.filter(x=>x.type == 1);
             this.dialog = false;
         }
     }

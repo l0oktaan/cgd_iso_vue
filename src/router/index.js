@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import Admin from "../views/Admin.vue";
 import ISO from "../views/ISO.vue";
 import Login from "../views/Login.vue";
 
@@ -10,6 +11,8 @@ import AssetPeople from "../views/AssetPeople.vue";
 import Request from "../views/Request.vue";
 import RequestChange from "../views/RequestChange.vue";
 import RequestForm from "../views/RequestForm.vue";
+
+import Ensure from "../views/Ensure.vue";
 import MasterData from "../views/MasterData.vue";
 import PolicyFirewall from "../views/PolicyFirewall.vue";
 
@@ -25,6 +28,11 @@ const routes = [
         path: "",
         name: "ISO",
         component: ISO,
+      },
+      {
+        path: "/admin",
+        name: "admin",
+        component: Admin,
       },
       {
         path: "/asset_equipment",
@@ -50,6 +58,10 @@ const routes = [
         path: "/test",
         name: "test",
         component: Test,
+      },
+      {
+        path: "/approves",        
+        component: Ensure,
       },
       {
         path: "/request_change",        
