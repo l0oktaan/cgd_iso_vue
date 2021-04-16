@@ -96,6 +96,64 @@
         
       </v-col>
     </v-row>
+    <v-dialog
+        transition="dialog-bottom-transition"
+        persistent
+        max-width="1200"
+        v-model="request_dialog"
+    >
+        
+        <template v-slot:default="dialog">
+            <v-card>      
+                <v-card-title>
+                    <span> สร้างการร้องขอการเปลี่ยนแปลงหรือแก้ไขระบบ</span>
+                </v-card-title>                      
+                <v-card-text class="mt-4">
+                    <v-row>
+                      <v-col cols="3">เรื่อง :</v-col>
+                      <v-col>
+                        <v-text-field
+                                outlined                                
+                                dense
+                                label=""
+                                v-model="request_title"
+                          >                            
+                        </v-text-field> 
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col cols="12" class="text-center">
+                        <v-btn
+                                    class="ma-3"
+                                    rounded
+                                    color="primary"
+                                    :disabled="invalid"
+                                    @click="save_request"
+                                >
+                                    <v-icon left>
+                                        mdi-content-save-outline
+                                    </v-icon>
+                                    บันทึก
+                                </v-btn>                           
+                        
+                      </v-col>
+                    </v-row>
+                                                        
+                </v-card-text>
+                <v-card-actions class="justify-end">
+                <v-btn
+                    text
+                    @click="close_dialog"
+                    color="error"
+                >
+                    <v-icon left>
+                        mdi-cancel
+                    </v-icon>
+                    ยกเลิก</v-btn>
+                </v-card-actions>
+            </v-card>
+        </template>
+    </v-dialog>
     <my-alert :AlertType="show_alert"></my-alert>
   </v-container>
 
@@ -134,11 +192,19 @@ export default {
         // { request_no : 'SDG1-2564/001', create_date: '2021-03-24',request_title : 'ขอเปิด policy firewall ระบบเงินเดือน',user_id: 'songwut.saj', status: 'รอรับรอง' }
       ],
       show_alert: '',
-      loadTable: true
+      loadTable: true,
+      request_dialog: false,
+      request_title: '',
+      user: this.$store.getters.user
     }
   },
   mounted(){
     this.fetchData();
+  },
+  computed: {
+    invalid(){
+      return this.request_title == '' ? true : false;
+    }
   },
   methods: {
     async fetchData(){
@@ -156,10 +222,35 @@ export default {
       }            
     },
     create_request(){
-      this.$router.push("/request_change/form");
+
+      this.request_dialog = true;
+      // this.$router.push("/request_change/form");
+    },
+    async save_request(){
+      let path = await `/api/request_forms`;
+      let response = await axios.post(`${path}`,{
+        user_id : this.user.user_id,
+        group_id : this.user.group_id,
+        group_code : this.user.group_code,
+        year : new Date().toISOString().substr(0, 4),
+        order_no : 0,
+        created_date : new Date().toISOString().substr(0, 10),        
+        request_title : this.request_title,        
+        status : 0,        
+        updated_date : new Date().toISOString().substr(0, 10),
+      })
+      let request = await response.data.data;
+      this.request_title = '';
+      this.show_alert = await 'success';
+      this.request_dialog = false;
+      await this.editItem(request.id);
     },
     editItem(id){
       this.$router.push("/request_change/form/" + id);
+    },
+    close_dialog(){
+      this.request_title = '';
+      this.request_dialog = false;
     },
     async deleteItem(id){
       Swal.fire({

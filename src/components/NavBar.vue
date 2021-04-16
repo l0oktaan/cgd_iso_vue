@@ -172,8 +172,8 @@ export default {
           group_4: [
             { title: "การร้องขอการเปลี่ยนแปลง", icon: "mdi-stack-exchange", route: "/request_change" },
             // { title: "การรับรองการร้องขอ", icon: "mdi-check-decagram", route: "/ensures" },
-            { title: "การพิจารณาการร้องขอ", icon: "mdi-shield-check", route: "/considers" },
-            { title: "การตรวจสอบผล", icon: "mdi-shield-check", route: "/checks" },
+            // { title: "การพิจารณาการร้องขอ", icon: "mdi-shield-check", route: "/considers" },
+            // { title: "การตรวจสอบผล", icon: "mdi-shield-check", route: "/checks" },
             // { title: "การอนุมัติการ้องขอ", icon: "mdi-check-bold", route: "/approves" },
             // { title: "การดำเนินการเปลี่ยนแปลง", icon: "mdi-cog", route: "/operators" },
             // { title: "การติดตามผล", icon: "mdi-cog", route: "/follows" },

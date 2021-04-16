@@ -84,21 +84,30 @@
             </template>
                 
                 <template v-slot:item.actions="{ item,index }">
-                <v-icon                    
-                    class="mr-2"
-                    large
-                    color="primary"
-                    @click="editPolicy(item,index)"
-                >
-                    mdi-pencil-circle
-                </v-icon>
-                <v-icon  
-                    
-                    color="error"        
-                    @click="deletePolicy(item,index)"
-                >
-                    mdi-delete
-                </v-icon>
+                    <v-btn
+                        class="mr-2"                                            
+                        outlined
+                        x-small
+                        fab
+                        color="primary"
+                        @click="editPolicy(item,index)"
+                        >
+                        <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
+                    <v-btn     
+                                                            
+                        fab
+                        dark
+                        x-small
+                        color="error"
+                        
+                        @click="deletePolicy(item,index)"
+                        >
+                        <v-icon>
+                            mdi-close
+                        </v-icon>
+                    </v-btn>
+                
             </template>
             </v-data-table>
             

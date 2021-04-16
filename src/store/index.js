@@ -13,8 +13,10 @@ const getDefaultState = () => {
     user: {
       user_id : 1,
       username : 'songwut.saj',
-      group_id : 1
-    }
+      group_id : 1,
+      group_code : 'SECD'
+    },
+    roles: ['admin','request','ensure','consider','approve','operation','follow','check']
   }
 }
 export default new Vuex.Store({
@@ -33,6 +35,9 @@ export default new Vuex.Store({
     },
     user (state){
       return state.user
+    },
+    roles (state){
+      return state.roles
     }
   },
   mutations: {

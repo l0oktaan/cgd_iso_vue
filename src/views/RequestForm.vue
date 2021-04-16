@@ -27,7 +27,7 @@
                                 <validation-provider
                                     v-slot="{ errors }"
                                     name="title"
-                                    rules="required"
+                                    :rules="required"
                                 >
                                     <v-text-field
                                         dense
@@ -198,6 +198,7 @@
                                     v-slot="{ errors }"
                                     name="เหตุผล"
                                     rules="required"
+                                    v-if="form_edit"
                                 >
                                 <v-text-field
                                     dense
@@ -818,8 +819,7 @@ export default {
             form_default:{
                 request_title:'',                
                 request_reason: '',
-                document_relate: [],
-                
+                document_relate: [],                
                 person_relate: [],
                 change_type:0,
                 system_relate:[],
@@ -852,10 +852,10 @@ export default {
                 description: ''
             },
             detail_status: 'new',
-            status: 'new',
-            alert: false,
+            status: 'new',            
             message: '',
-            show_alert: ''
+            show_alert: '',
+            user: this.$store.getters.user,
         }
     },
     mounted(){
@@ -929,7 +929,7 @@ export default {
             let path = await '/api/request_forms/' + this.request_id;
             let response = await axios.get(path);
             let request = response.data.data;
-            this.form_edit.user_id = request.user_id;
+            this.form_edit.user_id = request.user_id;            
             this.form_edit.group_code = request.group_code;
             this.form_edit.year = request.year;
             this.form_edit.order_no = request.order_no;
@@ -1161,9 +1161,10 @@ export default {
                 let path = '/api/request_forms';
                 try {
                     let response = await axios.post(path,{
-                    user_id : 1,
-                    group_code : 'SECD',
-                    year : 2564,
+                    user_id : this.user.user_id,
+                    group_id : this.user.group_id,
+                    group_code : this.user.group_code,
+                    year : new Date().toISOString().substr(0, 4),
                     order_no : 0,
                     created_date : new Date().toISOString().substr(0, 10),
                     request_no : '',
@@ -1180,7 +1181,7 @@ export default {
                     end_date : this.form_edit.end_date,
                     begin_time : this.form_edit.begin_time,
                     end_time : this.form_edit.end_time,
-                    status : 1,
+                    status : 0,
                     description : this.form_edit.description,
                     updated_date : new Date().toISOString().substr(0, 10),
                     
