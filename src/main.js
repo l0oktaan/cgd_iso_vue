@@ -17,7 +17,7 @@ Vue.use(UploadButton);
 import MyAlert from "./components/MyAlert.vue"
 Vue.component('my-alert',MyAlert);
 
-
+// Vue.config.devtools = false;
 new Vue({
   created() {
       window.addEventListener('beforeunload', this.beforePageDestroyed)

@@ -177,6 +177,7 @@ export default {
             // { title: "การอนุมัติการ้องขอ", icon: "mdi-check-bold", route: "/approves" },
             // { title: "การดำเนินการเปลี่ยนแปลง", icon: "mdi-cog", route: "/operators" },
             // { title: "การติดตามผล", icon: "mdi-cog", route: "/follows" },
+            { title: "Test", icon: "mdi-stack-exchange", route: "/test" },
           ]
         }
       ,

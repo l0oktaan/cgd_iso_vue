@@ -99,7 +99,7 @@
     <v-dialog
         transition="dialog-bottom-transition"
         persistent
-        max-width="1200"
+        max-width="700"
         v-model="request_dialog"
     >
         
@@ -110,31 +110,52 @@
                 </v-card-title>                      
                 <v-card-text class="mt-4">
                     <v-row>
-                      <v-col cols="3">เรื่อง :</v-col>
+                      <v-col cols="3" class="text-right">เรื่อง :</v-col>
                       <v-col>
                         <v-text-field
                                 outlined                                
                                 dense
                                 label=""
-                                v-model="request_title"
+                                v-model="request_title" 
+                                hide-details="auto"
+                                :rules="[rules.required, rules.counter]"
+                            maxlength="250"
+                            
                           >                            
+                        </v-text-field> 
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col cols="3" class="text-right">เหตุผล :</v-col>
+                      <v-col>
+                        <v-text-field
+                          outlined                                
+                          dense
+                          label=""
+                          v-model="request_reason" 
+                          hide-details="auto"  
+                          :rules="[rules.required, rules.counter]"
+                          maxlength="250"
+                          
+                        >                            
                         </v-text-field> 
                       </v-col>
                     </v-row>
                     <v-row>
                       <v-col cols="12" class="text-center">
                         <v-btn
-                                    class="ma-3"
-                                    rounded
-                                    color="primary"
-                                    :disabled="invalid"
-                                    @click="save_request"
-                                >
-                                    <v-icon left>
-                                        mdi-content-save-outline
-                                    </v-icon>
-                                    บันทึก
-                                </v-btn>                           
+                            class="ma-3"
+                            rounded
+                            color="primary"
+                            :disabled="invalid"
+                            @click="save_request"
+                            
+                        >
+                            <v-icon left>
+                                mdi-content-save-outline
+                            </v-icon>
+                            บันทึก
+                        </v-btn>                           
                         
                       </v-col>
                     </v-row>
@@ -195,6 +216,11 @@ export default {
       loadTable: true,
       request_dialog: false,
       request_title: '',
+      request_reason: '',
+      rules: {
+          required: value => !!value || 'กรุณาใส่ข้อมูล.',
+          counter: value => value.length > 10 || 'ความยาวไม่น้อยกว่า 10 ตัวอักษร',          
+        },
       user: this.$store.getters.user
     }
   },
@@ -203,7 +229,7 @@ export default {
   },
   computed: {
     invalid(){
-      return this.request_title == '' ? true : false;
+      return (this.request_title == '' || this.request_reason == '') ? true : false;
     }
   },
   methods: {
@@ -227,22 +253,34 @@ export default {
       // this.$router.push("/request_change/form");
     },
     async save_request(){
+      let arr = [];
       let path = await `/api/request_forms`;
       let response = await axios.post(`${path}`,{
         user_id : this.user.user_id,
         group_id : this.user.group_id,
         group_code : this.user.group_code,
-        year : new Date().toISOString().substr(0, 4),
+        year : parseInt(new Date().toISOString().substr(0, 4)) + 543,
         order_no : 0,
-        created_date : new Date().toISOString().substr(0, 10),        
-        request_title : this.request_title,        
-        status : 0,        
+        created_date : new Date().toISOString().substr(0, 10),
+        request_no : '',
+        change_type : 0,
+        request_title : this.request_title,
+        request_reason : this.request_reason,
+        document_relate : JSON.stringify(arr),
+        person_relate : JSON.stringify(arr),
+        system_relate : JSON.stringify(arr),
+        env_impact : JSON.stringify(arr),
+        system_impact : JSON.stringify(arr),
+        level_impact : 1,
+        begin_date : new Date().toISOString().substr(0, 10),        
+        status : 0,
+        description : '',
         updated_date : new Date().toISOString().substr(0, 10),
       })
       let request = await response.data.data;
-      this.request_title = '';
+      
       this.show_alert = await 'success';
-      this.request_dialog = false;
+      await this.close_dialog();
       await this.editItem(request.id);
     },
     editItem(id){
@@ -250,6 +288,7 @@ export default {
     },
     close_dialog(){
       this.request_title = '';
+      this.request_reason = '';
       this.request_dialog = false;
     },
     async deleteItem(id){

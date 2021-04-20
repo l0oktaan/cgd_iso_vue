@@ -27,7 +27,7 @@
                                 <validation-provider
                                     v-slot="{ errors }"
                                     name="title"
-                                    :rules="required"
+                                    rules="required"
                                 >
                                     <v-text-field
                                         dense
@@ -111,7 +111,7 @@
                                                         dark                
                                                         dense
                                                         @click="save_detail"
-                                                        v-if="form_edit.status == 1"
+                                                        v-if="form_edit.status <= 1"
                                                     >
                                                         <v-icon left>
                                                             mdi-content-save-outline
@@ -198,7 +198,7 @@
                                     v-slot="{ errors }"
                                     name="เหตุผล"
                                     rules="required"
-                                    v-if="form_edit"
+                                    
                                 >
                                 <v-text-field
                                     dense
