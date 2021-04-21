@@ -2,24 +2,75 @@
     <v-card>
         <v-form>
             <v-row>
-                <v-col cols="3" class="text-right">เรื่อง :</v-col>
-                <v-col class="text-left">
-                    <v-text-field
-                        
-                        placeholder="ใส่ชื่อเรื่อง"
-                        outlined
-                        dense
-                    ></v-text-field>
-                </v-col>
-            </v-row>
-            <v-row>
                 <v-col>
-                    <div class="v-toolbar__title">
-                        <v-icon>
-                            mdi-format-list-bulleted-square
-                        </v-icon>
-                        รายการ Policy Firewall
-                    </div>
+                    <v-data-table
+                        id="tbPolicyTemplate"
+                        :headers="policy_headers"
+                        :items="policy_list"
+                        :items-per-page="10"
+                        :search="search"
+                        class="elevation-1"
+                        :loading="loadTable"
+                    >
+                    <template v-slot:top>
+                        <v-toolbar
+                            flat
+                        >
+                            <v-toolbar-title>
+                                <v-icon>mdi-server</v-icon>
+                                รายการ Policy Firewall
+                            </v-toolbar-title>                             
+                            
+                            <v-spacer></v-spacer>        
+                            <v-text-field
+                                v-model="search"
+                                append-icon="mdi-magnify"
+                                label="ค้นหา"
+                                single-line
+                                hide-details
+                            ></v-text-field>                
+                    </v-toolbar>
+                    </template>
+                    
+                    <template v-slot:item.source="{ item,index }">
+                        <div v-for="(detail,index) in item.policy_detail" :key="index">
+                            {{getArray(detail.source)[0].asset}}
+                        </div> 
+                    </template>
+                    <template v-slot:item.destination="{ item,index }">
+                        <div v-for="(detail,index) in item.policy_detail" :key="index">
+                            {{getArray(detail.destination)[0].asset}}
+                        </div> 
+                    </template>
+
+
+                    <template v-slot:item.actions="{ item,index }">
+                        <v-btn
+                            class="mr-2"                                            
+                            outlined
+                            x-small
+                            fab
+                            color="primary"
+                            @click="editPolicy(item,index)"
+                            >
+                            <v-icon>mdi-pencil</v-icon>
+                        </v-btn>
+                        <v-btn     
+                                                                
+                            fab
+                            dark
+                            x-small
+                            color="error"
+                            
+                            @click="deletePolicy(item,index)"
+                            >
+                            <v-icon>
+                                mdi-close
+                            </v-icon>
+                        </v-btn>
+                        
+                    </template>
+                    </v-data-table>
                 </v-col>
             </v-row>
         </v-form>
@@ -27,6 +78,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import AssetEdit from './AssetEdit.vue'
 export default {
     props: ['edit_policy'],
@@ -35,37 +87,16 @@ export default {
     },
     data(){
         return {
-            menu_test: false,
-            menu_source: false,
-            menu_destination: false,
-            dialog:false,
-            dialog_source:false,
-            singleSelect: false,
-            selected: [],
-            source_select:[],
-            destination_select:[],
-            service_port_select:[],
-            search: '',
-            status: 'new',
-            select_index: null,
-            col_l: 3,
-            col_r: 9,
             
-            headers: [
+            policy_headers: [
                 {                    
-                    text: 'Source',
+                    text: 'Policy',
                     align: 'start',
                     // sortable: false,
-                    value: 'source',
-                    class: ['blue darken-1', 'white--text', 'head-text'],
-                    width: '30%'
+                    value: 'policy_name',
+                    class: ['blue darken-3', 'white--text', 'head-text'],
+                    width: '25%'
                 },
-                { text: 'Destination',align: 'start', sortable: false, sortable: false, value: 'destination', class: ['blue darken-1', 'white--text'],width: '30%'},       
-                { text: 'Service/Port',align: 'start', sortable: false, value: 'service_port', class: ['blue darken-1', 'white--text'],width: '25%'},                       
-                { text: 'Action',align: 'center', sortable: false, value: 'actions',class: ['blue darken-1', 'white--text'],width: '15%'}                       
-                            
-            ],
-            policy_headers: [
                 {                    
                     text: 'Source',
                     align: 'start',
@@ -80,64 +111,42 @@ export default {
                 { text: 'Action', value: 'actions', sortable: false,class: ['blue darken-3', 'white--text'],width: '10%'}                       
                             
             ],
-            source_headers:[
-                { text: 'Asset', sortable: false, value: 'asset', class: ['blue darken-3', 'white--text']},
-                { text: 'IP', sortable: false, value: 'ip_address', class: ['blue darken-3', 'white--text']},
-                { text: 'Tags', sortable: false, value: 'tags', class: ['blue darken-3', 'white--text']},
+            loadTable: true,
+            search: '',
+            policy_select: [],
+            policy_list: [],
+            user: this.$store.getters.user,
 
-            ],
-            destination_headers:[
-                { text: 'Asset', sortable: false, value: 'asset', class: ['blue darken-3', 'white--text']},
-                { text: 'IP', sortable: false, value: 'ip_address', class: ['blue darken-3', 'white--text']},
-                { text: 'Port', sortable: false, value: 'service_port', class: ['blue darken-3', 'white--text']},
-                { text: 'Tags', sortable: false, value: 'tags', class: ['blue darken-3', 'white--text']},
-            ],
-            policy_list_edit:[],
-            policy_list:[],
-            policy:{
-                source: [],
-                destination: [],
-                service_port:[],
-                
-            },
-            policy_edit:{
-                source: [],
-                destination: [],
-                service_port:[],
-                
-            },
-            equip_list: [
-                {id:1,equip_name: 'app server', ip_address : ['10.100.90.17','10.100.99.77'],service_port: ['22','443','smtp'],equip_tags:['egp','ewithdraw']},
-                {id:2,equip_name: 'db server', ip_address : ['10.100.11.17','10.100.11.77'],service_port: ['3306','9292'],equip_tags:['egp','db']},
-            ],
-            people_list: [
-                {id:1, people_name: 'ทรงวุฒิ สัจจบุตร', ip_address : '10.10.31.85',people_type: 1, organiz_id: 1,people_tags:['security','itc']},
-                {id:2, people_name: 'สัจจบุตร ทรงวุฒิ', ip_address : '10.10.31.86',people_type: 2, organiz_id: 12,people_tags:['pcc','vender']},
-            ],
-            source_list:[
-                {code: 'eqip_1',id: 1, asset: 'app_server', ip_address: ['10.100.90.17','10.100.90.27'],tags:['app']},
-                {code: 'eqip_2',id: 2, asset: 'db_server', ip_address: ['10.100.90.17'],tags:['db']},
-                {code: 'people_1',id: 1, asset: 'ทรงวุฒิ สัจจบุตร', ip_address : ['10.10.31.85'],people_type: 1, organiz_id: 1,people_tags:['security','itc']},
-                {code: 'people_2',id: 2, asset: 'สัจจบุตร ทรงวุฒิ', ip_address : ['10.10.31.86'],people_type: 2, organiz_id: 12,people_tags:['pcc','vender']},
-            ],
-            destination_list:[
-                {code: 'eqip_1',id: 1, asset: 'app_server', ip_address: ['10.100.90.17'],service_port:['22','443','80'],tags:['egp']},
-                {code: 'eqip_2',id: 2, asset: 'db_server', ip_address: ['10.100.90.17'],service_port:['22','443'],tags:['admin']}
-            ],
-            service_port_list:[]
+
         }
     },
     mounted() {
-        if (this.edit_policy){
-            this.policy_list = this.policy_list = JSON.parse(JSON.stringify(this.edit_policy));
-        }
+        // if (this.edit_policy){
+        //     this.policy_list = this.policy_list = JSON.parse(JSON.stringify(this.edit_policy));
+        // }
+        this.fetchData();
     },
     watch: {
         
     },
     methods: {
+        async fetchData(){
+            let path = await `/api/groups/${this.user.group_id}/policies`;
+            let response = await axios.get(`${path}`);
+            this.policy_list = await response.data.data;
+            this.loadTable = false;
+
+        },
         delPort(item,index){
             item.splice(index,1);
+        },
+        getArray(item){
+            try {
+                return JSON.parse(item);    
+            } catch (error) {
+                return [];
+            }
+            
         },
         clear(){
             this.status = 'new';
