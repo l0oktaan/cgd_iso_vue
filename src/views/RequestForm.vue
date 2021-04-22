@@ -135,6 +135,35 @@
                                     </v-card>
                                     </template>
                                 </v-dialog>
+                                <v-dialog
+                                    transition="dialog-bottom-transition"
+                                    persistent
+                                    max-width="1020"
+                                    v-model="firewall_dialog"
+                                >
+                                    
+                                    <template v-slot:default="dialog">
+                                    <v-card>      
+                                        <v-card-title>
+                                            <span> รายละเอียดของการร้องขอ</span>
+                                        </v-card-title>                      
+                                        <v-card-text class="mt-4">
+                                            <request-firewall></request-firewall>
+                                        </v-card-text>
+                                        <v-card-actions class="justify-end">
+                                        <v-btn
+                                            text
+                                            @click="dialog.value = false"
+                                            color="error"
+                                        >
+                                            <v-icon left>
+                                                mdi-cancel
+                                            </v-icon>
+                                            ยกเลิก</v-btn>
+                                        </v-card-actions>
+                                    </v-card>
+                                    </template>
+                                </v-dialog>
                             </v-col>
                         </v-row>
                         <v-row>
@@ -726,7 +755,7 @@ import axios from 'axios';
 import UploadButton from 'vuetify-upload-button';
 import { required, max, digits, regex} from 'vee-validate/dist/rules'
 import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
-
+import RequestFirewall from '../components/Request/RequestFirewall';
 setInteractionMode('eager')
 extend('required', {
 ...required,
@@ -752,7 +781,8 @@ export default {
       ValidationProvider,
       ValidationObserver,
       'upload-btn':UploadButton,
-      'request-flow' : RequestFlow
+      'request-flow' : RequestFlow,
+      'request-firewall': RequestFirewall
         
     },
     delimiters: ['${', '}'], // Avoid Twig conflicts
@@ -762,7 +792,7 @@ export default {
         return {
             request_id: this.$route.params.id,
             invalid: false,
-
+            firewall_dialog: false,
             detail_dialog: false,
             alert: true,
             rules: [v => v.length <= 250 || 'เกิน 250 ตัวอักษร'],
@@ -969,7 +999,8 @@ export default {
                 this.detail_status = 'new';
                 this.detail = JSON.parse(JSON.stringify(this.detail_item));
                 this.detail_dialog = true;
-
+            }else if (value == 2){
+                this.firewall_dialog = true;
             }
         },
         edit_detail(detail){

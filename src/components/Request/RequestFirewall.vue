@@ -1,6 +1,6 @@
 <template>
     <v-card>
-        <v-form>
+        <v-form @submit.prevent="submit">
             <v-row>
                 <v-col>
                     <v-data-table
@@ -11,6 +11,8 @@
                         :search="search"
                         class="elevation-1"
                         :loading="loadTable"
+                        :item-class= "row_classes"
+                        
                     >
                     <template v-slot:top>
                         <v-toolbar
@@ -19,8 +21,7 @@
                             <v-toolbar-title>
                                 <v-icon>mdi-server</v-icon>
                                 รายการ Policy Firewall
-                            </v-toolbar-title>                             
-                            
+                            </v-toolbar-title>                
                             <v-spacer></v-spacer>        
                             <v-text-field
                                 v-model="search"
@@ -30,47 +31,74 @@
                                 hide-details
                             ></v-text-field>                
                     </v-toolbar>
+                    </template >
+                    
+                    <template v-slot:item.detail="{ item,index }">
+                        <div class="policy" v-for="(detail,i) in item.policy_detail" :key="i">
+                            <v-row>
+                                <v-col class="text-right">
+                                    <div v-for="(source,j) in getArray(detail.source)" :key="j">
+                                        <v-chip small label color="primary" class="mt-1 mb-1">{{source.asset}}</v-chip>
+                                        <v-chip small label outlined color="primary" class="mt-1 mb-1">
+                                            <span v-for="(ip,x) in source.ip_address" :key="x">{{ip}}</span>
+                                        </v-chip>
+                                    </div>
+                                </v-col>
+                                <v-col cols="1" class="text-center"><v-icon>mdi-arrow-right-thick</v-icon></v-col>
+                                <v-col class="text-left">
+                                    <div v-for="(destination,j) in getArray(detail.destination)" :key="j">
+                                        <v-chip small label color="primary" class="mt-1 mb-1">{{destination.asset}}</v-chip>
+                                        <v-chip small label outlined color="primary" class="mt-1 mb-1">
+                                            <span v-for="(ip,x) in destination.ip_address" :key="x">{{ip}}</span>
+                                        </v-chip>
+                                    </div>
+                                </v-col>
+                                <v-col>
+                                    <v-chip  
+                                        color="deep-orange darken-3"   
+                                        class="ma-1"
+                                        small
+                                        v-for="(port,y) in getArray(detail.service_port)"               
+                                        :key="y"
+                                        dark
+                                    >
+                                        {{ port }}
+                                    </v-chip>
+                                </v-col>
+                            </v-row>
+                            
+                        </div>
+                        
                     </template>
                     
-                    <template v-slot:item.source="{ item,index }">
-                        <div v-for="(detail,index) in item.policy_detail" :key="index">
-                            {{getArray(detail.source)[0].asset}}
-                        </div> 
-                    </template>
-                    <template v-slot:item.destination="{ item,index }">
-                        <div v-for="(detail,index) in item.policy_detail" :key="index">
-                            {{getArray(detail.destination)[0].asset}}
-                        </div> 
-                    </template>
 
 
                     <template v-slot:item.actions="{ item,index }">
-                        <v-btn
-                            class="mr-2"                                            
-                            outlined
-                            x-small
-                            fab
-                            color="primary"
-                            @click="editPolicy(item,index)"
-                            >
-                            <v-icon>mdi-pencil</v-icon>
-                        </v-btn>
-                        <v-btn     
-                                                                
-                            fab
-                            dark
-                            x-small
-                            color="error"
+                        <v-switch
+                            v-model="policy_select"
                             
-                            @click="deletePolicy(item,index)"
-                            >
-                            <v-icon>
-                                mdi-close
-                            </v-icon>
-                        </v-btn>
-                        
+                            :value="item"
+                            ></v-switch>                        
                     </template>
-                    </v-data-table>
+                    </v-data-table>                    
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col class="text-center">
+                    <v-btn
+                                                        
+                        color="primary"
+                        rounded
+                        dark                
+                        dense
+                        @click="submit"
+                        
+                    >
+                        <v-icon left>
+                            mdi-content-save-outline
+                        </v-icon>
+                        บันทึกรายละเอียด
+                    </v-btn>
                 </v-col>
             </v-row>
         </v-form>
@@ -98,23 +126,24 @@ export default {
                     width: '25%'
                 },
                 {                    
-                    text: 'Source',
+                    text: 'Detail',
                     align: 'start',
                     // sortable: false,
-                    value: 'source',
+                    value: 'detail',
                     class: ['blue darken-3', 'white--text', 'head-text'],
-                    width: '25%'
+                    width: '60%'
                 },
-                { text: 'Destination', sortable: false, value: 'destination', class: ['blue darken-3', 'white--text'],width: '30%'},       
-                { text: 'Service/Port', value: 'service_port', sortable: false, class: ['blue darken-3', 'white--text'],width: '20%'},                       
-                { text: 'Tags', value: 'tags', sortable: false, class: ['blue darken-3', 'white--text'],width: '15%'},                       
-                { text: 'Action', value: 'actions', sortable: false,class: ['blue darken-3', 'white--text'],width: '10%'}                       
+                // { text: 'Destination', sortable: false, value: 'destination', class: ['blue darken-3', 'white--text'],width: '30%'},       
+                // { text: 'Service/Port', value: 'service_port', sortable: false, class: ['blue darken-3', 'white--text'],width: '20%'},                       
+                // { text: 'Tags', value: 'tags', sortable: false, class: ['blue darken-3', 'white--text'],width: '15%'},                       
+                { text: 'เลือก', value: 'actions', sortable: false,class: ['blue darken-3', 'white--text'],width: '5%'}                       
                             
             ],
             loadTable: true,
             search: '',
             policy_select: [],
             policy_list: [],
+            policy_list_show: [],
             user: this.$store.getters.user,
 
 
@@ -130,12 +159,59 @@ export default {
         
     },
     methods: {
+        
+        
+        row_classes(item) {
+            
+            return "row_selected";
+            
+        },
         async fetchData(){
             let path = await `/api/groups/${this.user.group_id}/policies`;
             let response = await axios.get(`${path}`);
             this.policy_list = await response.data.data;
             this.loadTable = false;
 
+        },
+        createListShow(list){
+            let arr = [];
+
+            for (let i=0;i<list.length;i++){
+                let detail = [];
+                let source = [];
+                let dest = [];
+                let port = [];
+                let tag = [];
+                for(let j=0;j<list[i].policy_detail.length;j++) {
+                    // detail.push({
+                    //     id: list[i].policy_detail[j].id,
+                    //     source: this.getArray(list[i].policy_detail[j].source),
+                    //     destination: this.getArray(list[i].policy_detail[j].destination),
+                    //     service_port: this.getArray(list[i].policy_detail[j].service_port),
+                    //     tags: this.getArray(list[i].policy_detail[j].tags)
+                    // })
+
+                        source.push(this.getArray(list[i].policy_detail[j].source));
+                        dest.push(this.getArray(list[i].policy_detail[j].destination));
+                        port.push(this.getArray(list[i].policy_detail[j].service_port));
+                        tag.push(this.getArray(list[i].policy_detail[j].tags));
+                }
+                
+
+                arr.push({
+                    id: list[i].id,
+                    policy_name: list[i].policy_name,
+                    // source: this.getArray(list.policy_detail.source),
+                    // detination: this.getArray(list.policy_detail.detination),
+                    // service_port: this.getArray(list.policy_detail.service_port),
+                    // tags: this.getArray(list.policy_detail.tags)
+                    source: source,
+                    destination: dest,
+                    service_port: port,
+                    tags: tag
+                })
+            }
+            return arr;
         },
         delPort(item,index){
             item.splice(index,1);
@@ -269,8 +345,7 @@ export default {
                         
                     }else if (this.status == 'edit'){
                         this.$nextTick(()=>{
-                            console.log('status ' + this.status);
-                            console.log('select_index ' + this.select_index);
+                            
                             //this.policy_list[this.select_index] = policy;
                             this.$set(this.policy_list,this.select_index,policy);
                             this.clear();
@@ -322,7 +397,16 @@ thead>tr>th{
 #tbPolicy.col{
     padding: 2px!important;
 }
-
+.policy{
+    margin: 2px;
+    border: 1px solid rgb(219, 219, 219);
+    background-color: rgb(224, 224, 224);
+    padding: 5px;
+    border-radius: 3px;
+}
+.row_selected{
+    background-color: #801616!important;
+}
 </style>>
 
 </style>
