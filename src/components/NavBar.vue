@@ -3,8 +3,10 @@
     dark
     app
     v-model="drawer"
-    :mini-variant.sync="mini"
     permanent
+    :mini-variant.sync="min"
+    
+    
   >
     <v-list-item px-2 class="main-menu">
       <v-list-item-icon>
@@ -177,7 +179,7 @@ export default {
             // { title: "การอนุมัติการ้องขอ", icon: "mdi-check-bold", route: "/approves" },
             // { title: "การดำเนินการเปลี่ยนแปลง", icon: "mdi-cog", route: "/operators" },
             // { title: "การติดตามผล", icon: "mdi-cog", route: "/follows" },
-            { title: "Test", icon: "mdi-stack-exchange", route: "/test" },
+            // { title: "Test", icon: "mdi-stack-exchange", route: "/test" },
           ]
         }
       ,
@@ -206,7 +208,17 @@ export default {
       
       mini: false
     }
-  }
+  },
+  computed: {
+    min: {
+        get() {
+           return this.$vuetify.breakpoint.mdAndDown || this.mini;            
+        },
+        set(value) {
+           this.mini = value;
+        }
+    }
+}
 };
 </script>
 

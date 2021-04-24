@@ -39,21 +39,27 @@
                                 <v-col class="text-right">
                                     <div v-for="(source,j) in getArray(detail.source)" :key="j">
                                         <v-chip small label color="primary" class="mt-1 mb-1">{{source.asset}}</v-chip>
-                                        <v-chip small label outlined color="primary" class="mt-1 mb-1">
-                                            <span v-for="(ip,x) in source.ip_address" :key="x">{{ip}}</span>
+                                        <v-chip small label outlined color="primary" class="mt-1 mb-1"
+                                            v-for="(ip,x) in source.ip_address" :key="x"
+                                        >
+                                            {{ip}}
                                         </v-chip>
                                     </div>
                                 </v-col>
                                 <v-col cols="1" class="text-center"><v-icon>mdi-arrow-right-thick</v-icon></v-col>
                                 <v-col class="text-left">
                                     <div v-for="(destination,j) in getArray(detail.destination)" :key="j">
-                                        <v-chip small label color="primary" class="mt-1 mb-1">{{destination.asset}}</v-chip>
-                                        <v-chip small label outlined color="primary" class="mt-1 mb-1">
-                                            <span v-for="(ip,x) in destination.ip_address" :key="x">{{ip}}</span>
+                                        <v-chip small label dark color="grey darken-3" class="mt-1 mb-1">{{destination.asset}}</v-chip>
+                                        <v-chip small label outlined color="grey darken-3" 
+                                            v-for="(ip,x) in destination.ip_address" :key="x"
+                                            class="mt-1 mb-1"
+
+                                        >
+                                            {{ip}}
                                         </v-chip>
                                     </div>
                                 </v-col>
-                                <v-col>
+                                <v-col cols="2">
                                     <v-chip  
                                         color="deep-orange darken-3"   
                                         class="ma-1"
@@ -91,13 +97,13 @@
                         rounded
                         dark                
                         dense
-                        @click="submit"
+                        type="submit"
                         
                     >
                         <v-icon left>
                             mdi-content-save-outline
                         </v-icon>
-                        บันทึกรายละเอียด
+                        บันทึก
                     </v-btn>
                 </v-col>
             </v-row>
@@ -109,7 +115,7 @@
 import axios from 'axios';
 import AssetEdit from './AssetEdit.vue'
 export default {
-    props: ['edit_policy'],
+    props: ['request_id'],
     components:{
         'asset-edit':AssetEdit
     },
@@ -161,17 +167,28 @@ export default {
     methods: {
         
         
-        row_classes(item) {
-            
+        row_classes(item) {            
             return "row_selected";
-            
         },
         async fetchData(){
             let path = await `/api/groups/${this.user.group_id}/policies`;
             let response = await axios.get(`${path}`);
             this.policy_list = await response.data.data;
             this.loadTable = false;
-
+        },
+        async submit(){
+            let path = await `/api/request_forms/${this.request_id}/request_details`;
+            console.log(path);
+            if (this.policy_select.length > 0){
+                for (let i=0; i<this.policy_select.length; i++){
+                    let response = await axios.post(`${path}`,{
+                        type: 2,
+                        request_detail: this.policy_select[i].policy_name,
+                        policy : this.policy_select[i].policy_detail
+                    })
+                }
+                this.$emit('close_detail');
+            }
         },
         createListShow(list){
             let arr = [];
@@ -360,9 +377,7 @@ export default {
         deletePolicy(item,index){
 
         },
-        submit(){
-
-        }
+        
     }
 }
 </script>

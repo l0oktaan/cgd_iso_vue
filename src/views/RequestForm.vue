@@ -47,7 +47,7 @@
                                 <p class="topic">รายละเอียด :</p>
                             </v-col>
                             <v-col cols="9" >                                
-                                <v-menu offset-y>
+                                <v-menu offset-y v-if="form_edit.status <= 1">
                                     <template v-slot:activator="{ on, attrs }">
                                             <v-btn
                                                 color="success"
@@ -55,7 +55,7 @@
                                                 dark
                                                 v-bind="attrs"
                                                 v-on="on"
-                                                
+                                                class="mb-2"
                                                 dense
                                             >
                                                 <v-icon left>
@@ -97,8 +97,7 @@
                                                         outlined
                                                         label="รายละเอียด"
                                                         no-resize
-                                                        rows="2"
-                                                        
+                                                        rows="2"                                                        
                                                     ></v-textarea>
                                                 </v-col>                                    
                                             </v-row>
@@ -116,7 +115,7 @@
                                                         <v-icon left>
                                                             mdi-content-save-outline
                                                         </v-icon>
-                                                        บันทึกรายละเอียด
+                                                        บันทึก
                                                     </v-btn>
                                                 </v-col>
                                             </v-row>
@@ -138,7 +137,7 @@
                                 <v-dialog
                                     transition="dialog-bottom-transition"
                                     persistent
-                                    max-width="1020"
+                                    max-width="1100"
                                     v-model="firewall_dialog"
                                 >
                                     
@@ -148,7 +147,10 @@
                                             <span> รายละเอียดของการร้องขอ</span>
                                         </v-card-title>                      
                                         <v-card-text class="mt-4">
-                                            <request-firewall></request-firewall>
+                                            <request-firewall 
+                                                :request_id="request_id"
+                                                @close_detail="close_detail"
+                                            ></request-firewall>
                                         </v-card-text>
                                         <v-card-actions class="justify-end">
                                         <v-btn
@@ -164,13 +166,66 @@
                                     </v-card>
                                     </template>
                                 </v-dialog>
+                                <v-expansion-panels 
+                                        v-model="panel"                             
+                                        multiple                                        
+                                        dense
+                                    >
+                                        <v-expansion-panel
+                                            class="panel-detail"
+                                             v-for="(detail,index) in detail_list" :key="index">
+                                            <v-expansion-panel-header>
+                                                <template v-slot:actions>
+                                                    <v-icon color="primary" large class="ml-2">
+                                                        mdi-arrow-down-drop-circle
+                                                    </v-icon>
+                                                </template>
+                                                <v-row>
+                                                    <v-col cols="10"><h4 style="color:#212121">ข้อที่ {{(index+1) + ' ' + (detail.type == 1 ? '(เรื่องทั่วไป)' : '(Policy Firewall)')}}</h4></v-col>
+                                                    <v-col> 
+                                                        <div class=text-right>
+                                                            <v-btn
+                                                                class="mr-2"                                            
+                                                                outlined
+                                                                x-small
+                                                                fab
+                                                                color="indigo"
+                                                                v-if="detail.type == 1"
+                                                                @click="edit_detail(detail)"
+                                                                >
+                                                                <v-icon>mdi-pencil</v-icon>
+                                                            </v-btn>
+                                                            <show-policy :detail="detail" v-if="detail.type == 2"></show-policy>
+                                                            <v-btn   
+                                                                fab
+                                                                dark
+                                                                x-small
+                                                                color="error"
+                                                                v-if="form_edit.status <= 1"
+                                                                @click="delete_detail(detail,index)"
+                                                                >
+                                                                <v-icon>
+                                                                    mdi-close
+                                                                </v-icon>
+                                                            </v-btn>                                                            
+                                                        </div>                                      
+                                                        
+                                                    </v-col>
+                                                </v-row>
+                                            </v-expansion-panel-header>
+                                                <v-expansion-panel-content>
+                                                    {{detail.request_detail}}
+                                                    
+                                                </v-expansion-panel-content>
+                                        </v-expansion-panel>                                        
+                                    </v-expansion-panels>
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col cols="3"></v-col>
-                            <v-col cols="9">
-                                <div v-for="(detail,index) in detail_list" :key="index">
+                            <v-col cols="9">                                    
                                     
+                                    <!-- <div v-for="(detail,index) in detail_list" :key="index">
                                     <v-alert             
                                         
                                         
@@ -190,6 +245,7 @@
                                                         x-small
                                                         fab
                                                         color="indigo"
+                                                        v-if="detail.type == 1"
                                                         @click="edit_detail(detail)"
                                                         >
                                                         <v-icon>mdi-pencil</v-icon>
@@ -200,7 +256,7 @@
                                                         dark
                                                         x-small
                                                         color="error"
-                                                        v-if="form_edit.status == 1"
+                                                        v-if="form_edit.status <= 1"
                                                         @click="delete_detail(detail,index)"
                                                         >
                                                         <v-icon>
@@ -214,7 +270,7 @@
                                         
                                     </v-alert>
                                     
-                                </div>            
+                                </div>             -->
                                 
                             </v-col>
                         </v-row>
@@ -739,7 +795,16 @@
                             
             </v-col>
             <v-col cols="3">
-                <request-flow></request-flow>
+                
+                <request-flow   
+
+                    :request_id = "request_id" 
+                    :status = "form_edit.status"
+                    :group_id = "form_edit.group_id"
+                    :user="user"                     
+                    v-if="show_status"
+                    @fetchRequest="fetchData"
+                ></request-flow>
             </v-col>
         </v-row>
   </div>         
@@ -751,6 +816,7 @@ import Swal from 'sweetalert2';
 // import MyAlert from '@/components/MyAlert.vue';
 import NewAlert from '@/components/NewAlert';
 import RequestFlow from '@/components/Request/RequestFlow';
+import ShowPolicy from '@/components/Request/ShowPolicy';
 import axios from 'axios';
 import UploadButton from 'vuetify-upload-button';
 import { required, max, digits, regex} from 'vee-validate/dist/rules'
@@ -781,6 +847,7 @@ export default {
       ValidationProvider,
       ValidationObserver,
       'upload-btn':UploadButton,
+      'show-policy' : ShowPolicy,
       'request-flow' : RequestFlow,
       'request-firewall': RequestFirewall
         
@@ -794,6 +861,7 @@ export default {
             invalid: false,
             firewall_dialog: false,
             detail_dialog: false,
+            policy_dialog : false,
             alert: true,
             rules: [v => v.length <= 250 || 'เกิน 250 ตัวอักษร'],
             title: '',
@@ -840,7 +908,7 @@ export default {
             begin_time_menu: false,           
             end_time_menu: false,
 
-
+            panel: [],
             detail_list: [],
             detail_type: [                
                 {text: 'เรื่องทั่วไป',value: 1},
@@ -881,11 +949,13 @@ export default {
                 status:0,
                 description: ''
             },
+            request_status: {},
             detail_status: 'new',
             status: 'new',            
             message: '',
             show_alert: '',
             user: this.$store.getters.user,
+            show_status : false
         }
     },
     mounted(){
@@ -932,6 +1002,14 @@ export default {
         },
     },
     methods: {
+        getArray(item){
+            try {
+                return JSON.parse(item);    
+            } catch (error) {
+                return [];
+            }
+            
+        },
         async fetchData(){
             if (this.request_id){
                 // console.log(this.request_id);
@@ -939,48 +1017,61 @@ export default {
                 await this.getRequest();
                 await this.getDetail();
                 await this.getFile();
+                await this.getStatus();
             }
         },
         async getDetail(){
             let path = await '/api/request_forms/' + this.request_id + '/request_details';
             try {
                 let response = await axios.get(path);
-                this.detail_list = response.data.data;
-                // for (let i=0;i<details.length;i++){
-
-                // }
+                this.detail_list = await response.data.data;
+                this.panel = [];//await [...Array(this.detail_list).keys()].map((k, i) => i)
+                for (let i=0;i<this.detail_list.length;i++){
+                    this.panel.push(i);
+                }
             } catch (error) {
                 
             }
             
 
         },
+        async getStatus(){
+            let path = await `/api/request_forms/${this.request_id}/request_status`;
+            let response = await axios.get(`${path}`);
+            this.request_status = await response.data.data[0];
+        },
         async getRequest(){
             let path = await '/api/request_forms/' + this.request_id;
             let response = await axios.get(path);
-            let request = response.data.data;
-            this.form_edit.user_id = request.user_id;            
-            this.form_edit.group_code = request.group_code;
-            this.form_edit.year = request.year;
-            this.form_edit.order_no = request.order_no;
-            this.form_edit.created_date = request.created_date;
-            this.form_edit.request_no = request.request_no;
-            this.form_edit.change_type = request.change_type;
-            this.form_edit.request_title = request.request_title;
-            this.form_edit.request_reason = request.request_reason;
-            this.form_edit.document_relate = JSON.parse(request.document_relate);
-            this.form_edit.person_relate = JSON.parse(request.person_relate);
-            this.form_edit.system_relate = JSON.parse(request.system_relate);
-            this.form_edit.env_impact = JSON.parse(request.env_impact);
-            this.form_edit.system_impact = JSON.parse(request.system_impact);
-            this.form_edit.level_impact = request.level_impact;
-            this.form_edit.begin_date = request.begin_date;
-            this.form_edit.end_date = request.end_date;
-            this.form_edit.begin_time = request.begin_time;
-            this.form_edit.end_time = request.end_time;
-            this.form_edit.status = request.status;
-            this.form_edit.description = request.description;
-            this.form_edit.updated_date = request.updated_date;
+            
+            let request = await response.data.data;
+            this.form_edit.user_id = await request.user_id;            
+            this.form_edit.group_code = await request.group_code;
+            this.form_edit.group_id = await request.group_id;
+            this.form_edit.year = await request.year;
+            this.form_edit.order_no = await request.order_no;
+            this.form_edit.created_date = await request.created_date;
+            this.form_edit.request_no = await request.request_no;
+            this.form_edit.change_type = await request.change_type;
+            this.form_edit.request_title = await request.request_title;
+            this.form_edit.request_reason = await request.request_reason;
+            this.form_edit.document_relate = await JSON.parse(request.document_relate);
+            this.form_edit.person_relate = await JSON.parse(request.person_relate);
+            this.form_edit.system_relate = await JSON.parse(request.system_relate);
+            this.form_edit.env_impact = await JSON.parse(request.env_impact);
+            this.form_edit.system_impact = await JSON.parse(request.system_impact);
+            this.form_edit.level_impact = await request.level_impact;
+            this.form_edit.begin_date = await request.begin_date;
+            this.form_edit.end_date = await request.end_date;
+            this.form_edit.begin_time = await request.begin_time;
+            this.form_edit.end_time = await request.end_time;
+            this.form_edit.status = await request.status;
+            this.form_edit.description = await request.description;
+            this.form_edit.updated_date = await request.updated_date;
+            this.show_status = await true;
+            await this.$forceUpdate();
+            
+            
 
 
         },
@@ -1011,13 +1102,46 @@ export default {
             }
             
         },
-        save_detail(){
+        async close_detail(){
+            this.show_alert = "success";
+            this.detail_status = await 'new';
+            await this.getDetail();
+            this.firewall_dialog = await false;
+        },
+        async save_detail(){
             if (this.detail_status == 'new'){
-                this.detail.order = this.detail_list.length + 1;
-                this.detail_list.push(JSON.parse(JSON.stringify(this.detail)));
+                let path = await `/api/request_forms/${this.request_id}/request_details`;
+                try {
+                    let response = await axios.post(`${path}`,{
+                        type: 1,
+                        request_detail: this.detail.request_detail,
+                        description: ''
+                    })
+                    this.show_alert = await "success";
+                    await this.getDetail();
+                    this.detail_dialog = false;
+                } catch (error) {
+                    this.show_alert = await "error";
+                }
+                
+                // this.detail.order = this.detail_list.length + 1;
+                // this.detail_list.push(JSON.parse(JSON.stringify(this.detail)));
                 
             }else if (this.detail_status == 'edit'){
-                this.detail_list[this.detail_list.findIndex(x=>x.order == this.detail.order)].request_detail = this.detail.request_detail;
+                let path = `/api/request_forms/${this.request_id}/request_details/${this.detail.id}`;
+                try {
+                    let response = await axios.put(`${path}`,{
+                        
+                        request_detail: this.detail.request_detail,
+                        
+                    })
+                    this.show_alert = await "success";
+                    await this.getDetail();
+                    this.detail_dialog = false;
+                } catch (error) {
+                    this.show_alert = await "error";
+                }
+                // this.detail_list[this.detail_list.findIndex(x=>x.order == this.detail.order)].request_detail = this.detail.request_detail;
             }
             
             
@@ -1126,9 +1250,9 @@ export default {
                     fileLink.href = fileURL;
                     let filename = item.file_title;
                     fileLink.setAttribute('download', filename);
-                    document.body.appendChild(fileLink);
-                    window.open(fileLink, "_blank");
-                    // fileLink.click();
+                    // document.body.appendChild(fileLink);
+                    // window.open(fileLink, "_blank");
+                    fileLink.click();
                     })
                 .catch(error=>{
 
@@ -1407,7 +1531,15 @@ export default {
     border: 1px solid #c5c5c5;  
     
 }
-
+.panel-detail{
+    border-color: #1976d2!important;
+}
+.policy{
+    margin: 2px;
+    border: 1px solid rgb(219, 219, 219);
+    background-color: rgb(255, 255, 255);
+    padding: 5px;
+    border-radius: 3px;
+}
 </style>>
 
-</style>

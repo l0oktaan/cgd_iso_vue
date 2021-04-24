@@ -17,6 +17,8 @@ Vue.use(UploadButton);
 import MyAlert from "./components/MyAlert.vue"
 Vue.component('my-alert',MyAlert);
 
+
+
 // Vue.config.devtools = false;
 new Vue({
   created() {
@@ -25,7 +27,15 @@ new Vue({
   methods: {
     beforePageDestroyed: function () {
         this.$store.dispatch('resetState');
-    }
+    },
+    getThaiDate(item){
+      if (item){
+          var d = new Date(item);
+      return d.toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
+      }else{
+          return "";
+      }            
+    },
   },
   router,
   store,

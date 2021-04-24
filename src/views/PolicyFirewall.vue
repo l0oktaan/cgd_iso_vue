@@ -101,7 +101,7 @@
                         x-small
                         color="error"
                         
-                        @click="deletePolicy(item,index)"
+                        @click="deletePolicy(item.id)"
                         >
                         <v-icon>
                             mdi-close
@@ -224,6 +224,36 @@ export default {
             this.policy_id= 0;
             this.policy_dialog = true;
             
+        },        
+        deletePolicy(id){
+            
+            Swal.fire({
+                title: "กรุณายืนยันการลบรายการจากฐานข้อมูล",                
+                icon: "warning",
+                allowOutsideClick: false,
+                showCancelButton: true,
+                confirmButtonText: `ยืนยัน`,
+                cancelButtonText: `ยกเลิก`,
+                }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    let path = `/api/groups/${this.group_id}/policies/${id}`;
+                    axios.delete(`${path}`)
+                    .then(resposne=>{
+                        this.show_alert = "success"
+                        this.fetchData();                        
+                    })
+                    .catch(error=>{
+                        this.show_alert = "error"
+                    })
+                } else if (result.isDenied) {
+                    // Swal.fire('Changes are not saved', '', 'info')
+                }
+            })
+            
+
+            
+
         },
         close_dialog(){
             this.$refs.request_firewall.clearAll();

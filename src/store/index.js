@@ -10,11 +10,20 @@ const getDefaultState = () => {
     equip_list : null,
     people_list : null,
     group_id : 1,
-    user: {
+    group_cgd: null,
+    user1: {
       user_id : 1,
       username : 'songwut.saj',
       group_id : 1,
-      group_code : 'SECD'
+      group_code : 'SECD',
+      roles: ['admin','request','ensure','consider','approve','operate','follow','check']
+    },
+    user2: {
+      user_id : 2,
+      username : 'songwut.saj',
+      group_id : 2,
+      group_code : 'NETD',
+      roles: ['request','operation','follow']
     },
     roles: ['admin','request','ensure','consider','approve','operation','follow','check']
   }
@@ -34,10 +43,13 @@ export default new Vuex.Store({
       return state.people_list
     },
     user (state){
-      return state.user
+      return state.user1
     },
     roles (state){
       return state.roles
+    },
+    group_cgd (state){
+      return state.group_cgd
     }
   },
   mutations: {
@@ -49,6 +61,9 @@ export default new Vuex.Store({
     },
     people_list (state,data){
       state.people_list = data
+    },
+    group_cgd (state, data){
+      state.group_cgd = data
     }
   },
   actions: {
@@ -69,6 +84,14 @@ export default new Vuex.Store({
       let response = await axios.get(`${path}`)
       let list = response.data.data
       commit('people_list',list)
+    },
+    async get_group_cgd ( {commit}){
+      let path = await `/api/groups?type=1`
+      let response = await axios.get(`${path}`,{
+        "type" : "0"
+      })
+      commit('group_cgd',response.data.data)
+
     }
   },
   modules: {}

@@ -8,7 +8,7 @@
                 <v-data-table
                     :headers="headers"
                     :items="user_list"
-                    :items-per-page="15"
+                    :items-per-page="10"
                     :search="search"
                     class="elevation-1"            
                     v-if="user_list"
@@ -313,14 +313,14 @@ export default {
         return{
             search: '',
             headers: [
-                { text: 'ชื่อผู้ใช้', sortable: true, value: 'ldap', class: ['blue darken-3', 'white--text'],width: '12%'},
+                { text: 'ชื่อผู้ใช้', sortable: true, value: 'ldap', class: ['blue darken-3', 'white--text'],width: '15%'},
                 {
                     text: 'ชื่อ-นามสกุล',
                     align: 'start',
                     // sortable: false,
                     value: 'firstname',
                     class: ['blue darken-3', 'white--text', 'head-text'],
-                    width: '15%'
+                    width: '20%'
                 },
                 {
                     text: 'กลุ่มงาน',
@@ -330,8 +330,8 @@ export default {
                     class: ['blue darken-3', 'white--text', 'head-text'],
                     width: '20%'
                 },                
-                { text: 'สิทธิ์', sortable: false, value: 'roles', class: ['blue darken-3', 'white--text'],width: '20%'},       
-                { text: 'สถานะ', sortable: false, value: 'status', class: ['blue darken-3', 'white--text'],width: '8%'},      
+                { text: 'สิทธิ์', sortable: false, value: 'roles', class: ['blue darken-3', 'white--text'],width: '15%'},       
+                { text: 'สถานะ', sortable: false, value: 'status', class: ['blue darken-3', 'white--text'],width: '5%'},      
                 { text: 'Action', align: 'end',value: 'actions',class: ['blue darken-3', 'white--text'],width: '10%'}                        
                             
             ],

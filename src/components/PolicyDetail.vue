@@ -28,7 +28,7 @@
                                 class="elevation-1"  
                                 :hide-default-header = "policy_list_edit.length == 0"
                                 hide-default-footer 
-                                :loading="loadEditTable && policy_list_edit.length != 0"   
+                                   
                                 no-data-text=""                             
                             >
                                 <template v-slot:top>
@@ -789,7 +789,7 @@ export default {
                     this.policy_status = await 'edit';
                 }
             }
-            await this.$emit('close_dialog');
+            
         }
     }
 }
