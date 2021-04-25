@@ -10,7 +10,11 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 Vue.use(VueAxios,axios)
 // axios.defaults.baseURL = 'http://192.168.1.60:8080/engine-rest/';
-axios.defaults.baseURL = 'http://localhost:8000';
+// axios.defaults.baseURL = 'http://localhost:8000';
+
+import camunda from './camunda'
+Vue.use(camunda)
+
 import UploadButton from 'vuetify-upload-button';
 Vue.use(UploadButton);
 
