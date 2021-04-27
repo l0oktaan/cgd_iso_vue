@@ -1012,7 +1012,7 @@ export default {
         },
         async fetchData(){
             if (this.request_id){
-                // console.log(this.request_id);
+                console.log('user :' + this.user.group_id);
                 this.status = 'edit'
                 await this.getRequest();
                 await this.getDetail();

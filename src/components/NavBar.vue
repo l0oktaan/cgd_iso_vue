@@ -69,7 +69,7 @@
     </v-list> -->
     <v-list shaped dense>
       <v-list-item
-        v-for="item in navs.group_1"
+        v-for="item in checkRole(navs.group_1)"
         :key="item.title"
         router
         :to="item.route"
@@ -88,7 +88,7 @@
     <v-divider></v-divider>
     <v-list shaped dense>
       <v-list-item
-        v-for="item in navs.group_2"
+        v-for="item in checkRole(navs.group_2)"
         :key="item.title"
         router
         :to="item.route"
@@ -105,7 +105,7 @@
       </v-list-item>
     </v-list>
     <v-divider></v-divider>
-    <v-list shaped dense v-if="false">
+    <v-list shaped dense>
       <v-list-item
         
         v-for="item in navs.group_3"
@@ -124,9 +124,10 @@
         </v-list-item-content>
       </v-list-item>
     </v-list>
+    <v-divider></v-divider>
     <v-list shaped dense>
       <v-list-item
-        v-for="item in navs.group_4"
+        v-for="item in checkRole(navs.group_4)"
         :key="item.title"
         router
         :to="item.route"
@@ -154,31 +155,33 @@ export default {
   data() {
     return {
       drawer: true,
+      user: this.$store.getters.user,
       navs: 
         {
           group_1: [
-            { title: "Dashboard", icon: "mdi-monitor-dashboard", route: "/" },   
-            { title: "ผู้ดูแลระบบ", icon: "mdi-account-tie", route: "/admin" },   
+            { title: "Dashboard", icon: "mdi-monitor-dashboard", route: "/" ,show : "all"},   
+            { title: "ผู้ดูแลระบบ", icon: "mdi-account-tie", route: "/admin", show: "admin" }, 
+            { title: "Master Data", icon: "mdi-vector-link", route: "/master_data", show: "admin" },  
           ],
         
           group_2: [
-            { title: "Master Data", icon: "mdi-vector-link", route: "/master_data" },     
-            { title: "รายการอุปกรณ์", icon: "mdi-server", route: "/asset_equipment" },
-            { title: "รายการบุคลากร", icon: "mdi-account-multiple", route: "/asset_people" },
-            { title: "รายการ Policy Firewall", icon: "mdi-wall", route: "/policy_firewall" },
+                 
+            { title: "รายการอุปกรณ์", icon: "mdi-server", route: "/asset_equipment" , show: "all"},
+            { title: "รายการบุคลากร", icon: "mdi-account-multiple", route: "/asset_people" , show: "all"},
+            { title: "รายการ Policy Firewall", icon: "mdi-wall", route: "/policy_firewall" , show: "all"},
           ],
         
           group_3: [
-            { title: "การร้องขอการเปลี่ยนแปลง", icon: "mdi-stack-exchange", route: "/request_change" },
+            { title: "การร้องขอการเปลี่ยนแปลง", icon: "mdi-stack-exchange", route: "/request_change"},
           ],
-          group_4: [
-            { title: "การร้องขอการเปลี่ยนแปลง", icon: "mdi-stack-exchange", route: "/request_change" },
-            // { title: "การรับรองการร้องขอ", icon: "mdi-check-decagram", route: "/ensures" },
-            // { title: "การพิจารณาการร้องขอ", icon: "mdi-shield-check", route: "/considers" },
-            // { title: "การตรวจสอบผล", icon: "mdi-shield-check", route: "/checks" },
-            // { title: "การอนุมัติการ้องขอ", icon: "mdi-check-bold", route: "/approves" },
-            // { title: "การดำเนินการเปลี่ยนแปลง", icon: "mdi-cog", route: "/operators" },
-            // { title: "การติดตามผล", icon: "mdi-cog", route: "/follows" },
+          group_4: [            
+            { title: "การรับรองการร้องขอ", icon: "mdi-check-decagram", route: "/ensures", show: "ensure" },
+            { title: "การพิจารณาการร้องขอ", icon: "mdi-shield-check", route: "/considers", show: "consider" },
+            
+            { title: "การอนุมัติการ้องขอ", icon: "mdi-check-bold", route: "/approves", show: "approve" },
+            { title: "การดำเนินการเปลี่ยนแปลง", icon: "mdi-cog", route: "/operators", show: "operate" },
+            { title: "การติดตามผล", icon: "mdi-cog", route: "/follows", show: "follow" },
+            { title: "การตรวจสอบผล", icon: "mdi-shield-check", route: "/checks", show: "check" },
             // { title: "Test", icon: "mdi-stack-exchange", route: "/test" },
           ]
         }
@@ -218,7 +221,14 @@ export default {
            this.mini = value;
         }
     }
-}
+  },
+  methods: {
+    checkRole(list){
+      let show = list.filter(x=>x.show === 'all' || this.user.roles.includes(x.show));      
+      return show
+    }  
+    
+  }
 };
 </script>
 

@@ -23,9 +23,16 @@ const getDefaultState = () => {
       username : 'songwut.saj',
       group_id : 2,
       group_code : 'NETD',
-      roles: ['request','operation','follow']
+      roles: ['request','operate','follow']
     },
-    roles: ['admin','request','ensure','consider','approve','operation','follow','check']
+    user_ensure: {
+      user_id : 3,
+      username : 'siriluk.sir',
+      group_id : 1,
+      group_code : 'SECD',
+      roles: ['request','ensure','consider','follow','check']
+    },
+    roles: ['admin','request','ensure','consider','approve','operate','follow','check']
   }
 }
 export default new Vuex.Store({
@@ -43,7 +50,7 @@ export default new Vuex.Store({
       return state.people_list
     },
     user (state){
-      return state.user1
+      return Vue.$set(state.user_ensure)
     },
     roles (state){
       return state.roles
@@ -67,6 +74,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    
     async get_request_list({commit}){
       let path = '/api/request_forms'
       let response = await axios.get(path)
