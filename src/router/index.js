@@ -13,6 +13,11 @@ import RequestChange from "../views/RequestChange.vue";
 import RequestForm from "../views/RequestForm.vue";
 
 import Ensure from "../views/Ensure.vue";
+import Consider from "../views/Consider.vue";
+import Approve from "../views/Approve.vue";
+import Operate from "../views/Operate.vue";
+import Follow from "../views/Follow.vue";
+import Check from "../views/Check.vue";
 import MasterData from "../views/MasterData.vue";
 import PolicyFirewall from "../views/PolicyFirewall.vue";
 
@@ -60,8 +65,28 @@ const routes = [
         component: Test,
       },
       {
-        path: "/approves",        
+        path: "/ensure",        
         component: Ensure,
+      },
+      {
+        path: "/consider",        
+        component: Consider,
+      },
+      {
+        path: "/approve",        
+        component: Approve,
+      },
+      {
+        path: "/operate",        
+        component: Operate,
+      },
+      {
+        path: "/follow",        
+        component: Follow,
+      },
+      {
+        path: "/check",        
+        component: Check,
       },
       {
         path: "/request_change",        

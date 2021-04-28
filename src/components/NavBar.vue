@@ -175,13 +175,13 @@ export default {
             { title: "การร้องขอการเปลี่ยนแปลง", icon: "mdi-stack-exchange", route: "/request_change"},
           ],
           group_4: [            
-            { title: "การรับรองการร้องขอ", icon: "mdi-check-decagram", route: "/ensures", show: "ensure" },
-            { title: "การพิจารณาการร้องขอ", icon: "mdi-shield-check", route: "/considers", show: "consider" },
+            { title: "การรับรองการร้องขอ", icon: "mdi-jira", route: "/ensure", show: "ensure" },
+            { title: "การพิจารณาการร้องขอ", icon: "mdi-file-find", route: "/consider", show: "consider" },
             
-            { title: "การอนุมัติการ้องขอ", icon: "mdi-check-bold", route: "/approves", show: "approve" },
-            { title: "การดำเนินการเปลี่ยนแปลง", icon: "mdi-cog", route: "/operators", show: "operate" },
-            { title: "การติดตามผล", icon: "mdi-cog", route: "/follows", show: "follow" },
-            { title: "การตรวจสอบผล", icon: "mdi-shield-check", route: "/checks", show: "check" },
+            { title: "การอนุมัติการ้องขอ", icon: "mdi-check-bold", route: "/approve", show: "approve" },
+            { title: "การดำเนินการเปลี่ยนแปลง", icon: "mdi-cog", route: "/operator", show: "operate" },
+            { title: "การติดตามผล", icon: "mdi-cog", route: "/follow", show: "follow" },
+            { title: "การตรวจสอบผล", icon: "mdi-shield-check", route: "/check", show: "check" },
             // { title: "Test", icon: "mdi-stack-exchange", route: "/test" },
           ]
         }
@@ -224,7 +224,8 @@ export default {
   },
   methods: {
     checkRole(list){
-      let show = list.filter(x=>x.show === 'all' || this.user.roles.includes(x.show));      
+      console.log(this.user)
+      let show = list.filter(x=>x.show === 'all' || JSON.parse(this.user.roles).includes(x.show));      
       return show
     }  
     

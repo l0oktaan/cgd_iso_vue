@@ -10,7 +10,7 @@
             <v-col cols="6">
                 
               <v-icon color="success" v-if="status > 2">mdi-check</v-icon>
-              <v-icon color="default" v-else>mdi-timer-sand</v-icon> การรับรอง
+              <v-icon color="default" v-else>mdi-timer-sand</v-icon>{{group_id}} การรับรอง
             </v-col>
             <v-col
               cols="6"

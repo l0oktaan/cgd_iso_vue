@@ -138,6 +138,17 @@ export default {
 
         invalid: false
       }
+    },
+    methods:{
+      async submit(){
+        await this.$store.dispatch('login',{
+            username : this.username,
+            password : this.password
+        })
+        if (this.$store.getters.user){
+          this.$router.push({name:"ISO"});
+        }
+      }
     }
 }
 </script>

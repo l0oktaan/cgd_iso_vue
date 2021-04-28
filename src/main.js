@@ -11,6 +11,26 @@ import VueAxios from 'vue-axios'
 Vue.use(VueAxios,axios)
 // axios.defaults.baseURL = 'http://192.168.1.60:8080/engine-rest/';
 // axios.defaults.baseURL = 'http://localhost:8000';
+axios.defaults.headers.common = {
+  'X-Requested-With': 'XMLHttpRequest',
+
+
+};
+axios.interceptors.request.use(
+  (config) => {
+    let token = localStorage.getItem('token');
+
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${ token }`;
+    }
+
+    return config;
+  },
+
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 import camunda from './camunda'
 Vue.use(camunda)

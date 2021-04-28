@@ -20,9 +20,7 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
 
-      <v-btn icon>
-        <v-icon>mdi-bell</v-icon>
-      </v-btn>
+      {{user.group_id}}
       <v-menu
       
       bottom
@@ -48,7 +46,7 @@
           <v-list-item-title>เมนู 3</v-list-item-title>          
         </v-list-item>
         <v-list-item link>
-          <v-list-item-title>ออกจากระบบ</v-list-item-title>          
+          <v-list-item-title @click="logout">ออกจากระบบ</v-list-item-title>          
         </v-list-item>
       </v-list>
     </v-menu>
@@ -63,7 +61,17 @@
 
 <script>
 export default {
-
+  data(){
+    return {
+      user: this.$store.getters.user
+    }
+  },
+  methods: {
+    async logout(){
+      await this.$store.dispatch('logout')
+      await this.$router.push("/login")
+    }
+  }
 }
 </script>
 

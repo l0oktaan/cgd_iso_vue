@@ -1,7 +1,7 @@
 import Vue from "vue";
 import axios from 'axios';
 import Vuex from "vuex";
-
+import router from 'vue-router'
 Vue.use(Vuex);
 import VuexPersistence from 'vuex-persist'
 const getDefaultState = () => {
@@ -11,6 +11,8 @@ const getDefaultState = () => {
     people_list : null,
     group_id : 1,
     group_cgd: null,
+    user: null,
+    userToken: null,
     user1: {
       user_id : 1,
       username : 'songwut.saj',
@@ -50,7 +52,7 @@ export default new Vuex.Store({
       return state.people_list
     },
     user (state){
-      return Vue.$set(state.user_ensure)
+      return state.user
     },
     roles (state){
       return state.roles
@@ -71,7 +73,18 @@ export default new Vuex.Store({
     },
     group_cgd (state, data){
       state.group_cgd = data
-    }
+    },
+    authUser (state, userData){
+      //console.log(userData.user);
+      state.user = userData
+      state.userToken = userData.token
+    },
+    clearAuthData (state){
+      state.user = null
+      state.userToken = null      
+      localStorage.removeItem('token')
+      localStorage.removeItem('expirationDate')
+  },
   },
   actions: {
     
@@ -100,7 +113,56 @@ export default new Vuex.Store({
       })
       commit('group_cgd',response.data.data)
 
-    }
+    },
+    async login ({ commit, state}, authData){
+      let path = '/api/login'
+      
+      let response =  await axios.post(path,{
+              username: authData.username,
+              password: authData.password
+          })
+          
+      const now = await new Date()
+      const expirationDate = await new Date(now.getTime() + 1*60*60*1000)
+
+      const userData = await response.data.user      
+      await commit('authUser',userData)
+      await localStorage.setItem('token', userData.token)
+      await localStorage.setItem('expirationDate', expirationDate)           
+      
+              
+              
+        
+          
+      
   },
+  checkLogin({ commit,state }){
+      let expirationDate = new Date(localStorage.getItem('expirationDate'))
+      let now = new Date()
+
+      if (now >= expirationDate){
+          console.log('expire')
+          commit('clearAuthData')
+          return
+      }
+      expirationDate = new Date(now.getTime() + 1*60*60*1000)
+      localStorage.setItem('expirationDate', expirationDate)
+      // const userData = state.user
+      // if (userData){
+      //     if (userData.status == 1){
+      //         router.replace('/passchange')
+      //     }else if (userData.type == 'admin'){
+      //         router.replace('/admin')
+      //     }else if (userData.type == 'user'){
+      //         router.replace('/refund')
+      //     }
+      // }else{
+      //     return
+      // }
+  },
+  logout({ commit }){
+    commit('clearAuthData')    
+  },
+},
   modules: {}
 });
