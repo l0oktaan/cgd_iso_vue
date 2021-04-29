@@ -142,7 +142,7 @@
           <v-list-item-title>
             {{ item.title }}
             
-            <v-chip class="text-right" color="error" x-small v-if="item.route=='/considers'" >1</v-chip>
+            <v-chip class="text-right" color="error" x-small v-if="countRequest(item.show)>0">{{countRequest(item.show)}}</v-chip>
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
@@ -179,7 +179,7 @@ export default {
             { title: "การพิจารณาการร้องขอ", icon: "mdi-file-find", route: "/consider", show: "consider" },
             
             { title: "การอนุมัติการ้องขอ", icon: "mdi-check-bold", route: "/approve", show: "approve" },
-            { title: "การดำเนินการเปลี่ยนแปลง", icon: "mdi-cog", route: "/operator", show: "operate" },
+            { title: "การดำเนินการเปลี่ยนแปลง", icon: "mdi-cog", route: "/operate", show: "operate" },
             { title: "การติดตามผล", icon: "mdi-cog", route: "/follow", show: "follow" },
             { title: "การตรวจสอบผล", icon: "mdi-shield-check", route: "/check", show: "check" },
             // { title: "Test", icon: "mdi-stack-exchange", route: "/test" },
@@ -222,10 +222,70 @@ export default {
         }
     }
   },
+  mounted(){
+    this.getRequest();
+  },
   methods: {
+    countRequest(role){
+      let count=0;
+      console.log('follow :' + this.$store.getters.request_follow)
+      switch (role) {
+          case 'ensure':
+            count = this.$store.getters.request_ensure ? this.$store.getters.request_ensure.length : 0
+            break;
+          case 'consider':
+            count = this.$store.getters.request_consider ? this.$store.getters.request_consider.length : 0
+            break;
+          case 'approve':
+            count = this.$store.getters.request_approve ? this.$store.getters.request_approve.length : 0
+            break;
+          case 'operate':
+            count = this.$store.getters.request_operate ? this.$store.getters.request_operate.length : 0
+            break;
+          case 'follow':
+            count = this.$store.getters.request_follow ? this.$store.getters.request_follow.length : 0
+            break;
+          case 'check':
+            count = this.$store.getters.request_check ? this.$store.getters.request_check.length : 0
+            break;        
+          default:
+            break;
+        }
+        return count;
+    },
+    getRequest(){
+      let roles = JSON.parse(this.user.roles);
+      for (let i=0;i<=roles;i++){
+        console.log('roles :' + roles[i])
+        switch (roles[i]) {
+          case 'ensure':
+            this.$store.dispatch('get_request_ensure')
+            break;
+          case 'consider':
+            this.$store.dispatch('get_request_consider')
+            break;
+          case 'approve':
+            this.$store.dispatch('get_request_approve')
+            break;
+          case 'operate':
+            this.$store.dispatch('get_request_operate')
+            break;
+          case 'follow':
+            this.$store.dispatch('get_request_follow')
+            break;
+          case 'check':
+            this.$store.dispatch('get_request_check')
+            break;
+        
+          default:
+            break;
+        }
+      }
+    },
     checkRole(list){
-      console.log(this.user)
-      let show = list.filter(x=>x.show === 'all' || JSON.parse(this.user.roles).includes(x.show));      
+      
+      let show = list.filter(x=>x.show === 'all' || JSON.parse(this.user.roles).includes(x.show));    
+      
       return show
     }  
     

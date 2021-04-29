@@ -16,11 +16,11 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon>
+      <!-- <v-btn icon>
         <v-icon>mdi-magnify</v-icon>
-      </v-btn>
+      </v-btn> -->
 
-      {{user.group_id}}
+      {{user.firstname + ' : ' + check_group(user.group_id)}}
       <v-menu
       
       bottom
@@ -36,7 +36,7 @@
       </template>
 
       <v-list>
-        <v-list-item link>
+        <!-- <v-list-item link>
           <v-list-item-title>เมนู 1</v-list-item-title>          
         </v-list-item>
         <v-list-item link>
@@ -44,7 +44,7 @@
         </v-list-item>
         <v-list-item link>
           <v-list-item-title>เมนู 3</v-list-item-title>          
-        </v-list-item>
+        </v-list-item> -->
         <v-list-item link>
           <v-list-item-title @click="logout">ออกจากระบบ</v-list-item-title>          
         </v-list-item>
@@ -67,6 +67,14 @@ export default {
     }
   },
   methods: {
+    check_group(id){
+          let group = this.$store.getters.group_cgd;
+          let g = group.filter(x=>x.id == id)
+          if (g.length>0){
+              console.log('group :' + g[0].group_name_short);
+              return g[0].group_name
+          }
+      },
     async logout(){
       await this.$store.dispatch('logout')
       await this.$router.push("/login")

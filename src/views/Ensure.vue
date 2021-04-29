@@ -1,102 +1,23 @@
 <template>
-
-  <v-container>
-    <!-- <v-row>
-      <v-col>
-        <request-search></request-search>
-      </v-col>
-    </v-row> -->
-    <v-row>
-      <v-col>
-        <v-card
-          elevation="4"
-        >
-          <v-data-table
-            :headers="headers"
-            :items="request_list"
-            :items-per-page="15"
-            
-            class="elevation-1"
-            :search="search"
-            >
-            <template v-slot:top>
-                <v-toolbar
-                    flat
-                >
-                  <v-toolbar-title>
-                    <v-icon large>mdi-stack-exchange</v-icon>
-                    {{'รายการเปลี่ยนแปลงข้อมูล' + getStatus(status)}}</v-toolbar-title> 
-                    
-                  <v-spacer></v-spacer>        
-                    <v-text-field
-                        v-model="search"
-                        append-icon="mdi-magnify"
-                        label="ค้นหา"
-                        single-line
-                        hide-details
-                  ></v-text-field>          
-                </v-toolbar>
-
-            </template>
-            <template v-slot:item.request_no="{ item }">
-                
-                    {{ getRequestNumber(item) }}
-                
-            </template>
-            <template v-slot:item.user_id="{ item }">
-                
-                    {{ "songwut.saj" }}
-                
-            </template>
-            <template v-slot:item.status="{ item }">
-                
-                    {{ getStatus(item.status) }}
-                
-            </template>
-            <template v-slot:item.created_date="{ item }">
-                
-                    {{ getThaiDate(item.created_date) }}
-                
-            </template>
-            
-            <template v-slot:item.actions="{ item }">
-                <v-icon                    
-                    class="mr-2"
-                    large
-                    color="primary"
-                    @click="editItem(item.id)"
-                >
-                    mdi-pencil-circle
-                </v-icon>
-                <!-- <v-icon  
-                    :disabled = "item.status > 1"
-                    color="error"        
-                    @click="deleteItem(item.id)"
-                >
-                    mdi-delete
-                </v-icon> -->
-            </template>
-        </v-data-table>
-        </v-card>
-        
-      </v-col>
-    </v-row>
-    <my-alert :AlertType="show_alert"></my-alert>
-  </v-container>
+  <request-list :list="request_list"></request-list>
+  
 
 </template>
 
 <script>
+import RequestList from '../components/Request/RequestList'
 import Swal from 'sweetalert2';
 
 import axios from 'axios';
 
-import RequestSearch from "../components/Request/RequestSearch"
+
 export default {
-  
+  components: {
+    'request-list' : RequestList
+  },
   data(){
     return  {
-      status: 7,
+      status: 2,
       search: '',
       headers: [
         { text: 'เรื่อง', sortable: false, value: 'request_title', class: ['blue darken-3', 'white--text'],width: '30%'},
@@ -127,9 +48,14 @@ export default {
   },
   methods: {
     async fetchData(){
-      await this.$store.dispatch('get_request_list');
-      let list = await this.$store.getters.request_list;
-      this.request_list = await list.filter(x=>x.status==this.status);
+      // await this.$store.dispatch('get_request_list');
+      // let list = await this.$store.getters.request_list;
+      // this.request_list = await list.filter(x=>x.status==this.status);
+      // let path = await `/api/request_form_ensure`;
+      // let response = await axios.get(`${path}`);
+      // this.request_list = await response.data.data;
+      await this.$store.dispatch('get_request_ensure');
+      this.request_list = await this.$store.getters.request_ensure;
     },
     getThaiDate(item){
       if (item){
@@ -209,9 +135,7 @@ export default {
     }
   },
   
-  components : {
-    RequestSearch
-  }
+  
 }
 </script>
 

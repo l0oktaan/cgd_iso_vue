@@ -41,7 +41,7 @@
                   <validation-provider
                     v-slot="{ errors }"
                     name="username"
-                    rules="required|max:10"
+                    rules="required|max:20"
                   >
                     <v-text-field
                       dense
@@ -58,7 +58,7 @@
                   <validation-provider
                     v-slot="{ errors }"
                     name="password"
-                    rules="required|max:10"
+                    rules="required|max:20"
                   >
                     <v-text-field
                       dense
@@ -81,7 +81,8 @@
                     rounded
                     block
                     color="primary"
-                    dark
+                    
+                    :disabled="invalid"
                   >
                     Login
                   </v-btn>
@@ -141,13 +142,16 @@ export default {
     },
     methods:{
       async submit(){
-        await this.$store.dispatch('login',{
+        if (this.$refs.observer.validate()){
+          await this.$store.dispatch('login',{
             username : this.username,
             password : this.password
-        })
-        if (this.$store.getters.user){
-          this.$router.push({name:"ISO"});
+          })
+          if (this.$store.getters.user){
+            this.$router.push({name:"ISO"});
+          }
         }
+        
       }
     }
 }

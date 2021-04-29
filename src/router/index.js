@@ -1,5 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+import store from '../store/index.js';
+
 import Home from "../views/Home.vue";
 import Admin from "../views/Admin.vue";
 import ISO from "../views/ISO.vue";
@@ -28,6 +30,14 @@ const routes = [
   {
     path: "/",    
     component: Home,
+    beforeEnter (to, from, next) {
+      store.dispatch('checkLogin')
+      if (store.state.user) {          
+          next()          
+      } else {
+          next('/login')
+      }
+    },
     children: [
       {
         path: "",
@@ -115,6 +125,14 @@ const routes = [
   {
     path: "/login",    
     component: Login,
+    beforeEnter (to, from, next) {
+      store.dispatch('checkLogin')
+      if (store.state.user) {          
+          next('/')          
+      } else {
+          next()
+      }
+    },
   }
 ];
 

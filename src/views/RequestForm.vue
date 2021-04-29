@@ -300,9 +300,8 @@
                             <v-col cols="3">
                                 <p class="topic">เอกสารประกอบ (ถ้ามี) :</p>
                             </v-col>     
-                            <v-col cols="9 mb-2">
-                                
-                                <div class="flex items-center justify-center w-full h-screen text-center">
+                            <v-col cols="9 mb-2">                                
+                                <div class="flex items-center justify-center w-full h-screen text-center" v-if="form_edit.status<2">
                                     <div class="bg-gray-100" @dragover="dragover" @dragleave="dragleave" @drop="drop" style="border-radius: 5px; padding: 10px; cursor:pointer;">
                                         <input type="file" style="display: none;" multiple name="fields[assetsFieldHandle][]" id="assetsFieldHandle" 
                                         class="w-px h-px opacity-0 overflow-hidden absolute" @change="onChange" ref="file" accept=".pdf,.jpg,.jpeg,.png" />
@@ -310,13 +309,25 @@
                                         <label for="assetsFieldHandle" class="block">
                                         <div  style="cursor:pointer;">
                                             <v-icon left>mdi-paperclip</v-icon> วางไฟล์ที่ต้องการ หรือ คลิก เพื่อเลือกไฟล์<br>
-                                            Action Plan, Test Plan, Rollback Plan หรือเอกสารอื่น ๆ 
-                                            
+                                            Action Plan, Test Plan, Rollback Plan หรือเอกสารอื่น ๆ                                             
                                         </div>
-                                        </label>
-                                        
+                                        </label>                                        
                                     </div>
                                 </div>
+                                <v-chip                                     
+                                    small
+                                    v-for="(item,index) in file_list" 
+                                    :key="index"
+                                    class="ma-2"
+                                    outlined
+                                    label
+                                    :close="form_edit.status>1 ? false : true"
+                                    @click="downloadFile(item)"
+                                    :color="item.id == 0 ? 'green' : 'primary'"    
+                                    @click:close="deleteFile(item,index)"
+                                    >
+                                    {{ item.file_title }}
+                                </v-chip>
                                 
                             </v-col>
                         </v-row>
@@ -325,18 +336,7 @@
                             </v-col>     
                             <v-col cols="9 pt-0 pl-0 mb-2">
                                 
-                                <v-chip                                     
-                                    small
-                                    v-for="(item,index) in file_list" 
-                                    :key="index"
-                                    class="ma-2"
-                                    close
-                                    @click="downloadFile(item)"
-                                    :color="item.id == 0 ? 'green' : 'primary'"    
-                                    @click:close="deleteFile(item,index)"
-                                    >
-                                    {{ item.file_title }}
-                                </v-chip>
+                                
                                 
                             </v-col>
                         </v-row>
@@ -361,7 +361,8 @@
                                     <template v-slot:selection="data">
                                         <v-chip
                                             class="mt-2"
-                                            close
+                                            :close="form_edit.status>1 ? false : true"
+                                            :readonly="form_edit.status>1 ? true : false"
                                             color="primary"
                                             small
                                             :key="JSON.stringify(data.item)"
@@ -394,6 +395,7 @@
                                     row
                                     dense
                                     mandatory
+                                    :readonly="form_edit.status>1 ? true : false"
                                 >
                                     <v-row>
                                         <v-col cols="4">
@@ -432,14 +434,15 @@
                                     deletable-chips
                                     class="tag-input"
                                     outlined
-                                    
+                                    :readonly="form_edit.status>1 ? true : false"
                                     hide-details="auto"
                                     label="เลือกระบบที่เกี่ยวข้อง ระบบอื่นๆ โปรดระบุ"
                                     >
                                     <template v-slot:selection="data">
                                         <v-chip
                                             class="mt-2"
-                                            close
+                                            :close="form_edit.status>1 ? false : true"
+                                            
                                             small
                                             color="primary"                                        
                                             :key="JSON.stringify(data.item)"
@@ -467,6 +470,7 @@
                                     <v-row>
                                         <v-col cols="4">                                            
                                             <v-checkbox
+                                                :readonly="form_edit.status>1 ? true : false"
                                                 v-model="form_edit.env_impact"
                                                 label="Production"
                                                 :value="1"
@@ -474,6 +478,7 @@
                                         </v-col>
                                         <v-col cols="4">
                                             <v-checkbox
+                                                :readonly="form_edit.status>1 ? true : false"
                                                 v-model="form_edit.env_impact"
                                                 label="Development"
                                                 :value="2"
@@ -481,6 +486,7 @@
                                         </v-col>
                                         <v-col cols="4">
                                             <v-checkbox
+                                                :readonly="form_edit.status>1 ? true : false"
                                                 v-model="form_edit.env_impact"
                                                 label="Test/QA"
                                                 :value="3"
@@ -509,11 +515,12 @@
                                     outlined
                                     hide-details="auto"
                                     label="ระบบที่กระทบ กด tab เพื่อเพิ่มหลายระบบ"
+                                    :readonly="form_edit.status>1 ? true : false"
                                     >
                                     <template v-slot:selection="data">
                                         <v-chip
                                             class="mt-2"
-                                            close
+                                            :close="form_edit.status>1 ? false : true"
                                             color="primary"
                                             small
                                             :key="JSON.stringify(data.item)"
@@ -537,6 +544,7 @@
                                     row
                                     dense
                                     mandatory
+                                    :readonly="form_edit.status>1 ? true : false"
                                 >
                                     <v-row>
                                         <v-col cols="4">
@@ -578,6 +586,7 @@
                                     transition="scale-transition"
                                     offset-y
                                     min-width="290px"
+                                    
                                 >
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-text-field                                                        
@@ -592,6 +601,7 @@
                                         ></v-text-field>
                                     </template>
                                     <v-date-picker
+                                        :readonly="form_edit.status>1 ? true : false"
                                         v-model="form_edit.begin_date"
                                         no-title
                                         scrollable
@@ -624,6 +634,7 @@
                                     transition="scale-transition"
                                     offset-y
                                     min-width="290px"
+                                    
                                 >
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-text-field                                                        
@@ -640,6 +651,7 @@
                                         ></v-text-field>
                                     </template>
                                     <v-date-picker
+                                        :readonly="form_edit.status>1 ? true : false"
                                         v-model="form_edit.end_date"
                                         no-title
                                         scrollable
@@ -679,6 +691,7 @@
                                             offset-y
                                             max-width="290px"
                                             min-width="290px"
+                                            
                                         >
                                             <template v-slot:activator="{ on, attrs }">
                                             <v-text-field
@@ -695,6 +708,7 @@
                                             ></v-text-field>
                                             </template>
                                             <v-time-picker
+                                                :readonly="form_edit.status>1 ? true : false"
                                                 format="24hr"
                                                 v-if="begin_time_menu"
                                                 v-model="form_edit.begin_time"
@@ -715,6 +729,7 @@
                                             offset-y
                                             max-width="290px"
                                             min-width="290px"
+                                            
                                         >
                                             <template v-slot:activator="{ on, attrs }">
                                             <v-text-field
@@ -731,6 +746,7 @@
                                             ></v-text-field>
                                             </template>
                                             <v-time-picker
+                                                :readonly="form_edit.status>1 ? true : false"
                                                 format="24hr"
                                                 v-if="end_time_menu"
                                                 v-model="form_edit.end_time"
@@ -1307,18 +1323,29 @@ export default {
             this.$router.go(-1);
             // this.$router.push('/request_change');
         },
+        check_group(id){
+            let group = this.$store.getters.group_cgd;
+            let g = group.filter(x=>x.id == id)
+            if (g.length>0){
+                console.log('group :' + g[0].group_name_short);
+                return g[0].group_name_short
+            }
+        },
         async submit(){
+            console.log('status :' + this.status);
             if (!this.detail_list || this.detail_list.length == 0){
                 this.show_alert = "no_detail";
                 return;
             }
             if (this.status == 'new'){
-                let path = '/api/request_forms';
+                
+                this.check_group(this.user.group_id)
+                
                 try {
                     let response = await axios.post(path,{
-                    user_id : this.user.user_id,
+                    user_id : this.user.id,
                     group_id : this.user.group_id,
-                    group_code : this.user.group_code,
+                    group_code : this.check_group(this.user.group_id),
                     year : new Date().toISOString().substr(0, 4),
                     order_no : 0,
                     created_date : new Date().toISOString().substr(0, 10),
@@ -1341,6 +1368,7 @@ export default {
                     updated_date : new Date().toISOString().substr(0, 10),
                     
                 })
+
                     this.request_id = await response.data.data.id;
                     this.status = await 'edit';
                     this.show_alert="success";

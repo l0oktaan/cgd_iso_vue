@@ -56,7 +56,7 @@
             </template>
             <template v-slot:item.user_id="{ item }">
                 
-                    {{ "songwut.saj" }}
+                    {{ item.user_name }}
                 
             </template>
             <template v-slot:item.status="{ item }">
@@ -252,13 +252,22 @@ export default {
       this.request_dialog = true;
       // this.$router.push("/request_change/form");
     },
+    check_group(id){
+          let group = this.$store.getters.group_cgd;
+          let g = group.filter(x=>x.id == id)
+          if (g.length>0){
+              console.log('group :' + g[0].group_name_short);
+              return g[0].group_name_short
+          }
+      },
     async save_request(){
       let arr = [];
       let path = await `/api/request_forms`;
       let response = await axios.post(`${path}`,{
-        user_id : this.user.user_id,
+        user_id : this.user.id,
+        user_name : this.user.name,
         group_id : this.user.group_id,
-        group_code : this.user.group_code,
+        group_code : this.check_group(this.user.group_id),
         year : parseInt(new Date().toISOString().substr(0, 4)) + 543,
         order_no : 0,
         created_date : new Date().toISOString().substr(0, 10),

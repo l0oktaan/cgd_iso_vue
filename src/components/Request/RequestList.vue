@@ -1,6 +1,85 @@
 <template>
 
-  <request-list :list="request_list"></request-list>
+  <v-container>
+   
+    <v-row>
+      <v-col>
+        <v-card
+          elevation="4"
+        >
+          <v-data-table
+            :headers="headers"
+            :items="request_list"
+            :items-per-page="15"
+            :loading="loadTable"
+            loading-text="กรุณารอสักครู่"
+            class="elevation-1"
+            :search="search"
+            >
+            <template v-slot:top>
+                <v-toolbar
+                    flat
+                >
+                  <v-toolbar-title>
+                    <v-icon large>mdi-stack-exchange</v-icon>
+                    {{'รายการเปลี่ยนแปลงข้อมูล' + getStatus(status)}}</v-toolbar-title> 
+                    
+                  <v-spacer></v-spacer>        
+                    <v-text-field
+                        v-model="search"
+                        append-icon="mdi-magnify"
+                        label="ค้นหา"
+                        single-line
+                        hide-details
+                  ></v-text-field>          
+                </v-toolbar>
+
+            </template>
+            <template v-slot:item.request_no="{ item }">
+                
+                    {{ item.request_no }}
+                
+            </template>
+            <template v-slot:item.user_id="{ item }">
+                
+                    {{ item.user_name }}
+                
+            </template>
+            <template v-slot:item.status="{ item }">
+                
+                    {{ getStatus(item.status) }}
+                
+            </template>
+            <template v-slot:item.created_date="{ item }">
+                
+                    {{ getThaiDate(item.created_date) }}
+                
+            </template>
+            
+            <template v-slot:item.actions="{ item }">
+                <v-icon                    
+                    class="mr-2"
+                    large
+                    color="primary"
+                    @click="editItem(item.id)"
+                >
+                    mdi-pencil-circle
+                </v-icon>
+                <!-- <v-icon  
+                    :disabled = "item.status > 1"
+                    color="error"        
+                    @click="deleteItem(item.id)"
+                >
+                    mdi-delete
+                </v-icon> -->
+            </template>
+        </v-data-table>
+        </v-card>
+        
+      </v-col>
+    </v-row>
+    <my-alert :AlertType="show_alert"></my-alert>
+  </v-container>
 
 </template>
 
@@ -10,12 +89,11 @@ import Swal from 'sweetalert2';
 import axios from 'axios';
 
 
-import RequestList from '../components/Request/RequestList'
 export default {
-  
+  props: ['list'],
   data(){
     return  {
-      status: 7,
+      status: 2,
       search: '',
       headers: [
         { text: 'เรื่อง', sortable: false, value: 'request_title', class: ['blue darken-3', 'white--text'],width: '30%'},
@@ -38,17 +116,25 @@ export default {
         // { request_no : 'SDG1-2564/002', create_date: '2021-03-25',request_title : 'ขอเปิดปิดระบบเพื่อ update firmware F5',user_id: 'songwut.saj', status: 'ระหว่างพิจารณา' },
         // { request_no : 'SDG1-2564/001', create_date: '2021-03-24',request_title : 'ขอเปิด policy firewall ระบบเงินเดือน',user_id: 'songwut.saj', status: 'รอรับรอง' }
       ],
-      show_alert: ''
+      show_alert: '',
+      loadTable: true
     }
   },
-  mounted(){
-    this.fetchData();
+  watch: {
+      async list(){
+          this.request_list = await this.list;
+          this.loadTable = await false;
+      }
+  },
+  async mounted(){
+    //   this.request_list = await this.list;
+    //   this.loadTable = await false;
   },
   methods: {
     async fetchData(){
-      let path = await `/api/request_form_approve`;
-      let response = await axios.get(`${path}`);
-      this.request_list = await response.data.data;
+      await this.$store.dispatch('get_request_list');
+      let list = await this.$store.getters.request_list;
+      this.request_list = await list.filter(x=>x.status==this.status);
     },
     getThaiDate(item){
       if (item){
@@ -64,34 +150,7 @@ export default {
     editItem(id){
       this.$router.push("/request_change/form/" + id);
     },
-    async deleteItem(id){
-      Swal.fire({
-          title: "กรุณายืนยันการลบรายการจากฐานข้อมูล",                
-          icon: "warning",
-          allowOutsideClick: false,
-          showCancelButton: true,
-          confirmButtonText: `ยืนยัน`,
-          cancelButtonText: `ยกเลิก`,
-          }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
-              this.delRequest(id);
-          } else if (result.isDenied) {
-              // Swal.fire('Changes are not saved', '', 'info')
-          }
-      })
-    },
-    async delRequest(id){
-      let path = `/api/request_forms/${id}`;
-            try {
-                await axios.delete(`${path}`);   
-                await this.fetchData();
-                this.show_alert= await "success";
-            } catch (error) {
-                this.show_alert = "error";
-                
-            }
-    },
+    
     getRequestNumber(item){
       return !item.request_no||item.request_no == '' ? item.group_code + "-" + item.year.toString() + "/---" : item.request_no;
     },
@@ -128,9 +187,7 @@ export default {
     }
   },
   
-  components : {
-    RequestList
-  }
+  
 }
 </script>
 

@@ -10,7 +10,7 @@
             <v-col cols="6">
                 
               <v-icon color="success" v-if="status > 2">mdi-check</v-icon>
-              <v-icon color="default" v-else>mdi-timer-sand</v-icon>{{group_id}} การรับรอง
+              <v-icon color="default" v-else>mdi-timer-sand</v-icon> การรับรอง
             </v-col>
             <v-col
               cols="6"
@@ -170,7 +170,7 @@
         </template>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <v-row v-if="status == 3">
+        <v-row v-if="status == 3 && getArray(user.roles).includes('consider')">
               <v-col class="text-center">
                   <v-btn
                     class="text-center"
@@ -337,7 +337,7 @@
         </template>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <v-row v-if="status == 4">
+        <v-row v-if="status == 4 && getArray(user.roles).includes('approve')">
               <v-col class="text-center">
                   <v-btn
                     class="text-center"
@@ -469,7 +469,7 @@
         </template>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <v-row v-if="status == 5">
+        <v-row v-if="status == 5 && getArray(user.roles).includes('operate')">
               <v-col class="text-center">
                   <v-btn
                     class="text-center"
@@ -663,7 +663,7 @@
         </template>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <v-row v-if="status == 6">
+        <v-row v-if="status == 6 && getArray(user.roles).includes('follow')">
               <v-col class="text-center">
                   <v-btn
                     class="text-center"
@@ -805,7 +805,7 @@
         </template>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <v-row v-if="status == 7">
+        <v-row v-if="status == 7 && getArray(user.roles).includes('check')">
               <v-col class="text-center">
                   <v-btn
                     class="text-center"
@@ -1025,6 +1025,18 @@ export default {
             }
 
         },
+        getArray(item){
+            
+            try {
+                let arr = JSON.parse(item);
+                return arr;    
+            } catch (error) {
+                
+                console.log('error :' + error);
+                return [];
+            }
+            
+        },
         getArrayItem(item){
             let arr = [];
             for (let i=0;i<item.length;i++){
@@ -1041,7 +1053,7 @@ export default {
                         ensure_status : this.request_status.ensure_status,
                         ensure_detail : this.request_status.ensure_detail,
                         ensure_date : new Date().toISOString().substr(0, 10),
-                        ensure_by : this.user.username
+                        ensure_by : this.user.name
                     }
                     break;
                 case "consider":
@@ -1050,7 +1062,7 @@ export default {
                         forward_to : this.getArrayItem(this.consider.forward_to),
                         consider_detail : this.consider.detail,
                         consider_date : new Date().toISOString().substr(0, 10),
-                        consider_by : this.user.username
+                        consider_by : this.user.name
                     }
                     break;
                 case "approve":
@@ -1058,7 +1070,7 @@ export default {
                         approve_status : this.approve.status,                        
                         approve_detail : this.approve.detail,
                         approve_date : new Date().toISOString().substr(0, 10),
-                        approve_by : this.user.username
+                        approve_by : this.user.name
                     }
                     break;
                 case "operate":
@@ -1068,7 +1080,7 @@ export default {
                         operate_detail : this.operate.detail,
                         operate_date : this.operate.operate_date,
                         operate_save_date : new Date().toISOString().substr(0, 10),
-                        operate_by : this.user.username
+                        operate_by : this.user.name
                     }
                     break;
                 case "follow":
@@ -1077,7 +1089,7 @@ export default {
                         follow_impact : this.follow.impact,
                         follow_detail : this.follow.detail,
                         follow_date : new Date().toISOString().substr(0, 10),
-                        follow_by : this.user.username
+                        follow_by : this.user.name
                     }
                     break;
                 case "check":
@@ -1085,14 +1097,14 @@ export default {
                         check_status : this.check.status,                        
                         check_detail : this.check.detail,
                         check_date : new Date().toISOString().substr(0, 10),
-                        check_by : this.user.username
+                        check_by : this.user.name
                     }
                     break;
             
                 default:
                     break;
             }
-            console.log(detail)
+            // console.log(detail)
             let response = await axios.put(`${path}`,detail)
             this.$parent.show_alert = await "success";
             await this.fetchData();
