@@ -16,9 +16,9 @@
 
       <v-spacer></v-spacer>
 
-      <!-- <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn> -->
+      <v-btn icon @click="$store.dispatch('fetchRequest')">
+        <v-icon>mdi-refresh-circle</v-icon>
+      </v-btn>
 
       {{user.firstname + ' : ' + check_group(user.group_id)}}
       <v-menu

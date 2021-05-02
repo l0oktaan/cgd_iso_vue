@@ -90,10 +90,10 @@ import axios from 'axios';
 
 
 export default {
-  props: ['list'],
+  props: ['list','status'],
   data(){
     return  {
-      status: 2,
+      
       search: '',
       headers: [
         { text: 'เรื่อง', sortable: false, value: 'request_title', class: ['blue darken-3', 'white--text'],width: '30%'},

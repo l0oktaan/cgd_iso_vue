@@ -17,7 +17,7 @@ module.exports = {
   //     }
   //   },    
   
-  // devServer: {
-  //   proxy: 'http://localhost:8088'
-  // }
+  devServer: {
+    proxy: 'http://localhost:8000'
+  }
 };

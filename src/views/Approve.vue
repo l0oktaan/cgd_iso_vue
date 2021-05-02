@@ -1,6 +1,6 @@
 <template>
 
-  <request-list :list="request_list"></request-list>
+  <request-list :list="request_list" :status="4"></request-list>
 
 </template>
 

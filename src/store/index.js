@@ -67,6 +67,9 @@ export default new Vuex.Store({
     group_cgd (state){
       return state.group_cgd
     },
+    request_all ( state){
+      return state.request_all
+    },
     request_ensure(state){
       return state.request_ensure
     },
@@ -186,8 +189,9 @@ export default new Vuex.Store({
       await dispatch('get_group_cgd')
       // console.log('roles :' + userData.roles)
       let roles = JSON.parse(userData.roles)
+      
       for (let i=0;i<roles.length;i++){
-        console.log('roles :' + roles[i])
+        
         switch (roles[i]) {
           case 'ensure':
             dispatch('get_request_ensure')
@@ -246,9 +250,18 @@ export default new Vuex.Store({
     await axios.post(path)
     await commit('clearAuthData')    
   },
+
+  async fetchRequest({dispatch}){
+    await dispatch('get_request_ensure')
+    await dispatch('get_request_consider')
+    await dispatch('get_request_approve')
+    await dispatch('get_request_operate')
+    await dispatch('get_request_follow')
+    await dispatch('get_request_check')
+  },
   async get_request_all({commit}){
-    let path = await `/api/request_forms`
-    let response = await axios.get(`${path}`)
+    let path = await '/api/request_forms'
+    let response = await axios.get(path)
     await commit('request_all',response.data.data)
   },
   async get_request_ensure({commit}){

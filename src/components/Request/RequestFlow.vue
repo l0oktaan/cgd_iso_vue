@@ -1109,6 +1109,7 @@ export default {
             this.$parent.show_alert = await "success";
             await this.fetchData();
             await this.$emit('fetchRequest');
+            await this.$store.dispatch('fetchRequest');
             this.ensure_dialog = await false;
             this.consider_dialog = await false;
             this.approve_dialog = await false;
