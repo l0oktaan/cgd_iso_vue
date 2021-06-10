@@ -466,7 +466,7 @@ export default {
             source_list:[],
             destination_list:[],
             service_port_list:[],
-            group_id: 1,
+            group_id: this.$store.getters.user.group_id,
             show_alert: '',
             policy_edit_id: null,
             policy: null,

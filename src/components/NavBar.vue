@@ -160,7 +160,7 @@ export default {
         {
           group_1: [
             { title: "Dashboard", icon: "mdi-monitor-dashboard", route: "/" ,show : "all"},   
-            { title: "ผู้ดูแลระบบ", icon: "mdi-account-tie", route: "/admin", show: "admin" }, 
+            { title: "รายการผู้ใช้ระบบ", icon: "mdi-account-tie", route: "/admin", show: "admin" }, 
             { title: "Master Data", icon: "mdi-vector-link", route: "/master_data", show: "admin" },  
           ],
         

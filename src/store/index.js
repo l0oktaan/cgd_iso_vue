@@ -20,27 +20,8 @@ const getDefaultState = () => {
     request_operate: null,
     request_follow: null,
     request_check: null,
-    user1: {
-      user_id : 1,
-      username : 'songwut.saj',
-      group_id : 1,
-      group_code : 'SECD',
-      roles: ['admin','request','ensure','consider','approve','operate','follow','check']
-    },
-    user2: {
-      user_id : 2,
-      username : 'songwut.saj',
-      group_id : 2,
-      group_code : 'NETD',
-      roles: ['request','operate','follow']
-    },
-    user_ensure: {
-      user_id : 3,
-      username : 'siriluk.sir',
-      group_id : 1,
-      group_code : 'SECD',
-      roles: ['request','ensure','consider','follow','check']
-    },
+    
+   
     roles: ['admin','request','ensure','consider','approve','operate','follow','check']
   }
 }
