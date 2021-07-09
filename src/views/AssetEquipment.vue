@@ -382,7 +382,7 @@ export default {
             equip_tags: [],
             search: '',
             show_alert: '',
-            group_id: 1,
+            group_id: this.$store.getters.group_id,
             loadTable: true
         }
     },

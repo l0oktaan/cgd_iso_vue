@@ -50,7 +50,7 @@
                       v-model="username"
                       placeholder=" "
                       :error-messages="errors"
-                      
+                      @keyup.enter=""
                       
                     ></v-text-field>
                     
@@ -61,6 +61,7 @@
                     rules="required|max:20"
                   >
                     <v-text-field
+                      ref="pws"
                       dense
                       label="Password"
                       outlined
@@ -68,7 +69,7 @@
                       type="password"
                       placeholder=" "
                       :error-messages="errors"
-                      
+                      @keyup.enter="submit"
                       
                     ></v-text-field>
                     
@@ -80,13 +81,11 @@
                     type="submit"
                     rounded
                     block
-                    color="primary"
-                    
-                    :disabled="invalid"
+                    color="primary"                    
+                    :disabled="isSubmit"
                   >
                     Login
-                  </v-btn>
-                  
+                  </v-btn>                  
                 </form>
               </validation-observer>
             </v-col>
@@ -137,19 +136,31 @@ export default {
         username: '',
         password: '',
 
-        invalid: false
+        invalid: false,
+        isSubmit: false
       }
     },
     methods:{
       async submit(){
         if (this.$refs.observer.validate()){
-          await this.$store.dispatch('login',{
-            username : this.username,
-            password : this.password
-          })
-          if (this.$store.getters.user){
-            this.$router.push({name:"ISO"});
+          try {
+            this.isSubmit = true;
+            await this.$store.dispatch('login',{
+              username : this.username,
+              password : this.password
+            })
+            
+            if (this.$store.getters.user){
+              this.$router.push({name:"ISO"});
+            }
+          } catch (error) {
+            setTimeout(() => {
+              this.isSubmit = false;
+            }, 1000);
+            
           }
+          
+          
         }
         
       }

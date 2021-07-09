@@ -189,7 +189,7 @@ export default {
             policy_edit: [],
             policy_list: [],
             policy_id: null,
-            group_id: 1,
+            group_id: this.$store.getters.group_id,
             show_alert: '',
             policy_status: 'new',
             loadTable: true,

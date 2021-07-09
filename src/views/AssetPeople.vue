@@ -427,7 +427,7 @@ export default {
                 description: ''
             },
             search: '',
-            group_id: 1,
+            group_id: this.$store.getters.group_id,
             show_alert: '',
             loadTable: true
 

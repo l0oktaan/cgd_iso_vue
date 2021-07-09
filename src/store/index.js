@@ -9,7 +9,7 @@ const getDefaultState = () => {
     request_list : null,
     equip_list : null,
     people_list : null,
-    group_id : 1,
+    group_id : null,
     group_cgd: null,
     user: null,
     userToken: null,
@@ -44,6 +44,9 @@ export default new Vuex.Store({
     },
     roles (state){
       return state.roles
+    },
+    group_id (state){
+      return state.user.group_id
     },
     group_cgd (state){
       return state.group_cgd
@@ -86,7 +89,8 @@ export default new Vuex.Store({
     authUser (state, userData){
       //console.log(userData.user);
       state.user = userData
-      state.userToken = userData.token
+      state.group_id = userData.group_id
+      //state.userToken = userData.token
     },
     clearAuthData (state){
       state.user = null
@@ -156,19 +160,21 @@ export default new Vuex.Store({
       let path = '/api/login'
       
       let response =  await axios.post(path,{
-              username: authData.username,
-              password: authData.password
-          })
+          username: authData.username,
+          password: authData.password
+      })
+      
           
       const now = await new Date()
       const expirationDate = await new Date(now.getTime() + 1*60*60*1000)
 
-      const userData = await response.data.user      
+      const userData = await response.data.user
+      console.log('userData :' + userData)   
       await commit('authUser',userData)
       await localStorage.setItem('token', userData.token)
       await localStorage.setItem('expirationDate', expirationDate)      
       await dispatch('get_group_cgd')
-      // console.log('roles :' + userData.roles)
+      
       let roles = JSON.parse(userData.roles)
       
       for (let i=0;i<roles.length;i++){
