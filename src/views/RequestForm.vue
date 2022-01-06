@@ -1256,7 +1256,7 @@ export default {
                 axios({
                     url : `${path}`,
                     methods : 'GET',
-                    //responseType : 'blob'
+                    responseType : 'blob'
                 })
                 .then(response=>{
                     var fileURL = window.URL.createObjectURL(new Blob([response.data]));
