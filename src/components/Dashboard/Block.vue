@@ -48,7 +48,7 @@ export default {
             let val=''           ;
             switch (this.status) {
                 case 1:
-                val = 'สร้างใหม่'          
+                val = 'รอการส่ง'          
                 break;
                 case 2:
                 val = 'รอการรับรอง'          
@@ -83,7 +83,7 @@ export default {
             let val='';
             switch (this.status) {
                 case 1:
-                val = 'mdi-plus-thick'          
+                val = 'mdi-clock'          
                 break;
                 case 2:
                 val = 'mdi-jira'          

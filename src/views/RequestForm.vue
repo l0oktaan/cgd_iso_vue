@@ -797,9 +797,9 @@
                                         color="error"
                                     >
                                         <v-icon left>
-                                            mdi-cancel
+                                            mdi-arrow-u-left-top-bold
                                         </v-icon>
-                                        ยกเลิก</v-btn>
+                                        ออก</v-btn>
                                 </div>
                             </v-col>
                         </v-row>

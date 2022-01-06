@@ -232,9 +232,9 @@
                                                 color="error"
                                             >
                                                 <v-icon left>
-                                                    mdi-cancel
+                                                    mdi-arrow-u-left-top-bold
                                                 </v-icon>
-                                                ยกเลิก
+                                                ออก
                                             </v-btn>
                                         </v-col>
                                     </v-row>

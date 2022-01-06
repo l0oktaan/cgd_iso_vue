@@ -42,7 +42,7 @@
             </template>
             <template v-slot:item.user_id="{ item }">
                 
-                    {{ item.user_name }}
+                    {{ item.fullname }}
                 
             </template>
             <template v-slot:item.status="{ item }">
@@ -96,7 +96,9 @@ export default {
       
       search: '',
       headers: [
-        { text: 'เรื่อง', sortable: false, value: 'request_title', class: ['blue darken-3', 'white--text'],width: '30%'},
+        
+        
+        { text: 'วันที่ขอดำเนินการ', value: 'created_date', class: ['blue darken-3', 'white--text'],width: '15%'},       
         {
             text: 'เลขที่เอกสาร',
             align: 'start',
@@ -105,8 +107,7 @@ export default {
             class: ['blue darken-3', 'white--text', 'head-text'],
             width: '15%'
         },
-        { text: 'วันที่ขอดำเนินการ', value: 'created_date', class: ['blue darken-3', 'white--text'],width: '15%'},       
-               
+        { text: 'เรื่อง', sortable: false, value: 'request_title', class: ['blue darken-3', 'white--text'],width: '30%'},       
         { text: 'ผู้ร้องขอ', sortable: false, value: 'user_id', class: ['blue darken-3', 'white--text'],width: '15%'},       
         { text: 'สถานะ', sortable: false, value: 'status', class: ['blue darken-3', 'white--text'],width: '15%'},      
         { text: 'Action', value: 'actions',class: ['blue darken-3', 'white--text'],width: '10%'}                        
