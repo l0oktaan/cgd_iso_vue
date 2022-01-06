@@ -285,14 +285,15 @@
                                     rules="required"
                                     
                                 >
-                                <v-text-field
+                                <v-textarea
                                     dense
+                                    rows="2"
                                     v-model="form_edit.request_reason"
                                     :rules="rules"
                                     hide-details="auto"          
                                     :error-messages="errors"
                                     outlined
-                                ></v-text-field>
+                                ></v-textarea>
                                 </validation-provider>
                             </v-col>
                         </v-row> 
@@ -318,8 +319,7 @@
                                     small
                                     v-for="(item,index) in file_list" 
                                     :key="index"
-                                    class="ma-2"
-                                    outlined
+                                    class="ma-2"                                    
                                     label
                                     :close="form_edit.status>1 ? false : true"
                                     @click="downloadFile(item)"
@@ -1256,7 +1256,7 @@ export default {
                 axios({
                     url : `${path}`,
                     methods : 'GET',
-                    responseType : 'blob'
+                    //responseType : 'blob'
                 })
                 .then(response=>{
                     var fileURL = window.URL.createObjectURL(new Blob([response.data]));
@@ -1268,8 +1268,8 @@ export default {
                     fileLink.setAttribute('download', filename);
                     // document.body.appendChild(fileLink);
                     // window.open(fileLink, "_blank");
-                    fileLink.click();
-                    })
+                    fileLink.click();               
+                })
                 .catch(error=>{
 
                 })
@@ -1538,9 +1538,7 @@ export default {
 .v-chip.v-chip--outlined.low{
     border-color: #0cbd05!important;
 }
-.v-chip.v-chip--outlined.v-chip.v-chip{
-    
-}
+
 
 .upload-btn{
     margin-top: 10px!important;

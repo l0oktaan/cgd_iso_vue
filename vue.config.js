@@ -31,6 +31,6 @@ module.exports = {
   //   }
   // },
   // devServer: {
-  //   proxy: 'http://localhost:8000'
+  //   proxy: 'http://isms.cgd.go.th/'
   // }
 };
