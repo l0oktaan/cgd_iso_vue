@@ -192,7 +192,7 @@ export default {
     return  {
       search: '',
       headers: [
-        { text: 'วันที่จัดทำ', value: 'created_date', class: ['blue darken-3', 'white--text'],width: '12%'},
+        { text: 'วันที่จัดทำ', value: 'created_date', class: ['blue darken-3', 'white--text'],width: '10%'},
         
         {
             text: 'เลขที่เอกสาร',
@@ -200,12 +200,12 @@ export default {
             // sortable: false,
             value: 'request_no',
             class: ['blue darken-3', 'white--text', 'head-text'],
-            width: '14%'
+            width: '13%'
         },
         { text: 'เรื่อง', sortable: false, value: 'request_title', class: ['blue darken-3', 'white--text'],width: '35%'},
                
                
-        { text: 'ผู้ร้องขอ', sortable: true, value: 'user_id', class: ['blue darken-3', 'white--text'],width: '12%'},       
+        { text: 'ผู้ร้องขอ', sortable: true, value: 'user_id', class: ['blue darken-3', 'white--text'],width: '15%'},       
         { text: 'สถานะ', sortable: true, value: 'status', class: ['blue darken-3', 'white--text'],width: '13%'},      
         { text: 'Action', value: 'actions',class: ['blue darken-3', 'white--text'],width: '10%'}                        
                       
