@@ -48,6 +48,14 @@ const routes = [
         path: "/admin",
         name: "admin",
         component: Admin,
+        beforeEnter (to, from, next) {
+          //string.includes(substring)
+          if(store.state.user.roles.includes("admin")){           
+            next()          
+          } else {
+            next({ name: 'ISO' })
+          }
+        },
       },
       {
         path: "/asset_equipment",

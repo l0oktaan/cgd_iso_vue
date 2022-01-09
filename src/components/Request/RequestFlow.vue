@@ -190,10 +190,10 @@
                       <v-col cols="4">สถานะ :</v-col>
                       <v-col cols="8">{{ request_status.consider_status == 1 ? 'รับทราบการเปลี่ยงแปลงหรือแก้ไขระบบ' : 'แจ้งต่อผู้อำนวยการศูนย์เทคโนโลยีสารสนเทศและการสื่อสาร'}}</v-col>
                   </v-row>
-                  <!-- <v-row>
-                      <v-col cols="4">ส่งไปยัง :</v-col>
-                      <v-col cols="8">{{request_status.forward_to}}</v-col>
-                  </v-row> -->
+                  <v-row>
+                      <v-col cols="4">รายละเอียด :</v-col>
+                      <v-col cols="8">{{request_status.consider_detail}}</v-col>
+                  </v-row>
                   <v-row>
                       <v-col cols="4">วันที่ :</v-col>
                       <v-col cols="8">{{getThaiDate(request_status.consider_date)}}</v-col>
@@ -357,6 +357,10 @@
                       <v-col cols="8">{{request_status.approve_status==1 ? 'อนุมัติ' : 'ไม่อนุมัติ'}}</v-col>
                   </v-row>
                   <v-row>
+                      <v-col cols="4">รายละเอียด :</v-col>
+                      <v-col cols="8">{{request_status.approve_detail ? request_status.approve_detail : '-'}}</v-col>
+                  </v-row>
+                  <v-row>
                       <v-col cols="4">วันที่ :</v-col>
                       <v-col cols="8">{{getThaiDate(request_status.approve_date)}}</v-col>
                   </v-row>
@@ -469,7 +473,7 @@
         </template>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <v-row v-if="status == 5 && getArray(user.roles).includes('operate')">
+        <v-row v-if="status == 5 && getArray(user.roles).includes('operate') && check_permiss('operate')">
               <v-col class="text-center">
                   <v-btn
                     class="text-center"
@@ -1044,6 +1048,14 @@ export default {
             }
             return JSON.stringify(arr);
         },
+        check_permiss(state){
+
+            switch (state){
+                case "operate":
+                    let arr = this.getArray(this.request_status.forward_to);
+                    return arr.includes(this.user.group_id)
+            }
+        },
         async save_status(flow){
             let path = await `/api/request_forms/${this.request_id}/request_status/${this.request_status.id}`;
             let detail = {};
@@ -1053,7 +1065,7 @@ export default {
                         ensure_status : this.request_status.ensure_status,
                         ensure_detail : this.request_status.ensure_detail,
                         ensure_date : new Date().toISOString().substr(0, 10),
-                        ensure_by : this.user.name
+                        ensure_by : this.user.firstname + ' ' + this.user.lastname
                     }
                     break;
                 case "consider":
@@ -1062,7 +1074,7 @@ export default {
                         forward_to : this.getArrayItem(this.consider.forward_to),
                         consider_detail : this.consider.detail,
                         consider_date : new Date().toISOString().substr(0, 10),
-                        consider_by : this.user.name
+                        consider_by : this.user.firstname + ' ' + this.user.lastname
                     }
                     break;
                 case "approve":
@@ -1070,7 +1082,7 @@ export default {
                         approve_status : this.approve.status,                        
                         approve_detail : this.approve.detail,
                         approve_date : new Date().toISOString().substr(0, 10),
-                        approve_by : this.user.name
+                        approve_by : this.user.firstname + ' ' + this.user.lastname
                     }
                     break;
                 case "operate":
@@ -1080,7 +1092,7 @@ export default {
                         operate_detail : this.operate.detail,
                         operate_date : this.operate.operate_date,
                         operate_save_date : new Date().toISOString().substr(0, 10),
-                        operate_by : this.user.name
+                        operate_by : this.user.firstname + ' ' + this.user.lastname
                     }
                     break;
                 case "follow":
@@ -1089,7 +1101,7 @@ export default {
                         follow_impact : this.follow.impact,
                         follow_detail : this.follow.detail,
                         follow_date : new Date().toISOString().substr(0, 10),
-                        follow_by : this.user.name
+                        follow_by : this.user.firstname + ' ' + this.user.lastname
                     }
                     break;
                 case "check":
@@ -1097,7 +1109,7 @@ export default {
                         check_status : this.check.status,                        
                         check_detail : this.check.detail,
                         check_date : new Date().toISOString().substr(0, 10),
-                        check_by : this.user.name
+                        check_by : this.user.firstname + ' ' + this.user.lastname
                     }
                     break;
             
