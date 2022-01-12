@@ -5,7 +5,7 @@
 >
     <v-expansion-panel >
       <v-expansion-panel-header>
-        <template v-slot:default="{ open }">
+        
           <v-row no-gutters>
             <v-col cols="6">
                 
@@ -34,7 +34,7 @@
               </v-fade-transition>
             </v-col>
           </v-row>
-        </template>
+        
       </v-expansion-panel-header>
       <v-expansion-panel-content>
           <v-row v-if="user.roles.includes('ensure') && user.group_id == group_id && status ==2 ">
@@ -141,7 +141,7 @@
     </v-expansion-panel>
     <v-expansion-panel>
       <v-expansion-panel-header>
-        <template v-slot:default="{ open }">
+        
           <v-row no-gutters>
             <v-col cols="6">
               <v-icon color="success" v-if="status > 3">mdi-check</v-icon>
@@ -167,7 +167,7 @@
               </v-fade-transition>
             </v-col>
           </v-row>
-        </template>
+        
       </v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-row v-if="status == 3 && getArray(user.roles).includes('consider')">
@@ -306,9 +306,9 @@
             </v-dialog>
       </v-expansion-panel-content>
     </v-expansion-panel>
-    <v-expansion-panel>
+    <v-expansion-panel v-show="(status < 5 || (status >4 && request_status.approve_status))">
       <v-expansion-panel-header>
-        <template v-slot:default="{ open }">
+        
           <v-row no-gutters>
             <v-col cols="6">
               <v-icon color="success" v-if="status > 4 && request_status.approve_status">mdi-check</v-icon>
@@ -334,7 +334,7 @@
               </v-fade-transition>
             </v-col>
           </v-row>
-        </template>
+        
       </v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-row v-if="status == 4 && getArray(user.roles).includes('approve')">
@@ -638,7 +638,7 @@
     </v-expansion-panel>
     <v-expansion-panel>
       <v-expansion-panel-header>
-        <template v-slot:default="{ open }">
+        
           <v-row no-gutters>
             <v-col cols="6">
               <v-icon color="success" v-if="status > 6">mdi-check</v-icon>
@@ -664,7 +664,7 @@
               </v-fade-transition>
             </v-col>
           </v-row>
-        </template>
+        
       </v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-row v-if="status == 6 && getArray(user.roles).includes('follow')">
@@ -780,7 +780,7 @@
     </v-expansion-panel>
     <v-expansion-panel>
       <v-expansion-panel-header>
-        <template v-slot:default="{ open }">
+        
           <v-row no-gutters>
             <v-col cols="6">
               <v-icon color="success" v-if="status > 7">mdi-check</v-icon>
@@ -806,7 +806,7 @@
               </v-fade-transition>
             </v-col>
           </v-row>
-        </template>
+        
       </v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-row v-if="status == 7 && getArray(user.roles).includes('check')">
@@ -918,7 +918,7 @@
 <script>
 import axios from 'axios'
 export default {
-    props: ['request_id','status','user','group_id'],
+    props: ['request_id','status','user','group_id','flow'],
     data: () => ({
         ensure_dialog: false,
         consider_dialog: false,
@@ -964,14 +964,42 @@ export default {
             status: null,
             detail: ''
         },
+        
         date: null,
         request_status: {},        
-        flow: [],
+        
         group_cgd: []
     }),
     watch:{
         request_id(){
            
+        },
+        status(){
+            // switch (this.status) {
+            //     case 2:
+            //         this.flow=[0];
+            //         break;
+            //     case 3:
+            //         this.flow=[1];
+            //         break;
+            //     case 4:
+            //         this.flow=[2];
+            //         break;
+            //     case 5:
+            //         this.flow=[3];
+            //         break;
+            //     case 6:
+            //         this.flow=[4];
+            //         break;
+            //     case 7:
+            //         this.flow=[5];
+            //         break;
+            //     case 8:
+            //         this.flow=[];
+            //         break;
+            //     default:
+            //         this.flow=[];
+            //}
         }
     },
     computed: {
@@ -982,12 +1010,14 @@ export default {
         },
     },
     async mounted(){
-        
+            
             await this.fetchData();
             await this.getGroupCGD();
     },
     methods: {
+        
         async fetchData(){
+            
             if (this.status < 2){
                 return;
             }

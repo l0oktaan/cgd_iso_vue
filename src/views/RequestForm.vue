@@ -792,6 +792,19 @@
                                         บันทึก
                                     </v-btn>
                                     <v-btn
+                                        v-if="form_edit.status>=2"
+                                        class="ma-3"
+                                        rounded
+                                        color="warning"                                       
+                                        @click="undo_request"
+                                        :disabled="form_edit.status != 2"
+                                    >
+                                        <v-icon left>
+                                            mdi-file-undo
+                                        </v-icon>
+                                        ยกเลิกการส่ง
+                                    </v-btn>
+                                    <v-btn
                                         text
                                         @click="reset"
                                         color="error"
@@ -817,6 +830,7 @@
                     :request_id = "request_id" 
                     :status = "form_edit.status"
                     :group_id = "form_edit.group_id"
+                    :flow = "get_flow"
                     :user="user"                     
                     v-if="show_status"
                     @fetchRequest="fetchData"
@@ -1018,6 +1032,33 @@ export default {
         },
     },
     methods: {
+        get_flow(){
+            switch (this.form_edit.status) {
+                case 2:
+                    return [0];
+                    break;
+                case 3:
+                    return [1];
+                    break;
+                case 4:
+                    return [2];
+                    break;
+                case 5:
+                    return [3];
+                    break;
+                case 6:
+                    return [4];
+                    break;
+                case 7:
+                    return [5];
+                    break;
+                case 8:
+                    return [];
+                    break;
+                default :
+                    return [];
+            }
+        },
         getArray(item){
             try {
                 return JSON.parse(item);    
@@ -1419,6 +1460,23 @@ export default {
             try{
                 let response = await axios.put(path,{
                     status: 2
+                })
+                
+                this.show_alert = await "success";
+                await this.fetchData();
+            } catch (error) {                    
+                this.show_alert = "error";
+            }
+
+        },
+        async undo_request(){
+            let path = "/api/request_forms/" + this.request_id;
+            if (this.form_edit.status != 2){
+                return;
+            }
+            try{
+                let response = await axios.put(path,{
+                    status: 1
                 })
                 
                 this.show_alert = await "success";
