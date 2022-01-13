@@ -1,6 +1,9 @@
 <template>
-
+  <div>
   <request-list :list="request_list" :status="5">></request-list>
+  <request-list :list="old_list" :status="55">></request-list>
+</div>
+
 
 </template>
 
@@ -38,6 +41,7 @@ export default {
         // { request_no : 'SDG1-2564/002', create_date: '2021-03-25',request_title : 'ขอเปิดปิดระบบเพื่อ update firmware F5',user_id: 'songwut.saj', status: 'ระหว่างพิจารณา' },
         // { request_no : 'SDG1-2564/001', create_date: '2021-03-24',request_title : 'ขอเปิด policy firewall ระบบเงินเดือน',user_id: 'songwut.saj', status: 'รอรับรอง' }
       ],
+      old_list: {},
       show_alert: ''
     }
   },
@@ -49,6 +53,9 @@ export default {
       let path = await `/api/request_form_operate`;
       let response = await axios.get(`${path}`);
       this.request_list = await response.data.data;
+      path = await `/api/request_operated`;
+      let response2 = await axios.get(`${path}`);
+      this.old_list = await response2.data.data;
     },
     getThaiDate(item){
       if (item){

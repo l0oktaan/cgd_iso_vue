@@ -829,8 +829,7 @@
 
                     :request_id = "request_id" 
                     :status = "form_edit.status"
-                    :group_id = "form_edit.group_id"
-                    :flow = "get_flow"
+                    :group_id = "form_edit.group_id"                    
                     :user="user"                     
                     v-if="show_status"
                     @fetchRequest="fetchData"
@@ -1069,7 +1068,7 @@ export default {
         },
         async fetchData(){
             if (this.request_id){
-                console.log('user :' + this.user.group_id);
+                
                 this.status = 'edit'
                 await this.getRequest();
                 await this.getDetail();
@@ -1301,8 +1300,7 @@ export default {
                 })
                 .then(response=>{
                     var fileURL = window.URL.createObjectURL(new Blob([response.data]));
-                    //console.log('file url :' + fileURL);
-                    //return
+                    
                     var fileLink = document.createElement('a');
                     fileLink.href = fileURL;
                     let filename = item.file_title;
@@ -1368,12 +1366,12 @@ export default {
             let group = this.$store.getters.group_cgd;
             let g = group.filter(x=>x.id == id)
             if (g.length>0){
-                console.log('group :' + g[0].group_name_short);
+                
                 return g[0].group_name_short
             }
         },
         async submit(){
-            console.log('status :' + this.status);
+            
             if (!this.detail_list || this.detail_list.length == 0){
                 this.show_alert = "no_detail";
                 return;

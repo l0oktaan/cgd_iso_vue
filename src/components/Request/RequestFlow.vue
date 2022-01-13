@@ -1,11 +1,11 @@
 <template>
 <v-expansion-panels 
     multiple 
-    v-model="flow"
+    v-model="step"
 >
     <v-expansion-panel >
       <v-expansion-panel-header>
-        
+        <template v-slot:default="{ open }">
           <v-row no-gutters>
             <v-col cols="6">
                 
@@ -34,7 +34,7 @@
               </v-fade-transition>
             </v-col>
           </v-row>
-        
+        </template>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
           <v-row v-if="user.roles.includes('ensure') && user.group_id == group_id && status ==2 ">
@@ -141,7 +141,7 @@
     </v-expansion-panel>
     <v-expansion-panel>
       <v-expansion-panel-header>
-        
+        <template v-slot:default="{ open }">
           <v-row no-gutters>
             <v-col cols="6">
               <v-icon color="success" v-if="status > 3">mdi-check</v-icon>
@@ -167,7 +167,7 @@
               </v-fade-transition>
             </v-col>
           </v-row>
-        
+        </template>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-row v-if="status == 3 && getArray(user.roles).includes('consider')">
@@ -308,7 +308,7 @@
     </v-expansion-panel>
     <v-expansion-panel v-show="(status < 5 || (status >4 && request_status.approve_status))">
       <v-expansion-panel-header>
-        
+        <template v-slot:default="{ open }">
           <v-row no-gutters>
             <v-col cols="6">
               <v-icon color="success" v-if="status > 4 && request_status.approve_status">mdi-check</v-icon>
@@ -334,7 +334,7 @@
               </v-fade-transition>
             </v-col>
           </v-row>
-        
+        </template>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-row v-if="status == 4 && getArray(user.roles).includes('approve')">
@@ -493,9 +493,13 @@
                       <v-col cols="8">{{ request_status.operate_status==1 ? 'ดำเนินการแล้ว' : 'ไม่สามารถดำเนินการได้'}}</v-col>
                   </v-row>
                   <v-row>
-                      <v-col cols="4">วันที่ :</v-col>
-                      <v-col cols="8">{{getThaiDate(request_status.operate_save_date)}}</v-col>
+                      <v-col cols="4">วันที่ดำเนินการ :</v-col>
+                      <v-col cols="8">{{getThaiDate(request_status.operate_date)}}</v-col>
                   </v-row>
+                  <v-row>
+                    <v-col cols="4">รายละเอียด :</v-col>
+                    <v-col cols="8">{{request_status.operate_detail + (request_status.operator_name ? ' (' + request_status.operator_name + ')' : '')}}</v-col>
+                </v-row>
                   <v-row>
                       <v-col cols="4">โดย :</v-col>
                       <v-col cols="8">{{request_status.operate_by}}</v-col>
@@ -638,7 +642,7 @@
     </v-expansion-panel>
     <v-expansion-panel>
       <v-expansion-panel-header>
-        
+        <template v-slot:default="{ open }">
           <v-row no-gutters>
             <v-col cols="6">
               <v-icon color="success" v-if="status > 6">mdi-check</v-icon>
@@ -664,7 +668,7 @@
               </v-fade-transition>
             </v-col>
           </v-row>
-        
+        </template>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-row v-if="status == 6 && getArray(user.roles).includes('follow')">
@@ -685,10 +689,10 @@
                   <v-row>
                       <v-col cols="4">สถานะ :</v-col>
                       <v-col cols="8">{{request_status.follow_status == 1 ? 'ดำเนินการแล้วเสร็จ' : ''}}
-                          <br>{{request_status.follow_impact == 1 ? 'ไม่มีผลกระทบ' : 'มีผลกระทบ'}}</v-col>
+                          <br>{{request_status.follow_impact == 1 ? 'ไม่มีผลกระทบ' : request_status.follow_impact == 0 ? 'มีผลกระทบ' : ''}}</v-col>
                   </v-row>
                   <v-row>
-                      <v-col cols="4">เมื่อวันที่</v-col>
+                      <v-col cols="4">วันที่</v-col>
                       <v-col cols="8">{{getThaiDate(request_status.follow_date)}}</v-col>
                   </v-row>
                   <v-row>
@@ -780,7 +784,7 @@
     </v-expansion-panel>
     <v-expansion-panel>
       <v-expansion-panel-header>
-        
+        <template v-slot:default="{ open }">
           <v-row no-gutters>
             <v-col cols="6">
               <v-icon color="success" v-if="status > 7">mdi-check</v-icon>
@@ -806,7 +810,7 @@
               </v-fade-transition>
             </v-col>
           </v-row>
-        
+        </template>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
         <v-row v-if="status == 7 && getArray(user.roles).includes('check')">
@@ -918,7 +922,7 @@
 <script>
 import axios from 'axios'
 export default {
-    props: ['request_id','status','user','group_id','flow'],
+    props: ['request_id','status','user','group_id'],
     data: () => ({
         ensure_dialog: false,
         consider_dialog: false,
@@ -957,7 +961,7 @@ export default {
         follow: {
             status: null,
             detail: '',
-            impact: null,
+            impact: 1,
 
         },
         check: {
@@ -967,7 +971,8 @@ export default {
         
         date: null,
         request_status: {},        
-        
+        flow: [],
+        step: [],
         group_cgd: []
     }),
     watch:{
@@ -977,29 +982,29 @@ export default {
         status(){
             // switch (this.status) {
             //     case 2:
-            //         this.flow=[0];
+            //         this.step=[0];
             //         break;
             //     case 3:
-            //         this.flow=[1];
+            //         this.step=[1];
             //         break;
             //     case 4:
-            //         this.flow=[2];
+            //         this.step=[2];
             //         break;
             //     case 5:
-            //         this.flow=[3];
+            //         this.step=[3];
             //         break;
             //     case 6:
-            //         this.flow=[4];
+            //         this.step=[4];
             //         break;
             //     case 7:
-            //         this.flow=[5];
+            //         this.step=[5];
             //         break;
             //     case 8:
-            //         this.flow=[];
+            //         this.step=[];
             //         break;
             //     default:
-            //         this.flow=[];
-            //}
+            //         this.step=[];
+            // }
         }
     },
     computed: {
@@ -1015,9 +1020,36 @@ export default {
             await this.getGroupCGD();
     },
     methods: {
-        
+        check_step(){
+            this.step.slice(0);
+            switch (this.status) {
+                case 2:
+                    this.step=[0];
+                    break;
+                case 3:
+                    this.step=[1];
+                    break;
+                case 4:
+                    this.step=[2];
+                    break;
+                case 5:
+                    this.step=[3];
+                    break;
+                case 6:
+                    this.step=[4];
+                    break;
+                case 7:
+                    this.step=[5];
+                    break;
+                case 8:
+                    this.step=[];
+                    break;
+                default:
+                    this.step=[];
+            }
+        },
         async fetchData(){
-            
+            await this.check_step();
             if (this.status < 2){
                 return;
             }

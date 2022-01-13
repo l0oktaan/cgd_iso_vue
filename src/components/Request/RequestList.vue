@@ -8,7 +8,7 @@
           elevation="4"
         >
           <v-data-table
-            :headers="headers"
+            :headers="(status == 44 || status==55) ? header2 : headers"
             :items="request_list"
             :items-per-page="15"
             :loading="loadTable"
@@ -22,7 +22,7 @@
                 >
                   <v-toolbar-title>
                     <v-icon large>mdi-stack-exchange</v-icon>
-                    {{'รายการเปลี่ยนแปลงข้อมูล' + getStatus(status)}}</v-toolbar-title> 
+                    {{'รายการเปลี่ยนแปลงที่' + getStatus(status)}}</v-toolbar-title> 
                     
                   <v-spacer></v-spacer>        
                     <v-text-field
@@ -60,10 +60,10 @@
                 <v-icon                    
                     class="mr-2"
                     large
-                    color="primary"
+                    :color="(status == 44 || status == 55) ? 'success' : 'primary'"
                     @click="editItem(item.id)"
                 >
-                    mdi-pencil-circle
+                    {{(status == 44 || status == 55) ? 'mdi-magnify' : 'mdi-pencil-circle'}}
                 </v-icon>
                 <!-- <v-icon  
                     :disabled = "item.status > 1"
@@ -95,6 +95,7 @@ export default {
     return  {
       
       search: '',
+      
       headers: [
         
         
@@ -111,6 +112,24 @@ export default {
         { text: 'ผู้ร้องขอ', sortable: false, value: 'user_id', class: ['blue darken-3', 'white--text'],width: '15%'},       
         { text: 'สถานะ', sortable: false, value: 'status', class: ['blue darken-3', 'white--text'],width: '15%'},      
         { text: 'Action', value: 'actions',class: ['blue darken-3', 'white--text'],width: '10%'}                        
+                      
+      ],
+      header2: [
+        
+        
+        { text: 'วันที่ขอดำเนินการ', value: 'created_date', class: ['green darken-3', 'white--text'],width: '15%'},       
+        {
+            text: 'เลขที่เอกสาร',
+            align: 'start',
+            // sortable: false,
+            value: 'request_no',
+            class: ['green darken-3', 'white--text', 'head-text'],
+            width: '15%'
+        },
+        { text: 'เรื่อง', sortable: false, value: 'request_title', class: ['green darken-3', 'white--text'],width: '30%'},       
+        { text: 'ผู้ร้องขอ', sortable: false, value: 'user_id', class: ['green darken-3', 'white--text'],width: '15%'},       
+        { text: 'สถานะ', sortable: false, value: 'status', class: ['green darken-3', 'white--text'],width: '15%'},      
+        { text: 'Action', value: 'actions',class: ['green darken-3', 'white--text'],width: '10%'}                        
                       
       ],
       request_list: [
@@ -156,6 +175,7 @@ export default {
       return !item.request_no||item.request_no == '' ? item.group_code + "-" + item.year.toString() + "/---" : item.request_no;
     },
     getStatus(status){
+      
       let val = '';
       switch (status) {
         case 1:
@@ -170,14 +190,23 @@ export default {
         case 4:
             val = 'รอการอนุมัติ'          
             break;
+        case 44:
+            val = 'อนุมัติแล้ว'          
+            break;
         case 5:
             val = 'รอดำเนินการ'          
+            break;
+        case 55:
+            val = 'ดำเนินการแล้ว'          
             break;
         case 6:
             val = 'รอติดตามผล'          
             break;
         case 7:
             val = 'รอตรวจสอบผล'          
+            break;
+          case 8:
+            val = 'เสร็จสิ้น'          
             break;
         default:
           val = '';

@@ -71,7 +71,7 @@ export default {
           let group = this.$store.getters.group_cgd;
           let g = group.filter(x=>x.id == id)
           if (g.length>0){
-              console.log('group :' + g[0].group_name_short);
+              
               return g[0].group_name
           }
       },

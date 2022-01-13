@@ -228,7 +228,7 @@ export default {
   methods: {
     countRequest(role){
       let count=0;
-      console.log('follow :' + this.$store.getters.request_follow)
+      
       switch (role) {
           case 'ensure':
             count = this.$store.getters.request_ensure ? this.$store.getters.request_ensure.length : 0
@@ -256,7 +256,7 @@ export default {
     getRequest(){
       let roles = JSON.parse(this.user.roles);
       for (let i=0;i<=roles;i++){
-        console.log('roles :' + roles[i])
+        
         switch (roles[i]) {
           case 'ensure':
             this.$store.dispatch('get_request_ensure')
