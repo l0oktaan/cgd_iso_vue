@@ -671,7 +671,7 @@
         </template>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <v-row v-if="status == 6 && getArray(user.roles).includes('follow')">
+        <v-row v-if="status == 6 && getArray(user.roles).includes('follow') && check_permiss('follow')">
               <v-col class="text-center">
                   <v-btn
                     class="text-center"
@@ -1115,7 +1115,10 @@ export default {
             switch (state){
                 case "operate":
                     let arr = this.getArray(this.request_status.forward_to);
-                    return arr.includes(this.user.group_id)
+                    return arr.includes(this.user.group_id);
+                case "follow" :
+                    return this.user.group_id == this.group_id;
+
             }
         },
         async save_status(flow){

@@ -180,7 +180,7 @@ export default {
             
             { title: "การอนุมัติการ้องขอ", icon: "mdi-check-bold", route: "/approve", show: "approve" },
             { title: "การดำเนินการเปลี่ยนแปลง", icon: "mdi-cog", route: "/operate", show: "operate" },
-            { title: "การติดตามผล", icon: "mdi-cog", route: "/follow", show: "follow" },
+            { title: "การติดตามผล", icon: "mdi-clipboard-clock", route: "/follow", show: "follow" },
             { title: "การตรวจสอบผล", icon: "mdi-shield-check", route: "/check", show: "check" },
             // { title: "Test", icon: "mdi-stack-exchange", route: "/test" },
           ]
