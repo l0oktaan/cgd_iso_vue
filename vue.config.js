@@ -26,7 +26,7 @@ module.exports = {
   //       changeOrigin: true,        
   //     },
         "^/api" :{
-          target: 'http://localhost:8000'
+          target: 'http://10.100.90.22:8000'
         }
     }
   },

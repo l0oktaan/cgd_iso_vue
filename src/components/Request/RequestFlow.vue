@@ -498,7 +498,7 @@
                   </v-row>
                   <v-row>
                     <v-col cols="4">รายละเอียด :</v-col>
-                    <v-col cols="8">{{request_status.operate_detail + (request_status.operator_name ? ' (' + request_status.operator_name + ')' : '')}}</v-col>
+                    <v-col cols="8">{{(request_status.operate_detail ? 'request_status.operate_detail' : '-') + (request_status.operator_name ? ' (' + request_status.operator_name + ')' : '')}}</v-col>
                 </v-row>
                   <v-row>
                       <v-col cols="4">โดย :</v-col>
@@ -730,13 +730,14 @@
                                 row
                                 >
                                 <v-radio
-                                    label="มีผลกระทบ"
-                                    value="0"
-                                ></v-radio>
-                                <v-radio
                                     label="ไม่มีผลกระทบ"
                                     value="1"
                                 ></v-radio>
+                                <v-radio
+                                    label="มีผลกระทบ"
+                                    value="0"
+                                ></v-radio>
+                                
                                 </v-radio-group>           
                                 <v-textarea
                                     v-model="follow.detail"
@@ -959,7 +960,7 @@ export default {
             operator_by: '',
         },
         follow: {
-            status: null,
+            status: 1,
             detail: '',
             impact: 1,
 
