@@ -27,6 +27,7 @@ module.exports = {
   //     },
         "^/api" :{
           target: 'http://10.100.90.22:8000'
+          //target: 'http://localhost:8000'
         }
     }
   },

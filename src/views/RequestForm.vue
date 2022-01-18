@@ -829,7 +829,8 @@
 
                     :request_id = "request_id" 
                     :status = "form_edit.status"
-                    :group_id = "form_edit.group_id"                    
+                    :group_id = "form_edit.group_id"  
+                    :form = "form_edit"                  
                     :user="user"                     
                     v-if="show_status"
                     @fetchRequest="fetchData"
@@ -984,7 +985,8 @@ export default {
             message: '',
             show_alert: '',
             user: this.$store.getters.user,
-            show_status : false
+            show_status : false,
+            group_cgd: this.$store.getters.group_cgd
         }
     },
     mounted(){
@@ -1104,6 +1106,7 @@ export default {
             this.form_edit.user_id = await request.user_id;            
             this.form_edit.group_code = await request.group_code;
             this.form_edit.group_id = await request.group_id;
+            this.form_edit.fullname = await request.fullname;
             this.form_edit.year = await request.year;
             this.form_edit.order_no = await request.order_no;
             this.form_edit.created_date = await request.created_date;
@@ -1366,8 +1369,14 @@ export default {
             let group = this.$store.getters.group_cgd;
             let g = group.filter(x=>x.id == id)
             if (g.length>0){
-                
-                return g[0].group_name_short
+                return g[0].group_name_short;
+            }
+        },
+        get_group_name(id){
+            let group = this.$store.getters.group_cgd;
+            let g = group.filter(x=>x.id == id)
+            if (g.length>0){
+                return g[0].group_name;
             }
         },
         async submit(){

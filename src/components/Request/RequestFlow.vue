@@ -1,8 +1,47 @@
 <template>
+<div>
+<v-expansion-panels
+    multiple
+    v-model="panel"
+    
+>
+    <v-expansion-panel >  
+        <v-expansion-panel-header>
+        <template v-slot:default>
+          <v-row no-gutters>
+            <v-col cols="12">               
+              <v-icon color="success">mdi-check</v-icon>รายละเอียด
+            </v-col>
+            
+          </v-row>
+        </template>
+      </v-expansion-panel-header>    
+      <v-expansion-panel-content>          
+          <v-row>
+              <v-col>
+                  <v-row>
+                      <v-col cols="4">เลขที่ใบคำขอ :</v-col>
+                      <v-col cols="8">{{form.request_no ? form.request_no : '-'}}</v-col>
+                  </v-row>
+                  <v-row>
+                      <v-col cols="4">วันที่สร้างคำขอ :</v-col>
+                        <v-col cols="8">{{getThaiDate(form.created_date)}}</v-col>
+                  </v-row>
+                  <v-row>
+                      <v-col cols="4">โดย :</v-col>
+                      <v-col cols="8">{{form.fullname}}</v-col>
+                  </v-row>       
+              </v-col>
+          </v-row>
+                     
+      </v-expansion-panel-content>
+    </v-expansion-panel>
+</v-expansion-panels>
 <v-expansion-panels 
     multiple 
     v-model="step"
 >
+    
     <v-expansion-panel >
       <v-expansion-panel-header>
         <template v-slot:default="{ open }">
@@ -918,12 +957,13 @@
       </v-expansion-panel-content>
     </v-expansion-panel>
 </v-expansion-panels>
+</div>
 </template>
 
 <script>
 import axios from 'axios'
 export default {
-    props: ['request_id','status','user','group_id'],
+    props: ['request_id','status','user','group_id','form'],
     data: () => ({
         ensure_dialog: false,
         consider_dialog: false,
@@ -974,6 +1014,7 @@ export default {
         request_status: {},        
         flow: [],
         step: [],
+        panel:[0],
         group_cgd: []
     }),
     watch:{
