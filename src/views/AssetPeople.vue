@@ -399,7 +399,7 @@ export default {
                 { text: 'IP Address', value: 'ip_address', class: ['blue darken-3', 'white--text'],width: '15%'},                       
                 { text: 'หน่วยงาน', sortable: false, value: 'org_name', class: ['blue darken-3', 'white--text'],width: '20%'},
                 { text: 'Tags', sortable: false, value: 'people_tags', class: ['blue darken-3', 'white--text']},
-                { text: 'Action', value: 'actions',class: ['blue darken-3', 'white--text'],width: '10%'}                       
+                { text: 'Action', value: 'actions',class: ['blue darken-3', 'white--text'],width: '15%'}                       
                             
             ],
             people_list: [],
@@ -505,18 +505,20 @@ export default {
         add_equip(){
             this.dialog = true;
         },
-        editItem(item){
-            this.status = "edit";
+        async editItem(item){
+            this.status = await "edit";
             // this.people_edit = Object.assign({},item);
-            this.people_edit.id = item.id;
-            this.people_edit.people_name = item.people_name;
-            this.people_edit.ldap_name = item.ldap_name;
-            this.people_edit.ip_address = JSON.parse(item.ip_address);
-            this.people_edit.people_type = item.people_type;
-            this.people_edit.org_name = item.org_name;            
-            this.people_edit.people_tags = JSON.parse(item.people_tags);
-            this.people_edit.description = item.description;
-            this.dialog = true;
+            this.people_edit.id = await item.id;
+            this.people_edit.people_name = await item.people_name;
+            this.people_edit.ldap_name = await item.ldap_name;
+            this.people_edit.ip_address = await JSON.parse(item.ip_address);
+            this.people_edit.people_type = await 0
+            this.people_edit.people_type = await item.people_type;
+            this.group_list_show = await this.group_list.filter(x=>x.type == item.people_type);
+            this.people_edit.org_name = await item.org_name;            
+            this.people_edit.people_tags = await JSON.parse(item.people_tags);
+            this.people_edit.description = await item.description;
+            this.dialog = await true;
         },
         deleteItem(id){
             

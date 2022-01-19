@@ -408,12 +408,12 @@ export default {
                     // sortable: false,
                     value: 'source',
                     class: ['blue darken-1', 'white--text', 'head-text'],
-                    width: '40%'
+                    width: '35%'
                 },
                 { text: 'Destination',align: 'start', sortable: false, sortable: false, value: 'destination', class: ['blue darken-1', 'white--text'],width: '30%'},       
                 { text: 'Service/Port',align: 'start', sortable: false, value: 'service_port', class: ['blue darken-1', 'white--text'],width: '15%'},                       
                 { text: 'Tags', value: 'tags', sortable: false, class: ['blue darken-1', 'white--text'],width: '10%'},                       
-                { text: 'Action',align: 'center', sortable: false, value: 'actions',class: ['blue darken-1', 'white--text'],width: '10%'}                       
+                { text: 'Action',align: 'center', sortable: false, value: 'actions',class: ['blue darken-1', 'white--text'],width: '15%'}                       
                             
             ],
             policy_headers: [
@@ -423,12 +423,12 @@ export default {
                     // sortable: false,
                     value: 'source',
                     class: ['blue darken-3', 'white--text', 'head-text'],
-                    width: '40%'
+                    width: '35%'
                 },
                 { text: 'Destination', sortable: false, value: 'destination', class: ['blue darken-3', 'white--text'],width: '30%'},       
                 { text: 'Service/Port', value: 'service_port', sortable: false, class: ['blue darken-3', 'white--text'],width: '15%'},                       
                 { text: 'Tags', value: 'tags', sortable: false, class: ['blue darken-3', 'white--text'],width: '10%'},                       
-                { text: 'Action', value: 'actions', sortable: false,class: ['blue darken-3', 'white--text'],width: '10%'}                       
+                { text: 'Action', value: 'actions', sortable: false,class: ['blue darken-3', 'white--text'],width: '15%'}                       
                             
             ],
             source_headers:[
