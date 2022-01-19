@@ -77,7 +77,7 @@
             <v-icon left>
                 mdi-cancel
             </v-icon>
-            ยกเลิก
+            ปิด
         </v-btn>
         </v-card-actions>
     </v-card>

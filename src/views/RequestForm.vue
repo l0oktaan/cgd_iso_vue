@@ -129,7 +129,7 @@
                                             <v-icon left>
                                                 mdi-cancel
                                             </v-icon>
-                                            ยกเลิก</v-btn>
+                                            ปิด</v-btn>
                                         </v-card-actions>
                                     </v-card>
                                     </template>
@@ -161,7 +161,7 @@
                                             <v-icon left>
                                                 mdi-cancel
                                             </v-icon>
-                                            ยกเลิก</v-btn>
+                                            ปิด</v-btn>
                                         </v-card-actions>
                                     </v-card>
                                     </template>

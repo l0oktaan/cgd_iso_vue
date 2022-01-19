@@ -60,7 +60,11 @@
                 
             </template>
             <template v-slot:item.status="{ item }">
-                
+                <v-progress-circular
+                  size=20
+                  :value="(item.status/8)*100"
+                  :color="getProgress(item.status)"
+                ></v-progress-circular>
                     {{ getStatus(item.status) }}
                 
             </template>
@@ -253,6 +257,41 @@ export default {
 
       this.request_dialog = true;
       // this.$router.push("/request_change/form");
+    },
+    getProgress(status){
+      let progress = status/8*100
+      let color = "gray";
+      switch (progress) {
+        case 12.5:
+          color = "grey"
+        break;
+        case 25:
+          color = "brown darken-2"
+        break;
+        case 37.5:
+          color = "yellow darken-1"
+        break;
+        case 50:
+          color = "amber darken-4"
+        break;
+        case 62.5:
+          color = "light-blue accent-4"
+        break;
+        case 75:
+          color = "light-blue darken-4"
+        break;
+        case 87.5:
+          color = "green accent-3"
+        break;
+        case 100:
+          color = "success"
+        break;
+      
+        default:
+          color = "blue-grey"
+        break;
+      }
+      return color;
     },
     check_group(id){
           let group = this.$store.getters.group_cgd;

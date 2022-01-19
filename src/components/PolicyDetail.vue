@@ -149,7 +149,7 @@
                                         <div>
                                             <v-chip                                                       
                                                 class="ma-1"
-                                                color="deep-orange darken-3"
+                                                color="deep-orange"
                                                 small
                                                 dark
                                                 close
@@ -273,7 +273,7 @@
                                     <div>
                                         <v-chip                                                       
                                         
-                                            color="deep-orange darken-3"
+                                            color="deep-orange"
                                             class="ma-1"
                                             small
                                             dark
@@ -408,12 +408,12 @@ export default {
                     // sortable: false,
                     value: 'source',
                     class: ['blue darken-1', 'white--text', 'head-text'],
-                    width: '30%'
+                    width: '40%'
                 },
-                { text: 'Destination',align: 'start', sortable: false, sortable: false, value: 'destination', class: ['blue darken-1', 'white--text'],width: '25%'},       
-                { text: 'Service/Port',align: 'start', sortable: false, value: 'service_port', class: ['blue darken-1', 'white--text'],width: '20%'},                       
-                { text: 'Tags', value: 'tags', sortable: false, class: ['blue darken-1', 'white--text'],width: '15%'},                       
-                { text: 'Action',align: 'center', sortable: false, value: 'actions',class: ['blue darken-1', 'white--text'],width: '15%'}                       
+                { text: 'Destination',align: 'start', sortable: false, sortable: false, value: 'destination', class: ['blue darken-1', 'white--text'],width: '30%'},       
+                { text: 'Service/Port',align: 'start', sortable: false, value: 'service_port', class: ['blue darken-1', 'white--text'],width: '15%'},                       
+                { text: 'Tags', value: 'tags', sortable: false, class: ['blue darken-1', 'white--text'],width: '10%'},                       
+                { text: 'Action',align: 'center', sortable: false, value: 'actions',class: ['blue darken-1', 'white--text'],width: '10%'}                       
                             
             ],
             policy_headers: [
@@ -423,11 +423,11 @@ export default {
                     // sortable: false,
                     value: 'source',
                     class: ['blue darken-3', 'white--text', 'head-text'],
-                    width: '25%'
+                    width: '40%'
                 },
                 { text: 'Destination', sortable: false, value: 'destination', class: ['blue darken-3', 'white--text'],width: '30%'},       
-                { text: 'Service/Port', value: 'service_port', sortable: false, class: ['blue darken-3', 'white--text'],width: '20%'},                       
-                { text: 'Tags', value: 'tags', sortable: false, class: ['blue darken-3', 'white--text'],width: '15%'},                       
+                { text: 'Service/Port', value: 'service_port', sortable: false, class: ['blue darken-3', 'white--text'],width: '15%'},                       
+                { text: 'Tags', value: 'tags', sortable: false, class: ['blue darken-3', 'white--text'],width: '10%'},                       
                 { text: 'Action', value: 'actions', sortable: false,class: ['blue darken-3', 'white--text'],width: '10%'}                       
                             
             ],
@@ -770,7 +770,7 @@ export default {
                     let response = await axios.post(`${path}`,{
                         policy_name: this.policy_name,
                         updated_date: new Date().toISOString().substr(0, 10), 
-                        updated_by: this.user.username                       
+                        updated_by: this.user.firstname + ' ' + this.user.lastname
                     })
                     let policy = response.data.data;
                     this.policy_edit_id = policy.id;
@@ -782,7 +782,7 @@ export default {
                     let response = await axios.put(`${path}/${this.policy_edit_id}`,{
                         policy_name: this.policy_name,
                         updated_date: new Date().toISOString().substr(0, 10),  
-                        updated_by: this.user.username                      
+                        updated_by: this.user.firstname + ' ' + this.user.lastname                     
                     })                    
                     // this.policy_list = policy.policy_detail;
                     this.show_alert = await 'success';

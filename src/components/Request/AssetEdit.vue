@@ -1,6 +1,6 @@
 <template>
     <v-menu        
-        :close-on-content-click="false"
+        :close-on-content-click="closeMenu"        
         :nudge-width="200"
         offset-x
         >
@@ -25,13 +25,16 @@
                     <v-data-table
                     v-model="selected"
                     :headers="header"
-                    :items="items"                                                        
+                    :items="items"    
+                    :items-per-page="8"                                                    
                     item-key="code"
                     show-select
-                    class="elevation-1"
-                    hide-default-footer
+                    class="elevation-1"                    
                     hide-default-header
                     :search="search"
+                    :footer-props="{
+                        disableItemsPerPage: true
+                    }"
                 >
                     <template v-slot:top>
                         <v-toolbar
@@ -55,6 +58,17 @@
                 </v-data-table>                
                 </v-col>
             </v-row>
+            <v-card-actions class="justify-end">
+            <v-btn
+                text
+                @click="closeMenu=true"
+                color="error"
+            >
+                <v-icon left>
+                    mdi-cancel
+                </v-icon>
+                ปิด</v-btn>
+            </v-card-actions>
         </v-card>    
     </v-menu>              
             
@@ -68,7 +82,8 @@ export default {
         return {
             
             search: '',
-            selected:[]            
+            selected:[],
+            closeMenu:false
         }
     },
     mounted(){        

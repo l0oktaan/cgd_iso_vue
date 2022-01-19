@@ -133,7 +133,7 @@
                                                     <v-chip
                                                         
                                                         close
-                                                        color="deep-orange darken-3"
+                                                        color="deep-orange"
                                                         dark
                                                         small
                                                         :key="JSON.stringify(data.item)"
@@ -262,7 +262,7 @@
                     </template>
                     <template v-slot:item.service_port="{ item }">
                         <v-chip  
-                            color="deep-orange darken-3"   
+                            color="deep-orange"   
                             class="ma-1"
                             small
                             v-for="(port,index) in getArray(item.service_port)"               

@@ -22,7 +22,7 @@
                     <v-dialog
                         transition="dialog-bottom-transition"
                         persistent
-                        max-width="1200"
+                        max-width="1300"
                         v-model="policy_dialog"
                     >
                         
