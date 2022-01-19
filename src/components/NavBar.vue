@@ -256,11 +256,25 @@ export default {
   computed: {
     min: {
         get() {
-          console.log('min ' + this.$vuetify.breakpoint.mdAndDown + ' mini : ' + this.mini);
-           return this.$vuetify.breakpoint.mdAndDown && this.mini;            
+          
+          // return this.$vuetify.breakpoint.mdAndDown || !this.mini;  
+          if (this.$vuetify.breakpoint.mdAndDown) {
+            if (this.mini){
+              return false;
+            }
+            //console.log('get md : ' + this.$vuetify.breakpoint.mdAndDown + ' mini : ' + this.mini);
+            return this.$vuetify.breakpoint.mdAndDown || this.mini;
+            
+          }else{
+            //console.log('get md mini : ' + this.mini);
+            
+            return this.mini;
+          }
+                    
         },
         set(value) {
-           this.mini = value;
+           //this.mini = value;
+           //console.log('set md : ' + this.$vuetify.breakpoint.mdAndDown + ' mini : ' + this.mini);
         }
     }
   },
