@@ -8,12 +8,12 @@
     
     
   >
-    <v-list-item px-2 class="main-menu">
+    <v-list-item px-2 class="main-menu" link>
       <v-list-item-icon>
-        <v-icon>mdi-home</v-icon>
+        <v-icon @click.stop="mini = !mini">mdi-menu</v-icon>
       </v-list-item-icon>
 
-      <v-list-item-title>เมนูหลัก</v-list-item-title>
+      <v-list-item-title>เมนู</v-list-item-title>
 
       <v-btn icon @click.stop="mini = !mini">
         <v-icon>mdi-chevron-left</v-icon>
@@ -77,7 +77,15 @@
         link
       >
         <v-list-item-icon>
-          <v-icon>{{ item.icon }}</v-icon>
+          <v-tooltip right color="primary">
+            <template v-slot:activator="{ on, attrs }">                      
+            <v-icon              
+              v-bind="attrs"
+              v-on="on">
+              {{ item.icon }}</v-icon>
+            </template>
+            <span>{{ item.title }}</span>
+          </v-tooltip>
         </v-list-item-icon>
 
         <v-list-item-content>
@@ -96,7 +104,14 @@
         link
       >
         <v-list-item-icon>
-          <v-icon>{{ item.icon }}</v-icon>
+          <v-tooltip right color="primary">
+            <template v-slot:activator="{ on, attrs }">
+          <v-icon 
+            v-bind="attrs"
+            v-on="on">{{ item.icon }}</v-icon>
+          </template>
+          <span>{{ item.title }}</span>  
+          </v-tooltip>
         </v-list-item-icon>
 
         <v-list-item-content>
@@ -116,7 +131,15 @@
         link
       >
         <v-list-item-icon>
-          <v-icon>{{ item.icon }}</v-icon>
+          <v-tooltip right color="primary">
+            <template v-slot:activator="{ on, attrs }">
+          <v-icon 
+            v-bind="attrs"
+            v-on="on"
+          >{{ item.icon }}</v-icon>
+          </template>
+          <span>{{ item.title }}</span>  
+          </v-tooltip>
         </v-list-item-icon>
 
         <v-list-item-content>
@@ -135,7 +158,25 @@
         link
       >
         <v-list-item-icon>
-          <v-icon>{{ item.icon }}</v-icon>
+          <v-tooltip right color="primary">
+            <template v-slot:activator="{ on, attrs }">
+              <v-badge
+                dot
+                color="error"
+                overlap
+                :value="countRequest(item.show)"
+              >
+                <v-icon
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  {{ item.icon }}
+                </v-icon>
+              </v-badge>
+          
+          </template>
+          <span>{{ item.title }}</span>  
+          </v-tooltip>
         </v-list-item-icon>
 
         <v-list-item-content>
@@ -215,7 +256,8 @@ export default {
   computed: {
     min: {
         get() {
-           return this.$vuetify.breakpoint.mdAndDown || this.mini;            
+          console.log('min ' + this.$vuetify.breakpoint.mdAndDown + ' mini : ' + this.mini);
+           return this.$vuetify.breakpoint.mdAndDown && this.mini;            
         },
         set(value) {
            this.mini = value;
@@ -226,6 +268,9 @@ export default {
     this.getRequest();
   },
   methods: {
+    getMini(){
+      return this.mini || this.min;
+    },
     countRequest(role){
       let count=0;
       
