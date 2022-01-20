@@ -177,6 +177,6 @@ export default {
 .container{
   padding-left: 0!important;
 }
-</style>>
+</style>
 
 </style>

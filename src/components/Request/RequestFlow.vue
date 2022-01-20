@@ -537,7 +537,7 @@
                   </v-row>
                   <v-row>
                     <v-col cols="4">รายละเอียด :</v-col>
-                    <v-col cols="8">{{(request_status.operate_detail ? 'request_status.operate_detail' : '-') + (request_status.operator_name ? ' (' + request_status.operator_name + ')' : '')}}</v-col>
+                    <v-col cols="8">{{(request_status.operate_detail ? request_status.operate_detail : '-') + (request_status.operator_name ? ' (' + request_status.operator_name + ')' : '')}}</v-col>
                 </v-row>
                   <v-row>
                       <v-col cols="4">โดย :</v-col>
