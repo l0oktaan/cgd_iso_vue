@@ -31,6 +31,7 @@
 
       <v-card-text class="py-2 white--text text-center">
         <p>ศูนย์เทคโนโลยีสารสนเทศและการสื่อสาร กรมบัญชีกลาง</p>
+        <!-- <a href="https://lin.ee/hZUSyWs"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/th.png" alt="เพิ่มเพื่อน" height="36" border="0"></a> -->
       </v-card-text>
     </v-card>
   </v-footer>  
