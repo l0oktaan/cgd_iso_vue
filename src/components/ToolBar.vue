@@ -45,8 +45,8 @@
         <v-list-item link>
           <v-list-item-title>เมนู 3</v-list-item-title>          
         </v-list-item> -->
-        <v-list-item link>
-          <v-list-item-title @click="logout">ออกจากระบบ</v-list-item-title>          
+        <v-list-item link  @click="logout">
+          <v-list-item-title>ออกจากระบบ</v-list-item-title>          
         </v-list-item>
       </v-list>
     </v-menu>

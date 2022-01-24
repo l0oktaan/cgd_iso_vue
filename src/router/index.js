@@ -127,7 +127,8 @@ const routes = [
           },
           
         ]
-      }      
+      },
+         
     ]
   },
   {
@@ -136,12 +137,19 @@ const routes = [
     beforeEnter (to, from, next) {
       store.dispatch('checkLogin')
       if (store.state.user) {          
-          next('/')          
+        next({ name: 'ISO' })
       } else {
           next()
       }
     },
-  }
+    
+  },
+  {
+    path: "*",
+    beforeEnter(to,from,next){
+      next('/')
+    }
+  }   
 ];
 
 const router = new VueRouter({
