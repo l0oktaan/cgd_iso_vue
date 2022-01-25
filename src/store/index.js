@@ -102,6 +102,9 @@ export default new Vuex.Store({
       state.request_operate = null
       state.request_follow = null
       state.request_check = null  
+      state.group_cgd = null
+      state.request_list = null
+      state.roles = null
       localStorage.removeItem('token')
       localStorage.removeItem('expirationDate')
     },

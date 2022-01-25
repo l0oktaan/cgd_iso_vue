@@ -23,6 +23,8 @@ import Check from "../views/Check.vue";
 import MasterData from "../views/MasterData.vue";
 import PolicyFirewall from "../views/PolicyFirewall.vue";
 
+import EmptyPage from "../views/EmptyPage.vue";
+
 import Test from "../views/Test.vue";
 Vue.use(VueRouter);
 
@@ -146,9 +148,13 @@ const routes = [
   },
   {
     path: "*",
-    beforeEnter(to,from,next){
-      next('/')
-    }
+    // beforeEnter(to,from,next){
+    //   next(vm => {
+    //     vm.prevRoute = from
+    //   })
+    // }
+    name: "empty_page",
+    component: EmptyPage,
   }   
 ];
 
