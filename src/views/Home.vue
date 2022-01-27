@@ -2,7 +2,7 @@
   <v-app>
     <nav-bar></nav-bar>
 
-    <tool-bar></tool-bar>
+    <tool-bar v-if="$store.getters.user"></tool-bar>
 
     <!-- Sizes your content based upon application components -->
     <v-main app>

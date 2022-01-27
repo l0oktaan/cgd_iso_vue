@@ -6,6 +6,7 @@
         <request-search></request-search>
       </v-col>
     </v-row> -->
+    
     <v-row>
       <v-col>
         <v-card
@@ -38,6 +39,7 @@
                     </v-icon>
                     เพิ่มรายการใหม่
                   </v-btn>  
+                  
                   <v-spacer></v-spacer>        
                     <v-text-field
                         v-model="search"
@@ -185,11 +187,17 @@
 </template>
 
 <script>
+
+
+
 import Swal from 'sweetalert2';
 
 import axios from 'axios';
 
 import RequestSearch from "../components/Request/RequestSearch"
+
+
+
 export default {
   
   data(){

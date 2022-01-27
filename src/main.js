@@ -8,7 +8,10 @@ Vue.use(VueSweetalert2);
 Vue.config.productionTip = false;
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+
 Vue.use(VueAxios,axios)
+
+
 // axios.defaults.baseURL = 'http://192.168.1.60:8080/engine-rest/';
 axios.defaults.baseURL = ''; //'http://10.100.90.23';
 //axios.defaults.baseURL = 'http://localhost:8000'; 

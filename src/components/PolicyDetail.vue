@@ -488,6 +488,9 @@ export default {
             if (this.policy_id){
                 console.log('edit policy id :' + this.policy_id);
                 this.policy_edit_id = this.policy_id;                
+            }else{
+                this.policy_status = 'new'
+                this.clear();
             }
         },
         policy_edit_id(){
@@ -561,6 +564,9 @@ export default {
         },
         delPort(item,index){
             item.splice(index,1);
+        },
+        close_dialog(){
+            console.log('Close');
         },
         clear(){
             this.status = 'new';
@@ -788,8 +794,7 @@ export default {
                     this.show_alert = await 'success';
                     this.policy_status = await 'edit';
                 }
-            }
-            
+            }            
         }
     }
 }

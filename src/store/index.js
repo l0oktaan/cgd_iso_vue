@@ -19,9 +19,7 @@ const getDefaultState = () => {
     request_approve: null,
     request_operate: null,
     request_follow: null,
-    request_check: null,
-    
-   
+    request_check: null,   
     roles: ['admin','request','ensure','consider','approve','operate','follow','check']
   }
 }
@@ -43,7 +41,7 @@ export default new Vuex.Store({
       return state.user
     },
     roles (state){
-      return state.roles
+      return ['admin','request','ensure','consider','approve','operate','follow','check'] //state.roles
     },
     group_id (state){
       return state.user.group_id
@@ -104,7 +102,8 @@ export default new Vuex.Store({
       state.request_check = null  
       state.group_cgd = null
       state.request_list = null
-      state.roles = null
+      state.group_id = null
+      // state.roles = null
       localStorage.removeItem('token')
       localStorage.removeItem('expirationDate')
     },
