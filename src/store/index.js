@@ -241,12 +241,25 @@ export default new Vuex.Store({
   },
 
   async fetchRequest({dispatch}){
-    await dispatch('get_request_ensure')
-    await dispatch('get_request_consider')
-    await dispatch('get_request_approve')
-    await dispatch('get_request_operate')
-    await dispatch('get_request_follow')
-    await dispatch('get_request_check')
+    if (this.state.user.roles.includes('ensure')){
+      await dispatch('get_request_ensure')
+    }
+    if (this.state.user.roles.includes('consider')){
+      await dispatch('get_request_consider')
+    }
+    if (this.state.user.roles.includes('approve')){
+      await dispatch('get_request_approve')
+    }
+    if (this.state.user.roles.includes('operate')){
+      await dispatch('get_request_operate')
+    }
+    if (this.state.user.roles.includes('follow')){
+      await dispatch('get_request_follow')
+    }
+    if (this.state.user.roles.includes('check')){
+      await dispatch('get_request_check')
+    }    
+    
   },
   async get_request_all({commit}){
     let path = await '/api/request_forms'
