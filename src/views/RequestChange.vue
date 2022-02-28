@@ -309,6 +309,11 @@ export default {
               return g[0].group_name_short
           }
       },
+      getDateTime(){
+            let date = new Date();
+            let text = new Date().toISOString().substring(0,19);
+            return text.substring(0,10) + ' ' + date.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+        },
     async save_request(){
       let arr = [];
       let path = await `/api/request_forms`;
@@ -319,7 +324,7 @@ export default {
         group_code : this.check_group(this.user.group_id),
         year : parseInt(new Date().toISOString().substr(0, 4)) + 543,
         order_no : 0,
-        created_date : new Date().toISOString().substr(0, 10),
+        created_date : this.getDateTime(),
         request_no : '',
         change_type : 0,
         request_title : this.request_title,

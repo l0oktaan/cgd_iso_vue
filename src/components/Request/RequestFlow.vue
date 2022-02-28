@@ -25,7 +25,7 @@
                   </v-row>
                   <v-row>
                       <v-col cols="4">วันที่สร้างคำขอ :</v-col>
-                        <v-col cols="8">{{getThaiDate(form.created_date)}}</v-col>
+                        <v-col cols="8">{{getThaiDateTime(form.created_date)}}</v-col>
                   </v-row>
                   <v-row>
                       <v-col cols="4">โดย :</v-col>
@@ -68,7 +68,7 @@
                   v-else
                   key="1"
                 >
-                  {{ status > 2 ? getThaiDate(request_status.ensure_date) : ''}}
+                  {{ status > 2 ? getThaiDateTime(request_status.ensure_date) : ''}}
                 </span>
               </v-fade-transition>
             </v-col>
@@ -97,7 +97,7 @@
                   </v-row>
                   <v-row>
                       <v-col cols="4">วันที่ :</v-col>
-                        <v-col cols="8">{{getThaiDate(request_status.ensure_date)}}</v-col>
+                        <v-col cols="8">{{getThaiDateTime(request_status.ensure_date)}}</v-col>
                   </v-row>
                   <v-row>
                       <v-col cols="4">โดย :</v-col>
@@ -201,7 +201,7 @@
                   v-else
                   key="1"
                 >
-                  {{ status > 3 ? getThaiDate(request_status.consider_date) : '' }}
+                  {{ status > 3 ? getThaiDateTime(request_status.consider_date) : '' }}
                 </span>
               </v-fade-transition>
             </v-col>
@@ -235,7 +235,7 @@
                   </v-row>
                   <v-row>
                       <v-col cols="4">วันที่ :</v-col>
-                      <v-col cols="8">{{getThaiDate(request_status.consider_date)}}</v-col>
+                      <v-col cols="8">{{getThaiDateTime(request_status.consider_date)}}</v-col>
                   </v-row>
                   <v-row>
                       <v-col cols="4">โดย :</v-col>
@@ -368,7 +368,7 @@
                   v-else
                   key="1"
                 >
-                  {{ request_status.approve_status ? getThaiDate(request_status.approve_date) : '' }}
+                  {{ request_status.approve_status ? getThaiDateTime(request_status.approve_date) : '' }}
                 </span>
               </v-fade-transition>
             </v-col>
@@ -401,7 +401,7 @@
                   </v-row>
                   <v-row>
                       <v-col cols="4">วันที่ :</v-col>
-                      <v-col cols="8">{{getThaiDate(request_status.approve_date)}}</v-col>
+                      <v-col cols="8">{{getThaiDateTime(request_status.approve_date)}}</v-col>
                   </v-row>
                   <v-row>
                       <v-col cols="4">โดย :</v-col>
@@ -504,7 +504,7 @@
                   v-else
                   key="1"
                 >
-                  {{ status > 5 ? getThaiDate(request_status.operate_save_date) : '' }}
+                  {{ status > 5 ? getThaiDateTime(request_status.operate_save_date) : '' }}
                 </span>
               </v-fade-transition>
             </v-col>
@@ -538,6 +538,10 @@
                   <v-row>
                     <v-col cols="4">รายละเอียด :</v-col>
                     <v-col cols="8">{{(request_status.operate_detail ? request_status.operate_detail : '-') + (request_status.operator_name ? ' (' + request_status.operator_name + ')' : '')}}</v-col>
+                </v-row>
+                <v-row>
+                    <v-col cols="4">วันที่ :</v-col>
+                    <v-col cols="8">{{getThaiDateTime(request_status.operate_save_date)}}</v-col>
                 </v-row>
                   <v-row>
                       <v-col cols="4">โดย :</v-col>
@@ -702,7 +706,7 @@
                   v-else
                   key="1"
                 >
-                  {{ status > 6 ? getThaiDate(request_status.follow_date) : '' }}
+                  {{ status > 6 ? getThaiDateTime(request_status.follow_date) : '' }}
                 </span>
               </v-fade-transition>
             </v-col>
@@ -732,7 +736,7 @@
                   </v-row>
                   <v-row>
                       <v-col cols="4">วันที่</v-col>
-                      <v-col cols="8">{{getThaiDate(request_status.follow_date)}}</v-col>
+                      <v-col cols="8">{{getThaiDateTime(request_status.follow_date)}}</v-col>
                   </v-row>
                   <v-row>
                       <v-col cols="4">โดย :</v-col>
@@ -845,7 +849,7 @@
                   v-else
                   key="1"
                 >
-                  {{ status > 7 ? getThaiDate(request_status.check_date) : '' }}
+                  {{ status > 7 ? getThaiDateTime(request_status.check_date) : '' }}
                 </span>
               </v-fade-transition>
             </v-col>
@@ -874,7 +878,7 @@
                   </v-row>
                   <v-row>
                       <v-col cols="4">วันที่ :</v-col>
-                      <v-col cols="8">{{getThaiDate(request_status.check_date)}}</v-col>
+                      <v-col cols="8">{{getThaiDateTime(request_status.check_date)}}</v-col>
                   </v-row>
                   <v-row>
                       <v-col cols="4">โดย :</v-col>
@@ -1163,6 +1167,11 @@ export default {
 
             }
         },
+        getDateTime(){
+            let date = new Date();
+            let text = new Date().toISOString().substring(0,19);
+            return text.substring(0,10) + ' ' + date.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+        },
         async save_status(flow){
             let path = await `/api/request_forms/${this.request_id}/request_status/${this.request_status.id}`;
             let detail = {};
@@ -1171,16 +1180,17 @@ export default {
                     detail = {
                         ensure_status : this.request_status.ensure_status,
                         ensure_detail : this.request_status.ensure_detail,
-                        ensure_date : new Date().toISOString().substr(0, 10),
+                        ensure_date : this.getDateTime(),
                         ensure_by : this.user.firstname + ' ' + this.user.lastname
                     }
+                    console.log('ensure date ' + detail.ensure_date)
                     break;
                 case "consider":
                     detail = {
                         consider_status : this.consider.status,
                         forward_to : this.getArrayItem(this.consider.forward_to),
                         consider_detail : this.consider.detail,
-                        consider_date : new Date().toISOString().substr(0, 10),
+                        consider_date : this.getDateTime(),
                         consider_by : this.user.firstname + ' ' + this.user.lastname
                     }
                     break;
@@ -1188,7 +1198,7 @@ export default {
                     detail = {
                         approve_status : this.approve.status,                        
                         approve_detail : this.approve.detail,
-                        approve_date : new Date().toISOString().substr(0, 10),
+                        approve_date : this.getDateTime(),
                         approve_by : this.user.firstname + ' ' + this.user.lastname
                     }
                     break;
@@ -1198,7 +1208,7 @@ export default {
                         operator_name : this.operate.operator_name,
                         operate_detail : this.operate.detail,
                         operate_date : this.operate.operate_date,
-                        operate_save_date : new Date().toISOString().substr(0, 10),
+                        operate_save_date : this.getDateTime(),
                         operate_by : this.user.firstname + ' ' + this.user.lastname
                     }
                     break;
@@ -1207,7 +1217,7 @@ export default {
                         follow_status : this.follow.status,
                         follow_impact : this.follow.impact,
                         follow_detail : this.follow.detail,
-                        follow_date : new Date().toISOString().substr(0, 10),
+                        follow_date : this.getDateTime(),
                         follow_by : this.user.firstname + ' ' + this.user.lastname
                     }
                     break;
@@ -1215,7 +1225,7 @@ export default {
                     detail = {
                         check_status : this.check.status,                        
                         check_detail : this.check.detail,
-                        check_date : new Date().toISOString().substr(0, 10),
+                        check_date : this.getDateTime(),
                         check_by : this.user.firstname + ' ' + this.user.lastname
                     }
                     break;
@@ -1224,11 +1234,16 @@ export default {
                     break;
             }
             // console.log(detail)
-            let response = await axios.put(`${path}`,detail)
-            this.$parent.show_alert = await "success";
-            await this.fetchData();
-            await this.$store.dispatch('fetchRequest');
-            await this.$emit('fetchRequest');
+            try {
+                let response = await axios.put(`${path}`,detail)
+                this.$parent.show_alert = await "success";
+                await this.fetchData();
+                await this.$store.dispatch('fetchRequest');
+                await this.$emit('fetchRequest');
+            } catch (error) {
+                
+            }
+            
             
             this.ensure_dialog = await false;
             this.consider_dialog = await false;
@@ -1239,12 +1254,30 @@ export default {
         },
         getThaiDate(item){
             if (item){
+                var locale = window.navigator.userLanguage || window.navigator.language;
                 var d = new Date(item);
-            return d.toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
+            return d.toLocaleDateString(locale, { day: 'numeric', month: 'short', year: 'numeric'});
             }else{
                 return "";
-            }            
+            }
         },
+        getThaiDateTime(item){
+            if (item){
+                var locale = window.navigator.userLanguage || window.navigator.language;
+                var d = new Date(item);
+            return d.toLocaleDateString(locale, { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric'});
+            }else{
+                return "";
+            }
+        },
+        // getThaiDate(item){
+        //     if (item){
+        //         var d = new Date(item);
+        //     return d.toLocaleDateString('th-TH', { day: 'numeric', month: 'short', year: 'numeric' });
+        //     }else{
+        //         return "";
+        //     }            
+        // },
     }
 }
 </script>

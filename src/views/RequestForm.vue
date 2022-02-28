@@ -80,7 +80,7 @@
                                 <v-dialog
                                     transition="dialog-bottom-transition"
                                     persistent
-                                    max-width="600"
+                                    max-width="900"
                                     v-model="detail_dialog"
                                 >
                                     
@@ -97,7 +97,7 @@
                                                         outlined
                                                         label="รายละเอียด"
                                                         no-resize
-                                                        rows="2"                                                        
+                                                        rows="5"                                                        
                                                     ></v-textarea>
                                                 </v-col>                                    
                                             </v-row>
@@ -1379,6 +1379,11 @@ export default {
                 return g[0].group_name;
             }
         },
+        getDateTime(){
+            let date = new Date();
+            let text = new Date().toISOString().substring(0,19);
+            return text.substring(0,10) + ' ' + date.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+        },
         async submit(){
             
             if (!this.detail_list || this.detail_list.length == 0){
@@ -1396,7 +1401,7 @@ export default {
                     group_code : this.check_group(this.user.group_id),
                     year : new Date().toISOString().substr(0, 4),
                     order_no : 0,
-                    created_date : new Date().toISOString().substr(0, 10),
+                    created_date : this.getDateTime(),
                     request_no : '',
                     change_type : this.form_edit.change_type,
                     request_title : this.form_edit.request_title,
@@ -1413,7 +1418,7 @@ export default {
                     end_time : this.form_edit.end_time,
                     status : 0,
                     description : this.form_edit.description,
-                    updated_date : new Date().toISOString().substr(0, 10),
+                    updated_date : this.getDateTime()
                     
                 })
 
@@ -1447,7 +1452,7 @@ export default {
                         end_time : this.form_edit.end_time,
                         status : 1,
                         description : this.form_edit.description,
-                        updated_date : new Date().toISOString().substr(0, 10)
+                        updated_date : this.getDateTime()
                     })
                     this.show_alert="success";
                     await this.uploadDetail();
