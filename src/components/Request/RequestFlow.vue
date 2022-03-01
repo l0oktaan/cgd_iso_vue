@@ -256,11 +256,42 @@
                         <span> รายละเอียดของการพิจารณา</span>
                     </v-card-title>                      
                     <v-card-text class="mt-4">
-                        <v-row justify="center">         
+                        <v-row>
+                            <v-col cols="12">                                
+                                <v-radio-group
+                                
+                                    v-model="consider_result"  
+                                    row     
+                                    mandatory                             
+                                    >
+                                    <v-radio
+                                        label="ส่งเรื่องคืน"
+                                        value="0"
+                                    ></v-radio>
+                                    <v-radio
+                                        label="ผ่านการพิจารณาแล้ว"
+                                        value="1"
+                                        check
+                                    ></v-radio>
+                                </v-radio-group>
+                                <hr>
+                                <v-textarea
+                                    v-if="consider_result == '0'"
+                                    v-model="consider.detail"
+                                    outlined
+                                    label="รายละเอียด"
+                                    no-resize
+                                    rows="3"
+                                    class="mt-2"
+                                    
+                                ></v-textarea>
+                            </v-col>
+                        </v-row>
+                        <v-row justify="center" v-if="consider_result == 1">         
                             <v-col cols="12">                                 
                                 <v-radio-group
                                     v-model="consider.status"
-                                    row
+                                    mandatory
                                     >
                                     <v-radio
                                         label="รับทราบการเปลี่ยงแปลงหรือแก้ไขระบบ"
@@ -305,7 +336,7 @@
                                     outlined
                                     label="รายละเอียด"
                                     no-resize
-                                    rows="2"
+                                    rows="3"
                                     class="mt-2"
                                     
                                 ></v-textarea>
@@ -975,6 +1006,7 @@ export default {
         operate_dialog: false,
         follow_dialog: false,
         check_dialog: false,
+        consider_result: "1",
         ensure:{
             status: 1,
             detail: 'รับรองให้ดำเนินการต่อ',
@@ -988,7 +1020,7 @@ export default {
             ensure_by: ''
         },
         consider: {
-            status: 0,
+            status: "1",
             forward_to: [],
             detail : ''
         },
@@ -1187,7 +1219,7 @@ export default {
                     break;
                 case "consider":
                     detail = {
-                        consider_status : this.consider.status,
+                        consider_status : this.consider_result == 1 ? this.consider.status : 0,
                         forward_to : this.getArrayItem(this.consider.forward_to),
                         consider_detail : this.consider.detail,
                         consider_date : this.getDateTime(),
