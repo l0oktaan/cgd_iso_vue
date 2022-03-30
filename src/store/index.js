@@ -216,6 +216,8 @@ export default new Vuex.Store({
           console.log('expire')
           commit('clearAuthData')
           return
+      }else{
+        console.log('expire')
       }
       expirationDate = new Date(now.getTime() + 1*60*60*1000)
       localStorage.setItem('expirationDate', expirationDate)

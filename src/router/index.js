@@ -24,6 +24,7 @@ import MasterData from "../views/MasterData.vue";
 import PolicyFirewall from "../views/PolicyFirewall.vue";
 
 import EmptyPage from "../views/EmptyPage.vue";
+import SearchUser from "../views/SearchUser.vue";
 
 import Test from "../views/Test.vue";
 Vue.use(VueRouter);
@@ -73,6 +74,11 @@ const routes = [
         path: "/master_data",
         name: "master_data",
         component: MasterData,
+      },
+      {
+        path: "/search_user",
+        name: "search_user",
+        component: SearchUser,
       },
       {
         path: "/policy_firewall",
