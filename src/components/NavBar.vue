@@ -96,6 +96,46 @@
     <v-divider></v-divider>
     <v-list shaped dense>
       <v-list-item
+        v-for="item in checkRole(navs.group_11)"
+        :key="item.title"
+        router
+        :to="item.route"
+        active-class="border"
+        link
+      >
+        <v-list-item-icon>
+          <v-tooltip right color="primary">
+            <template v-slot:activator="{ on, attrs }">
+              <v-badge
+                dot
+                color="error"
+                overlap
+                :value="countRequest(item.show)"
+              >
+                <v-icon
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  {{ item.icon }}
+                </v-icon>
+              </v-badge>
+          
+          </template>
+          <span>{{ item.title }}</span>  
+          </v-tooltip>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>
+            {{ item.title }}           
+            
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+    <v-divider></v-divider>
+    <v-list shaped dense>
+      <v-list-item
         v-for="item in checkRole(navs.group_2)"
         :key="item.title"
         router
@@ -204,9 +244,11 @@ export default {
             { title: "รายการผู้ใช้ระบบ", icon: "mdi-account-tie", route: "/admin", show: "admin" }, 
             { title: "Master Data", icon: "mdi-vector-link", route: "/master_data", show: "admin" },  
           ],
+          group_11: [            
+            { title: "AD Search", icon: "mdi-account-search", route: "/search_user", show: "search" },  
+          ],
         
-          group_2: [
-                 
+          group_2: [                 
             { title: "รายการอุปกรณ์", icon: "mdi-server", route: "/asset_equipment" , show: "all"},
             { title: "รายการบุคลากร", icon: "mdi-account-multiple", route: "/asset_people" , show: "all"},
             { title: "รายการ Policy Firewall", icon: "mdi-wall", route: "/policy_firewall" , show: "all"},
@@ -223,6 +265,7 @@ export default {
             { title: "การดำเนินการเปลี่ยนแปลง", icon: "mdi-cog", route: "/operate", show: "operate" },
             { title: "การติดตามผล", icon: "mdi-clipboard-clock", route: "/follow", show: "follow" },
             { title: "การตรวจสอบผล", icon: "mdi-shield-check", route: "/check", show: "check" },
+            
             // { title: "Test", icon: "mdi-stack-exchange", route: "/test" },
           ]
         }
@@ -341,10 +384,8 @@ export default {
         }
       }
     },
-    checkRole(list){
-      
-      let show = list.filter(x=>x.show === 'all' || JSON.parse(this.user.roles).includes(x.show));    
-      
+    checkRole(list){      
+      let show = list.filter(x=>x.show === 'all' || JSON.parse(this.user.roles).includes(x.show));          
       return show
     }  
     

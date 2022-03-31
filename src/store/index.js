@@ -20,7 +20,7 @@ const getDefaultState = () => {
     request_operate: null,
     request_follow: null,
     request_check: null,   
-    roles: ['admin','request','ensure','consider','approve','operate','follow','check']
+    roles: ['admin','request','ensure','consider','approve','operate','follow','check','search']
   }
 }
 export default new Vuex.Store({
@@ -41,7 +41,7 @@ export default new Vuex.Store({
       return state.user
     },
     roles (state){
-      return ['admin','request','ensure','consider','approve','operate','follow','check'] //state.roles
+      return ['admin','request','ensure','consider','approve','operate','follow','check','search'] //state.roles
     },
     group_id (state){
       return state.user.group_id

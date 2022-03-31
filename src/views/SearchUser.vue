@@ -149,6 +149,7 @@ export default {
         })
         this.waiting = await false;
         this.results = await res.data;
+        console.log(this.results);
     },
     getThaiDateTime(item){
         if (item == "Never Expire"){
