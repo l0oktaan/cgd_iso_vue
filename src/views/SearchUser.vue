@@ -1,24 +1,34 @@
 <template>    
 <div class="container">
-    <div class="search" v-if="!adv_toggle">
-        <i class="fa fa-search"></i>
+<Transition>
+    <div class="search" v-if="!adv_toggle">        
         <input type="text" class="searchTerm" placeholder="ค้นหา" 
             id="search" v-model="keyword" @keydown.enter="search"
         data-search>                    
-        <div class="clear" data-clear @click="keyword=''"></div>              
-        
+        <div class="clear">
+            <i class="fa fa-times fa-1x" v-show="keyword!=''" @click="keyword=''"></i>
+            <i class="fa fa-search" @click="search"></i>                        
+        </div>  
     </div>
+</Transition>
+<Transition>
     <div class="advsearch">
-        <div class="toggle_search" v-if="!adv_toggle">
+        <div class="toggle_search">
+            <v-switch            
+                v-model="adv_toggle"
+                :label="`Advance Search : [${getToggle()}]`"
+            ></v-switch>
+        </div>
+        <!-- <div class="toggle_search" v-if="!adv_toggle">
             <v-btn
                 elevation="2"
                 @click="adv_toggle=!adv_toggle"
             >Advance Search</v-btn>
-        </div>
+        </div> -->
         
-        <div class="filter" v-else>
+        <div class="filter" v-if="adv_toggle">
             <v-row>
-                <v-col cols="2"><div class="cname">ตัวเลือก :</div></v-col>
+                <v-col cols="2"><div class="cname">Advance Search</div></v-col>
                 <v-col cols="3">
                     <v-combobox
                         v-model="search_select"
@@ -45,14 +55,28 @@
                     elevation="2"
                     :disabled="arr_adv_search.length==0"
                 >Search</v-btn>
-                <v-btn
+                <!-- <v-btn
                     elevation="2"
                     @click="adv_toggle=!adv_toggle"
-                >Cancle</v-btn>
+                >Cancle</v-btn> -->
             </div>
         </div>
     </div>
-    <div class="show">
+</Transition>
+    <div class="wait" v-if="waiting">
+        <v-progress-circular
+            indeterminate
+            color="primary"
+        ></v-progress-circular>
+    </div>
+    <div class="show" v-if="!waiting">
+        <div>
+            <v-btn
+                v-if="results && results.length>0"
+                elevation="2"  
+                @click="clearSearch"              
+            >Clear</v-btn>
+        </div>
         
         <div class="detail" v-for="(item,index) in results" :key="index">
             
@@ -72,6 +96,10 @@
                 <v-col cols="3"><div class="cname">กลุ่มงาน :</div></v-col>
                 <v-col>{{item.department}}</v-col>
             </v-row>
+            <v-row>
+                <v-col cols="3"><div class="cname">Account หมดอายุ :</div></v-col>
+                <v-col>{{getThaiDateTime(item.accountexpires) + (item.remain == '' ? '' : ' (' + item.remain + ' วัน)')}}</v-col>
+            </v-row>            
              <v-row>
                 <v-col cols="3"><div class="cname">เปลี่ยนรหัสผ่านล่าสุด :</div></v-col>
                 <v-col>{{getThaiDateTime(item.pwdlastset)}}</v-col>
@@ -100,7 +128,8 @@ export default {
         ],
         search_select: {id: 0,text: 'ค้นหาด้วย'},
         adv_toggle: false,
-        arr_adv_search: []
+        arr_adv_search: [],
+        waiting: false
     }
   },
   mounted(){
@@ -108,18 +137,23 @@ export default {
   },
   methods: {
     async search(){
-        console.log(this.keyword);
+        
         if (this.keyword == ''){
             return;
         }
+        this.waiting = await true;
         let path = await `/api/search_ad`;
         let res = await axios.post(`${path}`,{
-            'field' : '',
+            'field' : 'quick',
             'value' : this.keyword
         })
+        this.waiting = await false;
         this.results = await res.data;
     },
     getThaiDateTime(item){
+        if (item == "Never Expire"){
+            return item;
+        }
         if (item){
             var locale = window.navigator.userLanguage || window.navigator.language;
             var d = new Date(item);
@@ -128,6 +162,14 @@ export default {
             return "";
         }
     },
+    getToggle(){
+        return this.adv_toggle ? 'เปิด' : 'ปิด';
+    },
+    async clearSearch(){
+        this.results = await [];
+        this.keyword = await '';     
+      
+    }
   },
   
   components : {
@@ -157,10 +199,11 @@ export default {
     align-items: center;
     background: #fff;    
     padding: 0px!important;
+    transition: opacity 0.2s ease;
 
 }
 .container .search .clear{
-    width: 15px;
+    width: 20px;
     height: 15px;
     margin-left: 10px;
     
@@ -169,7 +212,10 @@ export default {
     justify-content: center;
     align-items: center;
 }
-.container .search .clear::before{
+.container .search .clear .fa{
+    margin-left: 10px;
+}
+/* .container .search .clear::before{
     position: absolute;
     content: '';
     width: 1px;
@@ -192,18 +238,20 @@ export default {
 .container .search i:nth-last-child(1){
     width: 40px;
     cursor: pointer;
-}
+} */
 .container .search .searchTerm {
-    width: 305px;
+    width: 320px;
     border: 0;
     border-right: none;
     padding: 5px;
+    margin-left: 20px;
     height: 35px;
     background: rgb(255, 255, 255);
     outline: none;
     color: #000000;
     font-size: 1em;
 }
+
 .container .show{
     width: 100%;
     display: flex;
@@ -233,6 +281,7 @@ export default {
     justify-content: center;
     align-content: center;
     flex-direction: column;
+    transition: opacity 0.5s ease;
 }
 .container .advsearch .toggle_search{
     width: 100%;
