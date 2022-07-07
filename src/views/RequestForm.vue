@@ -1302,15 +1302,15 @@ export default {
                     responseType : 'blob'
                 })
                 .then(response=>{
-                    var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+                    var fileURL = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
                     
                     var fileLink = document.createElement('a');
                     fileLink.href = fileURL;
                     let filename = item.file_title;
                     fileLink.setAttribute('download', filename);
-                    // document.body.appendChild(fileLink);
-                    // window.open(fileLink, "_blank");
-                    fileLink.click();               
+                    document.body.appendChild(fileLink);
+                    window.open(fileLink, "_blank");
+                    // fileLink.click();               
                 })
                 .catch(error=>{
 

@@ -1,8 +1,11 @@
+// import VuePdfApp from "vue-pdf-app";
+
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
+
 import VueSweetalert2 from 'vue-sweetalert2';
 Vue.use(VueSweetalert2);
 Vue.config.productionTip = false;
@@ -12,6 +15,8 @@ import VueAxios from 'vue-axios'
 Vue.use(VueAxios,axios)
 
 
+// import "vue-pdf-app/dist/icons/main.css";
+// Vue.component("vue-pdf-app", VuePdfApp);
 // axios.defaults.baseURL = 'http://192.168.1.60:8080/engine-rest/';
 axios.defaults.baseURL = ''; //'http://10.100.90.23';
 //axios.defaults.baseURL = 'http://localhost:8000'; 

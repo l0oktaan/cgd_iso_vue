@@ -7,6 +7,7 @@ $font-size-root: 16px;
 $data-table-regular-row-height: 40px;
 $data-table-regular-header-height: 40px;
 
+$edit-dialog-content-padding	:0 0px !default;
 .v-application {
     [class*='text-'] {
       color: #36405a;

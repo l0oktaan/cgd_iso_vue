@@ -5,7 +5,7 @@
     v-model="drawer"
     permanent
     :mini-variant.sync="min"
-    
+    width="270"
     
   >
     <v-list-item px-2 class="main-menu" link>
@@ -243,6 +243,7 @@ export default {
             { title: "Dashboard", icon: "mdi-monitor-dashboard", route: "/" ,show : "all"},   
             { title: "รายการผู้ใช้ระบบ", icon: "mdi-account-tie", route: "/admin", show: "admin" }, 
             { title: "Master Data", icon: "mdi-vector-link", route: "/master_data", show: "admin" },  
+            { title: "Attach Files", icon: "mdi-paperclip", route: "/attach", show: "admin" }, 
           ],
           group_11: [            
             { title: "AD Search", icon: "mdi-account-search", route: "/search_user", show: "search" },  

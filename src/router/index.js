@@ -4,6 +4,7 @@ import store from '../store/index.js';
 
 import Home from "../views/Home.vue";
 import Admin from "../views/Admin.vue";
+import Attach from "../views/Attach.vue";
 import ISO from "../views/ISO.vue";
 import Login from "../views/Login.vue";
 
@@ -74,6 +75,11 @@ const routes = [
         path: "/master_data",
         name: "master_data",
         component: MasterData,
+      },
+      {
+        path: "/attach",
+        name: "attach",
+        component: Attach,
       },
       {
         path: "/search_user",

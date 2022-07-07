@@ -1,6 +1,6 @@
 <template>
 
-  <v-container>
+  <div>
     <!-- <v-row>
       <v-col>
         <request-search></request-search>
@@ -56,7 +56,7 @@
                     {{ getRequestNumber(item) }}
                 
             </template>
-            <template v-slot:item.user_id="{ item }">
+            <template v-slot:item.fullname="{ item }">
                 
                     {{ item.fullname }}
                 
@@ -182,7 +182,7 @@
         </template>
     </v-dialog>
     <my-alert :AlertType="show_alert"></my-alert>
-  </v-container>
+  </div>
 
 </template>
 
@@ -217,7 +217,7 @@ export default {
         { text: 'เรื่อง', sortable: false, value: 'request_title', class: ['blue darken-3', 'white--text'],width: '35%'},
                
                
-        { text: 'ผู้ร้องขอ', sortable: true, value: 'user_id', class: ['blue darken-3', 'white--text'],width: '15%'},       
+        { text: 'ผู้ร้องขอ', sortable: true, value: 'fullname', class: ['blue darken-3', 'white--text'],width: '15%'},       
         { text: 'สถานะ', sortable: true, value: 'status', class: ['blue darken-3', 'white--text'],width: '13%'},      
         { text: 'Action', value: 'actions',class: ['blue darken-3', 'white--text'],width: '10%'}                        
                       
