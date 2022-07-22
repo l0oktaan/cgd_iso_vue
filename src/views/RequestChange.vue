@@ -102,6 +102,7 @@
         
       </v-col>
     </v-row>
+    
     <v-dialog
         transition="dialog-bottom-transition"
         persistent
@@ -235,7 +236,9 @@ export default {
           required: value => !!value || 'กรุณาใส่ข้อมูล.',
           counter: value => value.length > 10 || 'ความยาวไม่น้อยกว่า 10 ตัวอักษร',          
         },
-      user: this.$store.getters.user
+      user: this.$store.getters.user,
+      check_dialog: false,
+      request_id: null
     }
   },
   mounted(){
@@ -346,6 +349,7 @@ export default {
       await this.close_dialog();
       await this.editItem(request.id);
     },
+    
     editItem(id){
       this.$router.push("/request_change/form/" + id);
     },

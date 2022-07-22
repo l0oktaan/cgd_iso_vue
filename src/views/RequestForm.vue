@@ -1476,7 +1476,8 @@ export default {
                 
                 this.show_alert = await "success";
                 await this.fetchData();
-            } catch (error) {                    
+            } catch (error) {   
+                // console.log(error);
                 this.show_alert = "error";
             }
 

@@ -65,6 +65,24 @@
                 >
                     {{(status == 44 || status == 55) ? 'mdi-magnify' : 'mdi-pencil-circle'}}
                 </v-icon>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-icon        
+                      v-if="status==7"            
+                      class="mr-2"
+                      large
+                      color="success"
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="checkItem(item.id)"
+                    >
+                      mdi-shield-check
+                    </v-icon>
+                  </template>
+                  <span>บันทึกตรวจสอบ</span>
+                </v-tooltip>
+                
+
                 <!-- <v-icon  
                     :disabled = "item.status > 1"
                     color="error"        
@@ -78,6 +96,78 @@
         
       </v-col>
     </v-row>
+    <v-dialog
+        transition="dialog-bottom-transition"
+        persistent
+        max-width="600"
+        v-model="check_dialog"
+    >
+        
+        <template v-slot:default="dialog">
+        <v-card>      
+            <v-card-title>
+                <span>การตรวจสอบผลการเปลี่ยนแปลง</span>
+            </v-card-title>                      
+            <v-card-text class="mt-4">
+                <v-row justify="center">  
+                          
+                    <v-col cols="12">                                 
+                        <v-radio-group
+                        v-model="check_status"
+                        mandatory
+                        row
+                        >
+                        <v-radio
+                            label="ดำเนินการตรวจสอบแล้ว"
+                            value="1"
+                        ></v-radio>
+                        <v-radio
+                            label="ไม่สามารถตรวจสอบได้"
+                            value="0"
+                        ></v-radio>
+                        </v-radio-group>           
+                        <v-textarea
+                            v-model="check_detail"
+                            outlined
+                            label="รายละเอียด"
+                            no-resize
+                            rows="2"
+                            
+                        ></v-textarea>
+                    </v-col>                                    
+                </v-row>
+                <v-row  justify="center">
+                    <v-col class="text-center">
+                        <v-btn                                    
+                            color="primary"
+                            rounded
+                            dark                
+                            dense
+                            @click="saveCheck"
+                            
+                        >
+                            <v-icon left>
+                                mdi-content-save-outline
+                            </v-icon>
+                            บันทึก
+                        </v-btn>
+                    </v-col>
+                </v-row>
+            </v-card-text>
+            <v-card-actions class="justify-end">
+            <v-btn
+                text
+                @click="dialog.value = false"
+                color="error"
+            >
+                <v-icon left>
+                    mdi-cancel
+                </v-icon>
+                ปิด</v-btn>
+            </v-card-actions>
+        </v-card>
+        </template>
+    </v-dialog>
     <my-alert :AlertType="show_alert"></my-alert>
   </v-container>
 
@@ -93,7 +183,7 @@ export default {
   props: ['list','status'],
   data(){
     return  {
-      
+      user: this.$store.getters.user,
       search: '',
       
       headers: [
@@ -137,7 +227,11 @@ export default {
         // { request_no : 'SDG1-2564/001', create_date: '2021-03-24',request_title : 'ขอเปิด policy firewall ระบบเงินเดือน',user_id: 'songwut.saj', status: 'รอรับรอง' }
       ],
       show_alert: '',
-      loadTable: true
+      loadTable: true,
+      check_dialog:false,
+      check_status: null,
+      check_detail:'',
+      request_id: null
     }
   },
   watch: {
@@ -214,6 +308,41 @@ export default {
         
       }
       return val;
+    },
+    
+    checkItem(id){
+      this.request_id = id;
+      this.check_dialog = true;
+
+    },
+    getDateTime(){
+        let date = new Date();
+        let text = new Date().toISOString().substring(0,19);
+        return text.substring(0,10) + ' ' + date.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+    },
+
+    async saveCheck(){
+      let path = await `/api/request_forms/${this.request_id}/request_status`;
+      let response = await axios.get(`${path}`);
+      let request_status = await response.data.data[0];
+      
+      const detail = await {
+          check_status : this.check_status,                        
+          check_detail : this.check_detail,
+          check_date : this.getDateTime(),
+          check_by : this.user.firstname + ' ' + this.user.lastname
+      }
+      try {
+        path = await `/api/request_forms/${this.request_id}/request_status/${request_status.id}`;
+        let res = await axios.put(`${path}`,detail)
+        this.show_alert = await "success";
+        await this.$store.dispatch('fetchRequest');
+        await this.fetchData();
+        this.check_dialog = await false;
+      } catch (error) {
+        this.show_alert = await "error";
+      }
+      
     }
   },
   
