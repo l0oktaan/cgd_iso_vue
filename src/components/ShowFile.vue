@@ -28,6 +28,28 @@
             </template>
             <span>เพิ่มไฟล์</span>
         </v-tooltip>
+        <v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">    
+                <div
+                v-bind="attrs"
+                v-on="on"
+                >
+
+                <div class="drag bg-gray-100 ml-4" @dragover="dragover" @dragleave="dragleave" @drop="drop" style="border-radius: 5px; padding: 10px; cursor:pointer;">
+                    <input type="file" style="display: none;" multiple name="fields[assetsFieldHandle][]" id="assetsFieldHandle" 
+                    class="w-px h-px opacity-0 overflow-hidden absolute" @click="onClick" @change="onChange" ref="file" accept=".pdf,.jpg,.jpeg,.png" />
+                    
+                    <label for="assetsFieldHandle" class="block">
+                        <div class="drag">
+                            <v-icon left x-samll>mdi-tray-arrow-up</v-icon>                                           
+                        </div>
+                    </label>                                        
+                </div>
+            </div>
+            </template>
+            <span>ลากวาง</span>
+        </v-tooltip>
+        
         <v-dialog
             v-model="file_dialog"
             transition="dialog-bottom-transition"            
@@ -224,7 +246,7 @@
                         fileLink.setAttribute('download', filename);
                         document.body.appendChild(fileLink);
                         window.open(fileLink, "_blank");
-                        // fileLink.click();               
+                        // fileLink.click();
                     })
                     .catch(error=>{
 
@@ -247,11 +269,17 @@
                 // this.file_list = await [];
                 await this.getFile();
                 this.file_dialog = await false;
+            },
+            onClick(e){
+                e.preventDefault();
             }
         }
     }
 </script>
 <style scoped>
+    .drag, .drag > i{
+        cursor:crosshair!important;
+    }
     .show_file{
         width: 100%;
         display: flex;

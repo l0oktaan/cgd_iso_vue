@@ -76,12 +76,14 @@
 </template>
 <script>
     import ShowFile from '@/components/ShowFile'
+    
     // import VuePdfApp from "vue-pdf-app";
     import axios from 'axios';
     export default{
         components: {
             // VuePdfApp,
-            ShowFile
+            ShowFile,
+            
         },
         data:()=>({           
             file_dialog: false,
@@ -105,7 +107,8 @@
                     
                 { text: 'ผู้ร้องขอ', sortable: true, value: 'fullname', class: ['blue darken-3', 'white--text'],width: '15%'},       
                 { text: 'สถานะ', sortable: true, value: 'status', class: ['blue darken-3', 'white--text'],width: '13%'},      
-                { text: 'ไฟล์แนบ', value: 'files',class: ['blue darken-3', 'white--text'],width: '5%'},
+                { text: 'ไฟล์แนบ', value: 'files',class: ['blue darken-3', 'white--text'],width: '10%'},
+                
                             
             ],
             loadTable: true,
@@ -216,11 +219,46 @@
                 }
                 return color;
             },
+            dragover(event) {
+                event.preventDefault();
+                    // Add some visual fluff to show the user can drop its files
+                    if (!event.currentTarget.classList.contains('bg-green-300')) {
+                        event.currentTarget.classList.remove('bg-gray-100');
+                        event.currentTarget.classList.add('bg-green-300');
+                    }
+                },
+            dragleave(event) {
+                // Clean up
+                event.currentTarget.classList.add('bg-gray-100');
+                event.currentTarget.classList.remove('bg-green-300');
+            },
+            drop(event) {
+                event.preventDefault();
+                this.$refs.file.files = event.dataTransfer.files;
+                this.onChange(); // Trigger the onChange event manually
+                // Clean up
+                document.getElementById('assetsFieldHandle').value= null;
+                
+                
+                
+                event.currentTarget.classList.add('bg-gray-100');
+                event.currentTarget.classList.remove('bg-green-300');
+            },
+            
         }
     }
 </script>
 <style scoped>
 .showFile{
     background: #fff;
+}
+.bg-gray-100{
+    background-color: #c5c5c5;
+    border: 1px solid #c5c5c5;
+}
+.bg-green-300{
+    background-color: #7ace79; 
+    border: 1px solid #c5c5c5;  
+    
 }
 </style>
