@@ -1269,6 +1269,8 @@ export default {
             try {
                 let response = await axios.put(`${path}`,detail)
                 this.$parent.show_alert = await "success";
+                // let r = await axios.get('/line/lineAlert');
+                // await console.log(r);
                 await this.fetchData();
                 await this.$store.dispatch('fetchRequest');
                 await this.$emit('fetchRequest');
