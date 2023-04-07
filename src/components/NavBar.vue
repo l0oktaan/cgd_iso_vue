@@ -364,6 +364,7 @@ export default {
     },
     getRequest(){
       let roles = JSON.parse(this.user.roles);
+      
       for (let i=0;i<=roles;i++){
         
         switch (roles[i]) {
@@ -385,9 +386,9 @@ export default {
           case 'check':
             this.$store.dispatch('get_request_check')
             break;
-            case 'expire':
-            this.$store.dispatch('get_request_expire')
-            break;
+            
+            
+            
         
           default:
             break;
