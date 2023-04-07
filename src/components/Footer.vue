@@ -30,8 +30,14 @@
       </v-card-title> -->
 
       <v-card-text class="py-2 white--text text-center">
-        <p>ศูนย์เทคโนโลยีสารสนเทศและการสื่อสาร กรมบัญชีกลาง</p>
-        <!-- <a href="https://lin.ee/hZUSyWs"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/th.png" alt="เพิ่มเพื่อน" height="36" border="0"></a> -->
+        <div class="footer-box">
+          <p>ศูนย์เทคโนโลยีสารสนเทศและการสื่อสาร กรมบัญชีกลาง</p>
+          <div>
+            <a href="https://lin.ee/hZUSyWs"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/th.png" alt="LINE Official" height="36" border="0"></a>
+            <p>LINE Official ID: @892idtwa</p>
+          </div>
+
+        </div>
       </v-card-text>
     </v-card>
   </v-footer>  
@@ -50,6 +56,12 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.footer-box{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+}
 </style>

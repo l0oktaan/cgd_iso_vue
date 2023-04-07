@@ -19,6 +19,7 @@ const getDefaultState = () => {
     request_approve: null,
     request_operate: null,
     request_follow: null,
+    request_expire: null,
     request_check: null,   
     roles: ['admin','request','ensure','consider','approve','operate','follow','check','search']
   }
@@ -64,6 +65,9 @@ export default new Vuex.Store({
     request_follow(state){
       return state.request_follow
     },
+    request_expire(state){
+      return state.request_expire
+    },
     request_check(state){
       return state.request_check
     },
@@ -99,6 +103,7 @@ export default new Vuex.Store({
       state.request_approve = null
       state.request_operate = null
       state.request_follow = null
+      state.request_expire = null
       state.request_check = null  
       state.group_cgd = null
       state.request_list = null
@@ -121,6 +126,9 @@ export default new Vuex.Store({
     },
     request_follow(state, data){
       state.request_follow = data
+    },
+    request_expire(state, data){
+      state.request_expire = data
     },
     request_check(state, data){
       state.request_check = data
@@ -260,7 +268,10 @@ export default new Vuex.Store({
     }
     if (this.state.user.roles.includes('check')){
       await dispatch('get_request_check')
-    }    
+    } 
+    
+    await dispatch('get_request_expire')
+       
     
   },
   async get_request_all({commit}){
@@ -296,6 +307,13 @@ export default new Vuex.Store({
     let response = await axios.get(`${path}`)
     console.log('follow length :' + response.data.data)
     await commit('request_follow',response.data.data)
+  },
+  async get_request_expire({commit}){     
+
+    let path = await `/api/request_form_expire`
+    let response = await axios.get(`${path}`)
+    console.log('expire length :' + response.data.data)
+    await commit('request_expire',response.data.data)
   },
   async get_request_check({commit}){
     let path = await `/api/request_form_check`

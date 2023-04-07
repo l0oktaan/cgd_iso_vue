@@ -20,6 +20,7 @@ import Consider from "../views/Consider.vue";
 import Approve from "../views/Approve.vue";
 import Operate from "../views/Operate.vue";
 import Follow from "../views/Follow.vue";
+import Expire from "../views/Expire.vue";
 import Check from "../views/Check.vue";
 import MasterData from "../views/MasterData.vue";
 import PolicyFirewall from "../views/PolicyFirewall.vue";
@@ -115,6 +116,10 @@ const routes = [
       {
         path: "/follow",        
         component: Follow,
+      },
+      {
+        path: "/request_expire",        
+        component: Expire,
       },
       {
         path: "/check",        

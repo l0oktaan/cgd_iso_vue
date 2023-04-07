@@ -183,7 +183,10 @@
         </v-list-item-icon>
 
         <v-list-item-content>
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
+          <v-list-item-title>
+            {{item.title }}
+            <v-chip class="text-right" color="error" x-small v-if="countRequest(item.show)>0">{{countRequest(item.show)}}</v-chip>
+          </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -221,8 +224,7 @@
 
         <v-list-item-content>
           <v-list-item-title>
-            {{ item.title }}
-            
+            {{ item.title }}            
             <v-chip class="text-right" color="error" x-small v-if="countRequest(item.show)>0">{{countRequest(item.show)}}</v-chip>
           </v-list-item-title>
         </v-list-item-content>
@@ -257,6 +259,7 @@ export default {
         
           group_3: [
             { title: "การร้องขอการเปลี่ยนแปลง", icon: "mdi-stack-exchange", route: "/request_change"},
+            { title: "การร้องขอใกล้หมดอายุ", icon: "mdi-alarm", route: "/request_expire", show: "expire"},
           ],
           group_4: [            
             { title: "การรับรองการร้องขอ", icon: "mdi-jira", route: "/ensure", show: "ensure" },
@@ -350,6 +353,9 @@ export default {
             break;
           case 'check':
             count = this.$store.getters.request_check ? this.$store.getters.request_check.length : 0
+            break;
+          case 'expire':
+            count = this.$store.getters.request_expire ? this.$store.getters.request_expire.length : 0
             break;        
           default:
             break;
@@ -378,6 +384,9 @@ export default {
             break;
           case 'check':
             this.$store.dispatch('get_request_check')
+            break;
+            case 'expire':
+            this.$store.dispatch('get_request_expire')
             break;
         
           default:

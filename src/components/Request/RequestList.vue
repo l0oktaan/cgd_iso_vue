@@ -299,8 +299,11 @@ export default {
         case 7:
             val = 'รอตรวจสอบผล'          
             break;
-          case 8:
+        case 8:
             val = 'เสร็จสิ้น'          
+            break;
+        case 88:
+            val = 'ใกล้หมดอายุ'          
             break;
         default:
           val = '';

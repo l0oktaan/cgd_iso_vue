@@ -759,6 +759,25 @@
                                 </v-row>
                             </v-col>
                         </v-row>
+                        <v-row>
+                            <v-col cols="3">
+                                <p class="topic"></p>
+                            </v-col>     
+                            <v-col cols="9">                                                               
+                                <v-row>
+                                    <v-col>                                            
+                                        <v-checkbox
+                                            :readonly="form_edit.status>1 ? true : false"
+                                            v-model="form_edit.alert_expire"
+                                            label="แจ้งเตือนก่อนหมดอายุ"                                            
+                                        ></v-checkbox>
+                                    </v-col>
+                                    
+                                    <v-spacer></v-spacer>
+                                </v-row>
+                                
+                            </v-col>
+                        </v-row>
                     </v-card>
                     
                     <v-card class="mycard mb-10 mt-5" > 
@@ -959,7 +978,8 @@ export default {
                 begin_time: null,
                 end_time: null,
                 status:0,
-                description: ''                
+                description: '',
+                alert_expire: false                
             },
             form_edit:{
                 request_title:'',                
@@ -977,7 +997,8 @@ export default {
                 begin_time: null,
                 end_time: null,
                 status:0,
-                description: ''
+                description: '',
+                alert_expire: false
             },
             request_status: {},
             detail_status: 'new',
@@ -1126,6 +1147,7 @@ export default {
             this.form_edit.end_time = await request.end_time;
             this.form_edit.status = await request.status;
             this.form_edit.description = await request.description;
+            this.form_edit.alert_expire = await request.alert_expire;
             this.form_edit.updated_date = await request.updated_date;
             this.show_status = await true;
             await this.$forceUpdate();
@@ -1418,6 +1440,7 @@ export default {
                     end_time : this.form_edit.end_time,
                     status : 0,
                     description : this.form_edit.description,
+                    alert_expire : this.form_edit.alert_expire,
                     updated_date : this.getDateTime()
                     
                 })
@@ -1452,6 +1475,7 @@ export default {
                         end_time : this.form_edit.end_time,
                         status : 1,
                         description : this.form_edit.description,
+                        alert_expire : this.form_edit.alert_expire,
                         updated_date : this.getDateTime()
                     })
                     this.show_alert="success";
