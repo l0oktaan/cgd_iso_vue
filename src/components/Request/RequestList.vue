@@ -81,6 +81,38 @@
                   </template>
                   <span>บันทึกตรวจสอบ</span>
                 </v-tooltip>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-icon        
+                      v-if="status==3"            
+                      class="mr-2"
+                      large
+                      color="success"
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="accept(item.id)"
+                    >
+                      mdi-shield-check
+                    </v-icon>
+                  </template>
+                  <span>พิจารณา</span>
+                </v-tooltip>
+                <v-tooltip top>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-icon        
+                      v-if="status==3"            
+                      class="mr-2"
+                      large
+                      color="warning"
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="forward(item.id)"
+                    >
+                      mdi-account-arrow-right
+                    </v-icon>
+                  </template>
+                  <span>ส่งต่อ ผอ.</span>
+                </v-tooltip>
                 
 
                 <!-- <v-icon  
@@ -201,7 +233,7 @@ export default {
         { text: 'เรื่อง', sortable: false, value: 'request_title', class: ['blue darken-3', 'white--text'],width: '30%'},       
         { text: 'ผู้ร้องขอ', sortable: false, value: 'user_id', class: ['blue darken-3', 'white--text'],width: '15%'},       
         { text: 'สถานะ', sortable: false, value: 'status', class: ['blue darken-3', 'white--text'],width: '15%'},      
-        { text: 'Action', value: 'actions',class: ['blue darken-3', 'white--text'],width: '10%'}                        
+        { text: 'Action', value: 'actions',class: ['blue darken-3', 'white--text'],width: '15%'}                        
                       
       ],
       header2: [
@@ -343,6 +375,96 @@ export default {
         await this.fetchData();
         this.check_dialog = await false;
       } catch (error) {
+        this.show_alert = await "error";
+      }
+      
+    },
+    async accept(id){
+      let path = await `/api/request_forms/${id}/request_status`;
+      
+      let response = await axios.get(`${path}`);
+      let request_status = await response.data.data[0];
+      
+      const detail = await {          
+        consider_status : 1,
+        forward_to : '[6]',
+        consider_detail : 'เห็นควรดำเนินการ',
+        consider_date : this.getDateTime(),
+        consider_by : this.user.firstname + ' ' + this.user.lastname
+      }
+      await console.log(detail);
+      // case "consider":
+      //               detail = {
+      //                   consider_status : this.consider_result == 1 ? this.consider.status : 0,
+      //                   forward_to : this.getArrayItem(this.consider.forward_to),
+      //                   consider_detail : this.consider.detail,
+      //                   consider_date : this.getDateTime(),
+      //                   consider_by : this.user.firstname + ' ' + this.user.lastname
+      //               }
+      //               break;
+      //           case "approve":
+      //               detail = {
+      //                   approve_status : this.approve.status,                        
+      //                   approve_detail : this.approve.detail,
+      //                   approve_date : this.getDateTime(),
+      //                   approve_by : this.user.firstname + ' ' + this.user.lastname
+      //               }
+      //               break;
+      try {
+        path = await `/api/request_forms/${id}/request_status/${request_status.id}`;
+        let res = await axios.put(`${path}`,detail)
+        this.show_alert = await "success";
+        await this.$store.dispatch('fetchRequest');
+        // await this.fetchData();
+        await this.$emit("getConsider");
+        this.check_dialog = await false;
+      } catch (error) {
+        console.log(error);
+        this.show_alert = await "error";
+      }
+      
+    },
+    async forward(id){
+      let path = await `/api/request_forms/${id}/request_status`;
+      
+      let response = await axios.get(`${path}`);
+      let request_status = await response.data.data[0];
+      
+      const detail = await {          
+        consider_status : 2,
+        forward_to : '[6]',
+        consider_detail : 'เห็นควรอนุมัติให้ดำเนินการ',
+        consider_date : this.getDateTime(),
+        consider_by : this.user.firstname + ' ' + this.user.lastname
+      }
+      await console.log(detail);
+      // case "consider":
+      //               detail = {
+      //                   consider_status : this.consider_result == 1 ? this.consider.status : 0,
+      //                   forward_to : this.getArrayItem(this.consider.forward_to),
+      //                   consider_detail : this.consider.detail,
+      //                   consider_date : this.getDateTime(),
+      //                   consider_by : this.user.firstname + ' ' + this.user.lastname
+      //               }
+      //               break;
+      //           case "approve":
+      //               detail = {
+      //                   approve_status : this.approve.status,                        
+      //                   approve_detail : this.approve.detail,
+      //                   approve_date : this.getDateTime(),
+      //                   approve_by : this.user.firstname + ' ' + this.user.lastname
+      //               }
+      //               break;
+      try {
+        path = await `/api/request_forms/${id}/request_status/${request_status.id}`;
+        let res = await axios.put(`${path}`,detail)
+        this.show_alert = await "success";
+        await this.$store.dispatch('fetchRequest');
+        await this.$emit("getConsider");
+        // await this.fetchData();
+        this.check_dialog = await false;
+      } catch (error) {
+        console.log(error);
         this.show_alert = await "error";
       }
       

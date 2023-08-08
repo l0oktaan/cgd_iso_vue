@@ -1,6 +1,6 @@
 <template>
 
-  <request-list :list="request_list" :status="3"></request-list>
+  <request-list :list="request_list" :status="3" @getConsider="fetchData"></request-list>
 
 </template>
 
