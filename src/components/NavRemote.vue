@@ -1,6 +1,8 @@
 <template>
   <v-navigation-drawer
+  class="indigo"
     dark
+    
     app
     v-model="drawer"
     permanent
@@ -134,7 +136,7 @@
       </v-list-item>
     </v-list>
     <v-divider></v-divider>
-    <!-- <v-list shaped dense>
+    <v-list shaped dense>
       <v-list-item
         v-for="item in checkRole(navs.group_2)"
         :key="item.title"
@@ -159,7 +161,7 @@
         </v-list-item-content>
       </v-list-item>
     </v-list>
-    <v-divider></v-divider> -->
+    <v-divider></v-divider>
     <v-list shaped dense>
       <v-list-item
         
@@ -258,15 +260,15 @@ export default {
           ],
         
           group_3: [
-            { title: "การร้องขอการเปลี่ยนแปลง", icon: "mdi-stack-exchange", route: "/request_change"},
-            { title: "การร้องขอใกล้หมดอายุ", icon: "mdi-alarm", route: "/request_expire", show: "expire"},
+            { title: "ขอดำเนินการ Policy Firewall/VPN", icon: "mdi-stack-exchange", route: "/remote_list"},
+            { title: "รายการใหล้หมดอายุ", icon: "mdi-alarm", route: "/request_expire", show: "expire"},
           ],
           group_4: [            
-            { title: "การรับรองการร้องขอ", icon: "mdi-jira", route: "/ensure", show: "ensure" },
-            { title: "การพิจารณาการร้องขอ", icon: "mdi-file-find", route: "/consider", show: "consider" },
+            { title: "การรับรอง", icon: "mdi-jira", route: "/ensure", show: "ensure" },
+            { title: "การพิจารณา", icon: "mdi-file-find", route: "/consider", show: "consider" },
             
-            { title: "การอนุมัติการ้องขอ", icon: "mdi-check-bold", route: "/approve", show: "approve" },
-            { title: "การดำเนินการเปลี่ยนแปลง", icon: "mdi-cog", route: "/operate", show: "operate" },
+            { title: "การอนุมัติกา", icon: "mdi-check-bold", route: "/approve", show: "approve" },
+            { title: "การดำเนินการเ", icon: "mdi-cog", route: "/operate", show: "operate" },
             { title: "การติดตามผล", icon: "mdi-clipboard-clock", route: "/follow", show: "follow" },
             { title: "การตรวจสอบผล", icon: "mdi-shield-check", route: "/check", show: "check" },
             
@@ -423,5 +425,8 @@ export default {
 }
 .v-list-item__icon:first-child{
   margin-right: 15px!important;
+}
+.v-navigation-drawer{
+  
 }
 </style>

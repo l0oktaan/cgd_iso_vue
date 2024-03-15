@@ -2,16 +2,17 @@
 <v-app-bar
       absolute     
       app
+      
     >
       <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
       <v-spacer></v-spacer>
       <v-toolbar-title>
           <v-avatar>
-            <v-img class="ma-3" height="45" contain src="@/assets/logo.png"></v-img>
+            <v-img class="ma-3 logo" height="45" contain src="@/assets/logo.png" @click="$router.replace('/')"></v-img>
           </v-avatar>
       </v-toolbar-title>
       <v-toolbar-title>
-        <strong>Request for Change System</strong>
+        <strong class="logo">ISMS Portal</strong>
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
@@ -83,6 +84,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.logo{
+  cursor: pointer;
+}
 </style>

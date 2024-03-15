@@ -7,6 +7,13 @@ import Admin from "../views/Admin.vue";
 import Attach from "../views/Attach.vue";
 import ISO from "../views/ISO.vue";
 import Login from "../views/Login.vue";
+import ISMS from "../views/ISMS.vue";
+import Landing from "../views/Landing.vue";
+
+import Remote from "../views/Remote/Remote.vue";
+import RemoteForm from "../views/Remote/RemoteForm.vue";
+import RemoteDashboard from "../views/Remote/RemoteDashboard.vue";
+import RemoteList from "../views/Remote/RemoteList.vue";
 
 import AssetEquipment from "../views/AssetEquipment.vue";
 import AssetPeople from "../views/AssetPeople.vue";
@@ -33,7 +40,67 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",    
+  path: "/",    
+    component: ISMS,
+    name: "ISMS",
+    beforeEnter (to, from, next) {
+      store.dispatch('checkLogin')
+      if (store.state.user) {          
+          next()          
+      } else {
+          next('/login')
+      }
+    },
+    children: [
+      {
+        path: "",
+        name: "Landing",
+        component: Landing,
+      },
+    ]
+  },
+  {
+    path: "/remote",    
+    component: Remote,
+    beforeEnter (to, from, next) {
+      store.dispatch('checkLogin')
+      if (store.state.user) {          
+          next()          
+      } else {
+          next('/login')
+      }
+    },
+    children: [
+      {
+        path: "",
+        name: "remote-dashboard",
+        component: RemoteDashboard,
+      },
+      {
+        path: "/remote_list",        
+        component: Request,
+        children:[
+          {
+            path: "",
+            name: "remote_list",
+            component: RemoteList,
+          },
+          {
+            path: "remote_form",
+            name: "remote_form",
+            component: RemoteForm,
+          },
+          {
+            path: "remote_form/:id",
+            name: "edit_remote_form",
+            component: RemoteForm,
+          },          
+        ]
+      },
+    ]
+  },
+  {
+    path: "/change",    
     component: Home,
     beforeEnter (to, from, next) {
       store.dispatch('checkLogin')
@@ -44,6 +111,7 @@ const routes = [
       }
     },
     children: [
+      
       {
         path: "",
         name: "ISO",

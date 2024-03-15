@@ -1,9 +1,8 @@
 <template>
   <v-app>
-    
+    <nav-bar></nav-bar>
 
     <tool-bar v-if="$store.getters.user"></tool-bar>
-    <nav-bar></nav-bar>
 
     <!-- Sizes your content based upon application components -->
     <v-main app>
@@ -23,7 +22,7 @@
 </template>
 
 <script>
-import NavBar from "@/components/NavBar.vue";
+import NavBar from "@/components/NavRemote.vue";
 import ToolBar from "@/components/ToolBar.vue";
 import MyFooter from "@/components/Footer.vue";
 export default {

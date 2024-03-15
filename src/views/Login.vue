@@ -39,7 +39,7 @@
                 <v-container>
                   <v-row justify="center">
                     <v-col cols="12">
-                      <h2 class="pt-10 text-center">Request for Change System</h2>
+                      <h2 class="pt-10 text-center">ISMS Portal</h2>
                     </v-col>
                   </v-row>
                   <v-row>
@@ -144,7 +144,7 @@ export default {
             })
             
             if (this.$store.getters.user){
-              this.$router.push({name:"ISO"});
+              this.$router.push({name:"Landing"});
             }
           } catch (error) {
             setTimeout(() => {

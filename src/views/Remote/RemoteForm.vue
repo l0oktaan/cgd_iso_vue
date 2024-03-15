@@ -54,20 +54,16 @@
                                     
                                 >
                                 <v-textarea
-                                    v-if="detail_list && detail_list.length > 0"
                                     dense
                                     rows="4"
-                                    v-model="detail_list[0].request_detail"
+                                    v-model="form_edit.request_detail"
                                     :rules="rules"
                                     hide-details="auto"          
                                     :error-messages="errors"
                                     outlined
                                 ></v-textarea>
-                                
                                 </validation-provider>
-                                
                             </v-col>
-                            
                         </v-row> 
                         <!-- <v-row>
                             <v-col cols="3">
@@ -247,7 +243,7 @@
                                         </v-expansion-panel>                                        
                                     </v-expansion-panels>
                             </v-col>
-                        </v-row> //Oled Detail -->
+                        </v-row> Oled Detail-->
                         <v-row>
                             <v-col cols="3"></v-col>
                             <v-col cols="9">                                    
@@ -921,7 +917,7 @@ import axios from 'axios';
 import UploadButton from 'vuetify-upload-button';
 import { required, max, digits, regex} from 'vee-validate/dist/rules'
 import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
-import RequestFirewall from '../components/Request/RequestFirewall';
+import RequestFirewall from '@/components/Request/RequestFirewall';
 setInteractionMode('eager')
 extend('required', {
 ...required,
@@ -1065,7 +1061,6 @@ export default {
     mounted(){
         
         this.fetchData();
-        console.log('router : ' + this.$route.name);
     },
     watch: {
         document_files(){
