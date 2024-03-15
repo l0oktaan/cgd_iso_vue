@@ -1252,9 +1252,9 @@ export default {
                         request_detail: this.detail.request_detail,
                         description: ''
                     })
-                    this.show_alert = await "success";
+                    // this.show_alert = await "success";
                     await this.getDetail();
-                    this.detail_dialog = false;
+                    // this.detail_dialog = false;
                 } catch (error) {
                     this.show_alert = await "error";
                 }
@@ -1270,9 +1270,9 @@ export default {
                         request_detail: this.detail.request_detail,
                         
                     })
-                    this.show_alert = await "success";
+                    // this.show_alert = await "success";
                     await this.getDetail();
-                    this.detail_dialog = false;
+                    // this.detail_dialog = false;
                 } catch (error) {
                     this.show_alert = await "error";
                 }
@@ -1280,7 +1280,7 @@ export default {
             }
             
             
-            this.detail_dialog = false;
+            // this.detail_dialog = false;
         },
         delete_detail(detail,index){
             if (detail.id == 0){
