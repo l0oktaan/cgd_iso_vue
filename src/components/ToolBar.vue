@@ -5,14 +5,14 @@
       
     >
       <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
-      <v-spacer></v-spacer>
+      
       <v-toolbar-title>
           <v-avatar>
             <v-img class="ma-3 logo" height="45" contain src="@/assets/logo.png" @click="$router.replace('/')"></v-img>
           </v-avatar>
       </v-toolbar-title>
       <v-toolbar-title>
-        <strong class="logo">ISMS Portal</strong>
+        <strong>ISMS Portal</strong>
       </v-toolbar-title>
 
       <v-spacer></v-spacer>
@@ -87,5 +87,9 @@ export default {
 <style scoped>
 .logo{
   cursor: pointer;
+  
+}
+.v-toolbar__title strong{
+  margin-left: 30px;
 }
 </style>

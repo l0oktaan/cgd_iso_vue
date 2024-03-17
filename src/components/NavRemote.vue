@@ -12,14 +12,14 @@
   >
     <v-list-item px-2 class="main-menu" link>
       <v-list-item-icon>
-        <v-icon @click.stop="mini = !mini">mdi-menu</v-icon>
+        <v-icon @click="$router.replace('/')">mdi-home</v-icon>
       </v-list-item-icon>
 
-      <v-list-item-title>เมนู</v-list-item-title>
+      <v-list-item-title @click="$router.replace('/')">หน้าหลัก</v-list-item-title>
 
-      <v-btn icon @click.stop="mini = !mini">
+      <!-- <v-btn icon @click.stop="mini = !mini">
         <v-icon>mdi-chevron-left</v-icon>
-      </v-btn>
+      </v-btn> -->
     </v-list-item>
 
     <v-divider></v-divider>

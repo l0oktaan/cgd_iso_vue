@@ -963,7 +963,7 @@ export default {
             detail_dialog: false,
             policy_dialog : false,
             alert: true,
-            rules: [v => v.length <= 250 || 'เกิน 250 ตัวอักษร'],
+            rules: [v => v.length <= 2500 || 'เกิน 2,500 ตัวอักษร'],
             title: '',
             detail: null,
             detail_item: {
@@ -1157,11 +1157,13 @@ export default {
             let path = await '/api/request_forms/' + this.request_id + '/request_details';
             try {
                 let response = await axios.get(path);
-                this.detail_list = await response.data.data;
-                this.panel = [];//await [...Array(this.detail_list).keys()].map((k, i) => i)
-                for (let i=0;i<this.detail_list.length;i++){
-                    this.panel.push(i);
-                }
+                let details =  await response.data.data;
+                this.detail_list = await details.filter(x=>x.type == 1)
+                // this.panel = [];//await [...Array(this.detail_list).keys()].map((k, i) => i)
+                // for (let i=0;i<this.detail_list.length;i++){
+                //     this.panel.push(i);
+                // }
+
             } catch (error) {
                 
             }
