@@ -7,6 +7,7 @@ import VuexPersistence from 'vuex-persist'
 const getDefaultState = () => {
   return {
     request_list : null,
+    remote_list : null,
     equip_list : null,
     people_list : null,
     group_id : null,
@@ -14,6 +15,7 @@ const getDefaultState = () => {
     user: null,
     userToken: null,
     request_all: null,
+    remote_all: null,
     request_ensure: null,
     request_consider: null,
     request_approve: null,
@@ -31,6 +33,9 @@ export default new Vuex.Store({
   getters: {
     request_list (state){
       return state.request_list
+    },
+    remote_list (state){
+      return state.remote_list
     },
     equip_list (state){
       return state.equip_list
@@ -52,6 +57,9 @@ export default new Vuex.Store({
     },
     request_all ( state){
       return state.request_all
+    },
+    remote_all ( state){
+      return state.remote_all
     },
     request_ensure(state){
       return state.request_ensure
@@ -78,6 +86,9 @@ export default new Vuex.Store({
   mutations: {
     request_list (state, data){
       state.request_list = data
+    },
+    remote_list (state, data){
+      state.remote_list = data
     },
     equip_list (state,data){
       state.equip_list = data
@@ -115,6 +126,9 @@ export default new Vuex.Store({
     request_all(state, data){
       state.request_all = data
     },
+    remote_all(state, data){
+      state.remote_all = data
+    },
     request_ensure(state, data){
       state.request_ensure = data
     },
@@ -145,6 +159,12 @@ export default new Vuex.Store({
       let response = await axios.get(path)
 
       commit('request_list',response.data.data)
+    },
+    async get_remote_list({commit}){
+      let path = '/api/remote_forms'
+      let response = await axios.get(path)
+
+      commit('remote_list',response.data.data)
     },
     async get_equip_list( {state,commit}){
       let path = await `/api/groups/${state.group_id}/asset_equipments`
@@ -278,6 +298,11 @@ export default new Vuex.Store({
     let path = await '/api/request_forms'
     let response = await axios.get(path)
     await commit('request_all',response.data.data)
+  },
+  async get_remote_all({commit}){
+    let path = await '/api/remote_forms'
+    let response = await axios.get(path)
+    await commit('remote_all',response.data.data)
   },
   async get_request_ensure({commit}){
     let path = await '/api/request_form_ensure'

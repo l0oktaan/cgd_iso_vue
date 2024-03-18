@@ -70,8 +70,8 @@ export default {
       // return (JSON.parse(this.user.roles).includes("admin")) ? true : false;
     },
     async fetchData(){
-      await this.$store.dispatch('get_request_all');
-      this.request_list = await this.$store.getters.request_all;
+      await this.$store.dispatch('get_remote_all');
+      this.request_list = await this.$store.getters.remote_all;
       
       await this.filterList();
       this.permissCheck()

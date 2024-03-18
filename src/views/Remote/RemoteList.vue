@@ -251,9 +251,9 @@ export default {
   },
   methods: {
     async fetchData(){
-      await this.$store.dispatch('get_request_list');
+      await this.$store.dispatch('get_remote_list');
       
-      this.request_list = await this.$store.getters.request_list;
+      this.request_list = await this.$store.getters.remote_list;
       this.loadTable = await false;
     },
     getThaiDate(item){
@@ -351,7 +351,7 @@ export default {
     },
     
     editItem(id){
-      this.$router.push("/remote_list/remote_form/" + id);
+      this.$router.push("/request_list/form/" + id);
     },
     close_dialog(){
       this.request_title = '';
