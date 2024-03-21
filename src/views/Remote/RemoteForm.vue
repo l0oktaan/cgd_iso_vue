@@ -892,7 +892,6 @@
             <v-col cols="3">
                 
                 <request-flow   
-
                     :request_id = "request_id" 
                     :status = "form_edit.status"
                     :group_id = "form_edit.group_id"  

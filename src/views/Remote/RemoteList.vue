@@ -340,6 +340,7 @@ export default {
         level_impact : 1,
         begin_date : new Date().toISOString().substr(0, 10),        
         status : 0,
+        detail_type: '2',
         description : '',
         updated_date : new Date().toISOString().substr(0, 10),
       })
@@ -351,7 +352,7 @@ export default {
     },
     
     editItem(id){
-      this.$router.push("/request_list/form/" + id);
+      this.$router.push("/remote_list/remote_form/" + id);
     },
     close_dialog(){
       this.request_title = '';

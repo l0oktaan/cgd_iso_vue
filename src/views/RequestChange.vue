@@ -318,6 +318,8 @@ export default {
             return text.substring(0,10) + ' ' + date.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
         },
     async save_request(){
+      
+      
       let arr = [];
       let path = await `/api/request_forms`;
       let response = await axios.post(`${path}`,{
@@ -341,6 +343,7 @@ export default {
         begin_date : new Date().toISOString().substr(0, 10),        
         status : 0,
         description : '',
+        detail_type : '1',
         updated_date : new Date().toISOString().substr(0, 10),
       })
       let request = await response.data.data;
