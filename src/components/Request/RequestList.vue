@@ -294,7 +294,15 @@ export default {
       this.$router.push("/request_change/form");
     },
     editItem(id){
-      this.$router.push("/request_change/form/" + id);
+      let path = this.$route.path;
+      if (path.includes('remote')){
+        this.$router.push("/remote/remote_list/remote_form/" + id);
+      }else{
+        this.$router.push("/change/request_change/form/" + id);
+      }
+      
+      
+      
     },
     
     getRequestNumber(item){

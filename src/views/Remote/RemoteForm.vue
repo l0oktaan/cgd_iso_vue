@@ -1433,7 +1433,7 @@ export default {
         },
         reset(){
             this.$router.go(-1);
-            // this.$router.push('/request_change');
+            // this.$router.push('/remote/remote_list');
         },
         check_group(id){
             let group = this.$store.getters.group_cgd;

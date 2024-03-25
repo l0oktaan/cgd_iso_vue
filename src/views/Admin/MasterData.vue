@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import Organization from '../components/Organization.vue'
+import Organization from '@/components/Organization.vue'
 export default {
     components:{
         'org':Organization

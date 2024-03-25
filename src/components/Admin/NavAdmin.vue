@@ -71,16 +71,17 @@
       <v-list-item
         v-for="item in checkRole(navs.group_1)"
         :key="item.title"
+        
         router
         :to="item.route"
         active-class="border"
         link
-        :class="item.route === $route.path ? 'border' : ''"
       >
-        <v-list-item-icon>
+        <v-list-item-icon >
           <v-tooltip right color="primary">
             <template v-slot:activator="{ on, attrs }">                      
-            <v-icon
+            <v-icon         
+              @click="goMenu(item.route)"     
               v-bind="attrs"
               v-on="on">
               {{ item.icon }}</v-icon>
@@ -88,8 +89,9 @@
             <span>{{ item.title }}</span>
           </v-tooltip>
         </v-list-item-icon>
+
         <v-list-item-content>
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
+          <v-list-item-title @click="goMenu(item.route)">{{ item.title }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -190,46 +192,8 @@
         </v-list-item-content>
       </v-list-item>
     </v-list>
-    <v-divider></v-divider>
-    <v-list shaped dense>
-      <v-list-item
-        v-for="item in checkRole(navs.group_4)"
-        :key="item.title"
-        router
-        :to="item.route"
-        active-class="border"
-        link
-      >
-        <v-list-item-icon>
-          <v-tooltip right color="primary">
-            <template v-slot:activator="{ on, attrs }">
-              <v-badge
-                dot
-                color="error"
-                overlap
-                :value="countRequest(item.show)"
-              >
-                <v-icon
-                  v-bind="attrs"
-                  v-on="on"
-                >
-                  {{ item.icon }}
-                </v-icon>
-              </v-badge>
-          
-          </template>
-          <span>{{ item.title }}</span>  
-          </v-tooltip>
-        </v-list-item-icon>
-
-        <v-list-item-content>
-          <v-list-item-title>
-            {{ item.title }}            
-            <v-chip class="text-right" color="error" x-small v-if="countRequest(item.show)>0">{{countRequest(item.show)}}</v-chip>
-          </v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
+    
+    
   </v-navigation-drawer>
 </template>
 
@@ -237,18 +201,28 @@
 export default {
   data() {
     return {
+      selectedItem: 0,
       drawer: true,
       user: this.$store.getters.user,
       navs: 
         {
+          mynavs: [
+            { text: 'My Files', icon: 'mdi-folder' },
+            { text: 'Shared with me', icon: 'mdi-account-multiple' },
+            { text: 'Starred', icon: 'mdi-star' },
+            { text: 'Recent', icon: 'mdi-history' },
+            { text: 'Offline', icon: 'mdi-check-circle' },
+            { text: 'Uploads', icon: 'mdi-upload' },
+            { text: 'Backups', icon: 'mdi-cloud-upload' },
+          ],
           group_1: [
-            { title: "Dashboard", icon: "mdi-monitor-dashboard", route: "/change/" ,show : "all"},   
-          //   { title: "รายการผู้ใช้ระบบ", icon: "mdi-account-tie", route: "/admin", show: "admin" }, 
-          //   { title: "Master Data", icon: "mdi-vector-link", route: "/admin/master_data", show: "admin" },  
-          //   { title: "Attach Files", icon: "mdi-paperclip", route: "/admin/attach", show: "admin" }, 
+            // { title: "Dashboard", icon: "mdi-monitor-dashboard", route: "/change" ,show : "all"},   
+            { title: "รายการผู้ใช้ระบบ", icon: "mdi-account-tie", route: "/admin", show: "admin" }, 
+            { title: "Master Data", icon: "mdi-vector-link", route: "/admin/master_data", show: "admin" },  
+            { title: "Attach Files", icon: "mdi-paperclip", route: "/admin/attach", show: "admin" }, 
           ],
           group_11: [            
-            // { title: "AD Search", icon: "mdi-account-search", route: "/admin/search_user", show: "search" },  
+            { title: "AD Search", icon: "mdi-account-search", route: "/admin/search_user", show: "search" },  
           ],
         
           group_2: [                 
@@ -258,17 +232,17 @@ export default {
           ],
         
           group_3: [
-            { title: "การร้องขอการเปลี่ยนแปลง", icon: "mdi-stack-exchange", route: "/change/request_change"},
-            { title: "การร้องขอใกล้หมดอายุ", icon: "mdi-alarm", route: "/change/request_expire", show: "expire"},
+            // { title: "การร้องขอการเปลี่ยนแปลง", icon: "mdi-stack-exchange", route: "/change/request_change"},
+            // { title: "การร้องขอใกล้หมดอายุ", icon: "mdi-alarm", route: "/change/request_expire", show: "expire"},
           ],
           group_4: [            
-            { title: "การรับรองการร้องขอ", icon: "mdi-jira", route: "/change/ensure", show: "ensure" },
-            { title: "การพิจารณาการร้องขอ", icon: "mdi-file-find", route: "/change/consider", show: "consider" },
+            // { title: "การรับรองการร้องขอ", icon: "mdi-jira", route: "/change/ensure", show: "ensure" },
+            // { title: "การพิจารณาการร้องขอ", icon: "mdi-file-find", route: "/change/consider", show: "consider" },
             
-            { title: "การอนุมัติการ้องขอ", icon: "mdi-check-bold", route: "/change/approve", show: "approve" },
-            { title: "การดำเนินการเปลี่ยนแปลง", icon: "mdi-cog", route: "/change/operate", show: "operate" },
-            { title: "การติดตามผล", icon: "mdi-clipboard-clock", route: "/change/follow", show: "follow" },
-            { title: "การตรวจสอบผล", icon: "mdi-shield-check", route: "/change/check", show: "check" },
+            // { title: "การอนุมัติการ้องขอ", icon: "mdi-check-bold", route: "/change/approve", show: "approve" },
+            // { title: "การดำเนินการเปลี่ยนแปลง", icon: "mdi-cog", route: "/change/operate", show: "operate" },
+            // { title: "การติดตามผล", icon: "mdi-clipboard-clock", route: "/change/follow", show: "follow" },
+            // { title: "การตรวจสอบผล", icon: "mdi-shield-check", route: "/change/check", show: "check" },
             
             // { title: "Test", icon: "mdi-stack-exchange", route: "/test" },
           ]
@@ -329,6 +303,10 @@ export default {
     this.getRequest();
   },
   methods: {
+    goMenu(route){
+      console.log('route : ' + route);
+      this.$router.push(route);
+    },
     getMini(){
       return this.mini || this.min;
     },

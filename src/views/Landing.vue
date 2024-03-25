@@ -36,6 +36,13 @@
           icon : 'fas fa-network-wired',
           route : 'remote',
           color : ''
+        },
+        {
+          id : 3,
+          name : 'Admin',
+          icon : 'fas fa-user-cog',
+          route : 'admin',
+          color : ''
         }
       ]
     }),

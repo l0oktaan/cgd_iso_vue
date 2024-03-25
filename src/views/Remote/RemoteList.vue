@@ -352,7 +352,7 @@ export default {
     },
     
     editItem(id){
-      this.$router.push("/remote_list/remote_form/" + id);
+      this.$router.push("/remote/remote_list/remote_form/" + id);
     },
     close_dialog(){
       this.request_title = '';

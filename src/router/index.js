@@ -3,7 +3,9 @@ import VueRouter from "vue-router";
 import store from '../store/index.js';
 
 import Home from "../views/Home.vue";
-import Admin from "../views/Admin.vue";
+import Admin from "../views/Admin/Admin.vue";
+import User from "../views/Admin/User.vue";
+import MasterData from "../views/Admin/MasterData.vue";
 import Attach from "../views/Attach.vue";
 import ISO from "../views/ISO.vue";
 import Login from "../views/Login.vue";
@@ -29,11 +31,11 @@ import Operate from "../views/Operate.vue";
 import Follow from "../views/Follow.vue";
 import Expire from "../views/Expire.vue";
 import Check from "../views/Check.vue";
-import MasterData from "../views/MasterData.vue";
+
 import PolicyFirewall from "../views/PolicyFirewall.vue";
 
 import EmptyPage from "../views/EmptyPage.vue";
-import SearchUser from "../views/SearchUser.vue";
+import SearchUser from "../views/Admin/SearchUser.vue";
 
 import Test from "../views/Test.vue";
 Vue.use(VueRouter);
@@ -77,7 +79,7 @@ const routes = [
         component: RemoteDashboard,
       },
       {
-        path: "/remote_list",        
+        path: "remote_list",        
         component: Request,
         children:[
           {
@@ -96,6 +98,85 @@ const routes = [
             component: RemoteForm,
           },          
         ]
+      },
+      {
+        path: "ensure",        
+        component: Ensure,
+      },
+      {
+        path: "consider",        
+        component: Consider,
+      },
+      {
+        path: "approve",        
+        component: Approve,
+      },
+      {
+        path: "operate",        
+        component: Operate,
+      },
+      {
+        path: "follow",        
+        component: Follow,
+      },
+      {
+        path: "remote_expire",        
+        component: Expire,
+      },
+      {
+        path: "check",        
+        component: Check,
+      },
+      {
+        path: "asset_equipment",
+        name: "asset_equipment",
+        component: AssetEquipment,
+      },
+      {
+        path: "asset_people",
+        name: "asset_people",
+        component: AssetPeople,
+      },
+      {
+        path: "policy_firewall",
+        name: "policy_firewall",
+        component: PolicyFirewall,
+      },
+    ]
+  },
+  {
+    path: "/admin",
+    name: "admin",
+    component: Admin,
+    beforeEnter (to, from, next) {
+      //string.includes(substring)
+      if(store.state.user.roles.includes("admin")){           
+        next()          
+      } else {
+        next({ name: 'ISO' })
+      }
+    },
+    children: [
+      {
+        path: "", 
+        name : "user",
+        component: User,
+      },
+      
+      {
+        path: "master_data",
+        name: "master_data",
+        component: MasterData,
+      },
+      {
+        path: "attach",
+        name: "attach",
+        component: Attach,
+      },
+      {
+        path: "search_user",
+        name: "search_user",
+        component: SearchUser,
       },
     ]
   },
@@ -117,84 +198,44 @@ const routes = [
         name: "ISO",
         component: ISO,
       },
+      
+      
+      
       {
-        path: "/admin",
-        name: "admin",
-        component: Admin,
-        beforeEnter (to, from, next) {
-          //string.includes(substring)
-          if(store.state.user.roles.includes("admin")){           
-            next()          
-          } else {
-            next({ name: 'ISO' })
-          }
-        },
-      },
-      {
-        path: "/asset_equipment",
-        name: "asset_equipment",
-        component: AssetEquipment,
-      },
-      {
-        path: "/asset_people",
-        name: "asset_people",
-        component: AssetPeople,
-      },
-      {
-        path: "/master_data",
-        name: "master_data",
-        component: MasterData,
-      },
-      {
-        path: "/attach",
-        name: "attach",
-        component: Attach,
-      },
-      {
-        path: "/search_user",
-        name: "search_user",
-        component: SearchUser,
-      },
-      {
-        path: "/policy_firewall",
-        name: "policy_firewall",
-        component: PolicyFirewall,
-      },
-      {
-        path: "/test",
+        path: "test",
         name: "test",
         component: Test,
       },
       {
-        path: "/ensure",        
+        path: "ensure",        
         component: Ensure,
       },
       {
-        path: "/consider",        
+        path: "consider",        
         component: Consider,
       },
       {
-        path: "/approve",        
+        path: "approve",        
         component: Approve,
       },
       {
-        path: "/operate",        
+        path: "operate",        
         component: Operate,
       },
       {
-        path: "/follow",        
+        path: "follow",        
         component: Follow,
       },
       {
-        path: "/request_expire",        
+        path: "request_expire",        
         component: Expire,
       },
       {
-        path: "/check",        
+        path: "check",        
         component: Check,
       },
       {
-        path: "/request_change",        
+        path: "request_change",        
         component: Request,
         children:[
           {

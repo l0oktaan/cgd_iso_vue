@@ -245,32 +245,32 @@ export default {
         {
           group_1: [
             { title: "Dashboard", icon: "mdi-monitor-dashboard", route: "/remote" ,show : "all"},   
-            { title: "รายการผู้ใช้ระบบ", icon: "mdi-account-tie", route: "/admin", show: "admin" }, 
-            { title: "Master Data", icon: "mdi-vector-link", route: "/master_data", show: "admin" },  
-            { title: "Attach Files", icon: "mdi-paperclip", route: "/attach", show: "admin" }, 
+            // { title: "รายการผู้ใช้ระบบ", icon: "mdi-account-tie", route: "/admin", show: "admin" }, 
+            // { title: "Master Data", icon: "mdi-vector-link", route: "/master_data", show: "admin" },  
+            // { title: "Attach Files", icon: "mdi-paperclip", route: "/attach", show: "admin" }, 
           ],
           group_11: [            
-            { title: "AD Search", icon: "mdi-account-search", route: "/search_user", show: "search" },  
+            // { title: "AD Search", icon: "mdi-account-search", route: "/search_user", show: "search" },  
           ],
         
           group_2: [                 
-            { title: "รายการอุปกรณ์", icon: "mdi-server", route: "/asset_equipment" , show: "all"},
-            { title: "รายการบุคลากร", icon: "mdi-account-multiple", route: "/asset_people" , show: "all"},
-            { title: "รายการ Policy Firewall", icon: "mdi-wall", route: "/policy_firewall" , show: "all"},
+            { title: "รายการอุปกรณ์", icon: "mdi-server", route: "/remote/asset_equipment" , show: "all"},
+            { title: "รายการบุคลากร", icon: "mdi-account-multiple", route: "/remote/asset_people" , show: "all"},
+            { title: "รายการ Policy Firewall", icon: "mdi-wall", route: "/remote/policy_firewall" , show: "all"},
           ],
         
           group_3: [
-            { title: "ขอดำเนินการ Policy Firewall/VPN", icon: "mdi-stack-exchange", route: "/remote_list"},
-            { title: "รายการใหล้หมดอายุ", icon: "mdi-alarm", route: "/request_expire", show: "expire"},
+            { title: "ขอดำเนินการ Policy Firewall/VPN", icon: "mdi-stack-exchange", route: "/remote/remote_list"},
+            { title: "รายการใหล้หมดอายุ", icon: "mdi-alarm", route: "/remote/remote_expire", show: "expire"},
           ],
           group_4: [            
-            { title: "การรับรอง", icon: "mdi-jira", route: "/ensure", show: "ensure" },
-            { title: "การพิจารณา", icon: "mdi-file-find", route: "/consider", show: "consider" },
+            { title: "การรับรอง", icon: "mdi-jira", route: "/remote/ensure", show: "ensure" },
+            { title: "การพิจารณา", icon: "mdi-file-find", route: "/remote/consider", show: "consider" },
             
-            { title: "การอนุมัติกา", icon: "mdi-check-bold", route: "/approve", show: "approve" },
-            { title: "การดำเนินการเ", icon: "mdi-cog", route: "/operate", show: "operate" },
-            { title: "การติดตามผล", icon: "mdi-clipboard-clock", route: "/follow", show: "follow" },
-            { title: "การตรวจสอบผล", icon: "mdi-shield-check", route: "/check", show: "check" },
+            { title: "การอนุมัติกา", icon: "mdi-check-bold", route: "/remote/approve", show: "approve" },
+            { title: "การดำเนินการเ", icon: "mdi-cog", route: "/remote/operate", show: "operate" },
+            { title: "การติดตามผล", icon: "mdi-clipboard-clock", route: "/remote/follow", show: "follow" },
+            { title: "การตรวจสอบผล", icon: "mdi-shield-check", route: "/remote/check", show: "check" },
             
             // { title: "Test", icon: "mdi-stack-exchange", route: "/test" },
           ]
