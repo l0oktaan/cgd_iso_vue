@@ -55,8 +55,14 @@ export default {
       // let path = await `/api/request_form_ensure`;
       // let response = await axios.get(`${path}`);
       // this.request_list = await response.data.data;
-      await this.$store.dispatch('get_request_ensure');
-      this.request_list = await this.$store.getters.request_ensure;
+      if (this.$route.path.includes('remote')){
+        await this.$store.dispatch('get_remote_ensure');
+        this.request_list = await this.$store.getters.remote_ensure;
+      }else{
+        await this.$store.dispatch('get_request_ensure');
+        this.request_list = await this.$store.getters.request_ensure;
+      }
+      
     },
     getThaiDate(item){
       if (item){

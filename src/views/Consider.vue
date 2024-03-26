@@ -49,9 +49,16 @@ export default {
       // await this.$store.dispatch('get_request_list');
       // let list = await this.$store.getters.request_list;
       // this.request_list = await list.filter(x=>x.status==this.status);
-      let path = await `/api/request_form_consider`;
-      let response = await axios.get(`${path}`);
-      this.request_list = await response.data.data;
+      if (this.$route.path.includes('remote')){
+        let path = await `/api/remote_form_consider`;
+        let response = await axios.get(`${path}`);
+        this.request_list = await response.data.data;
+      }else{
+        let path = await `/api/request_form_consider`;
+        let response = await axios.get(`${path}`);
+        this.request_list = await response.data.data;
+      }
+      
     },
     getThaiDate(item){
       if (item){

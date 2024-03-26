@@ -261,14 +261,14 @@ export default {
         
           group_3: [
             { title: "ขอดำเนินการ Policy Firewall/VPN", icon: "mdi-stack-exchange", route: "/remote/remote_list"},
-            { title: "รายการใหล้หมดอายุ", icon: "mdi-alarm", route: "/remote/remote_expire", show: "expire"},
+            { title: "รายการใกล้หมดอายุ", icon: "mdi-alarm", route: "/remote/remote_expire", show: "expire"},
           ],
           group_4: [            
             { title: "การรับรอง", icon: "mdi-jira", route: "/remote/ensure", show: "ensure" },
             { title: "การพิจารณา", icon: "mdi-file-find", route: "/remote/consider", show: "consider" },
             
-            { title: "การอนุมัติกา", icon: "mdi-check-bold", route: "/remote/approve", show: "approve" },
-            { title: "การดำเนินการเ", icon: "mdi-cog", route: "/remote/operate", show: "operate" },
+            { title: "การอนุมัติ", icon: "mdi-check-bold", route: "/remote/approve", show: "approve" },
+            { title: "การดำเนินการ", icon: "mdi-cog", route: "/remote/operate", show: "operate" },
             { title: "การติดตามผล", icon: "mdi-clipboard-clock", route: "/remote/follow", show: "follow" },
             { title: "การตรวจสอบผล", icon: "mdi-shield-check", route: "/remote/check", show: "check" },
             
@@ -339,25 +339,25 @@ export default {
       
       switch (role) {
           case 'ensure':
-            count = this.$store.getters.request_ensure ? this.$store.getters.request_ensure.length : 0
+            count = this.$store.getters.remote_ensure ? this.$store.getters.remote_ensure.length : 0
             break;
           case 'consider':
-            count = this.$store.getters.request_consider ? this.$store.getters.request_consider.length : 0
+            count = this.$store.getters.remote_consider ? this.$store.getters.remote_consider.length : 0
             break;
           case 'approve':
-            count = this.$store.getters.request_approve ? this.$store.getters.request_approve.length : 0
+            count = this.$store.getters.remote_approve ? this.$store.getters.remote_approve.length : 0
             break;
           case 'operate':
-            count = this.$store.getters.request_operate ? this.$store.getters.request_operate.length : 0
+            count = this.$store.getters.remote_operate ? this.$store.getters.remote_operate.length : 0
             break;
           case 'follow':
-            count = this.$store.getters.request_follow ? this.$store.getters.request_follow.length : 0
+            count = this.$store.getters.remote_follow ? this.$store.getters.remote_follow.length : 0
             break;
           case 'check':
-            count = this.$store.getters.request_check ? this.$store.getters.request_check.length : 0
+            count = this.$store.getters.remote_check ? this.$store.getters.remote_check.length : 0
             break;
           case 'expire':
-            count = this.$store.getters.request_expire ? this.$store.getters.request_expire.length : 0
+            count = this.$store.getters.remote_expire ? this.$store.getters.remote_expire.length : 0
             break;        
           default:
             break;

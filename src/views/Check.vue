@@ -46,9 +46,15 @@ export default {
   },
   methods: {
     async fetchData(){
-      let path = await `/api/request_form_check`;
-      let response = await axios.get(`${path}`);
-      this.request_list = await response.data.data;
+      if (this.$route.path.includes('remote')){
+        let path = await `/api/remote_form_check`;
+        let response = await axios.get(`${path}`);
+        this.request_list = await response.data.data;
+      }else{
+        let path = await `/api/request_form_check`;
+        let response = await axios.get(`${path}`);
+        this.request_list = await response.data.data;
+      }
     },
     getThaiDate(item){
       if (item){

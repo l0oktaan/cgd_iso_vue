@@ -49,8 +49,13 @@ export default {
       // let path = await `/api/request_form_follow`;
       // let response = await axios.get(`${path}`);
       // this.request_list = await response.data.data;
-      await this.$store.dispatch('get_request_follow');
-      this.request_list = await this.$store.getters.request_follow;
+      if (this.$route.path.includes('remote')){
+        await this.$store.dispatch('get_remote_follow');
+        this.request_list = await this.$store.getters.remote_follow;
+      }else{
+        await this.$store.dispatch('get_request_follow');
+        this.request_list = await this.$store.getters.request_follow;
+      }
     },
     getThaiDate(item){
       if (item){

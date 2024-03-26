@@ -42,7 +42,7 @@
                                 </validation-provider>
                             </v-col>
                         </v-row>
-                        <v-row>    
+                        <!-- <v-row>    
                             <v-col cols="3">
                                 <p class="topic">รายละเอียด :</p>
                             </v-col>     
@@ -64,99 +64,56 @@
                                 ></v-textarea>
                                 </validation-provider>
                             </v-col>
-                        </v-row> 
-                        <!-- <v-row>
+                        </v-row>  -->
+                        <v-row>
                             <v-col cols="3">
                                 <p class="topic">รายละเอียด :</p>
                             </v-col>
                             <v-col cols="9" >                                
-                                <v-menu offset-y v-if="form_edit.status <= 1">
-                                    <template v-slot:activator="{ on, attrs }">
-                                            <v-btn
-                                                color="success"
-                                                rounded
-                                                dark
-                                                v-bind="attrs"
-                                                v-on="on"
-                                                class="mb-2"
-                                                dense
-                                            >
-                                                <v-icon left>
-                                                    mdi-plus
-                                                </v-icon>
-                                                เพิ่มรายละเอียด
-                                            </v-btn>                               
-                                        
-                                    </template>
-                                    <v-list>
-                                        <v-list-item
-                                            v-for="(item, index) in detail_type"
-                                            :key="index"
-                                            link
-                                        >
-                                            <v-list-item-title @click="create_detail(item.value)" class="mymenu">
-                                                {{ item.text }}
-                                            </v-list-item-title>
-                                        </v-list-item>
-                                    </v-list>
-                                </v-menu>
-                                <v-dialog
-                                    transition="dialog-bottom-transition"
-                                    persistent
-                                    max-width="900"
-                                    v-model="detail_dialog"
+                                
+                                <v-btn
+                                    color="success"
+                                    rounded
+                                    dark                                    
+                                    class="mb-2"
+                                    dense
+                                    @click="create_detail(2)"
                                 >
+                                    <v-icon left>
+                                        mdi-plus
+                                    </v-icon>
+                                    เพิ่มรายละเอียด
+                                </v-btn>                               
+                                <div class="request_detail" v-for="(detail,index) in detail_list" :key="index">
+                                    <div class="detail_top">
+                                        <div>
+                                            <v-chip
+                                            class="ma-2"
+                                            color="primary"
+                                            >
+                                        {{index+1}}
+                                            </v-chip>
+                                        </div>
+                                        <div class="detail_menu">
+                                            <show-policy :detail="detail" v-if="detail.type == 2"></show-policy>                                        
+                                            <v-btn   
+                                                fab
+                                                dark
+                                                x-small
+                                                color="error"
+                                                v-if="form_edit.status <= 1"
+                                                @click="delete_detail(detail,index)"
+                                                >
+                                                <v-icon>
+                                                    mdi-close
+                                                </v-icon>
+                                            </v-btn>
+                                        </div>
+                                    </div>
+                                    <div class="detail">{{detail.request_detail}}</div>
+                                </div>        
                                     
-                                    <template v-slot:default="dialog">
-                                    <v-card>      
-                                        <v-card-title>
-                                            <span> รายละเอียดของการร้องขอ</span>
-                                        </v-card-title>                      
-                                        <v-card-text class="mt-4">
-                                            <v-row justify="center">         
-                                                <v-col cols="12">            
-                                                    <v-textarea
-                                                        v-model="detail.request_detail"
-                                                        outlined
-                                                        label="รายละเอียด"
-                                                        no-resize
-                                                        rows="5"                                                        
-                                                    ></v-textarea>
-                                                </v-col>                                    
-                                            </v-row>
-                                            <v-row  justify="center">
-                                                <v-col cols="3">
-                                                    <v-btn
-                                                        
-                                                        color="primary"
-                                                        rounded
-                                                        dark                
-                                                        dense
-                                                        @click="save_detail"
-                                                        v-if="form_edit.status <= 1"
-                                                    >
-                                                        <v-icon left>
-                                                            mdi-content-save-outline
-                                                        </v-icon>
-                                                        บันทึก
-                                                    </v-btn>
-                                                </v-col>
-                                            </v-row>
-                                        </v-card-text>
-                                        <v-card-actions class="justify-end">
-                                        <v-btn
-                                            text
-                                            @click="dialog.value = false"
-                                            color="error"
-                                        >
-                                            <v-icon left>
-                                                mdi-cancel
-                                            </v-icon>
-                                            ปิด</v-btn>
-                                        </v-card-actions>
-                                    </v-card>
-                                    </template>
-                                </v-dialog>
+                                
                                 <v-dialog
                                     transition="dialog-bottom-transition"
                                     persistent
@@ -189,61 +146,60 @@
                                     </v-card>
                                     </template>
                                 </v-dialog>
-                                <v-expansion-panels 
-                                        v-model="panel"                             
-                                        multiple                                        
-                                        dense
-                                    >
-                                        <v-expansion-panel
-                                            class="panel-detail"
-                                             v-for="(detail,index) in detail_list" :key="index">
-                                            <v-expansion-panel-header>
-                                                <template v-slot:actions>
-                                                    <v-icon color="primary" large class="ml-2">
-                                                        mdi-arrow-down-drop-circle
-                                                    </v-icon>
-                                                </template>
-                                                <v-row>
-                                                    <v-col cols="10"><h4 style="color:#212121">ข้อที่ {{(index+1) + ' ' + (detail.type == 1 ? '(เรื่องทั่วไป)' : '(Policy Firewall)')}}</h4></v-col>
-                                                    <v-col> 
-                                                        <div class=text-right>
-                                                            <v-btn
-                                                                class="mr-2"                                            
-                                                                outlined
-                                                                x-small
-                                                                fab
-                                                                color="indigo"
-                                                                v-if="detail.type == 1"
-                                                                @click="edit_detail(detail)"
-                                                                >
-                                                                <v-icon>mdi-pencil</v-icon>
-                                                            </v-btn>
-                                                            <show-policy :detail="detail" v-if="detail.type == 2"></show-policy>
-                                                            <v-btn   
-                                                                fab
-                                                                dark
-                                                                x-small
-                                                                color="error"
-                                                                v-if="form_edit.status <= 1"
-                                                                @click="delete_detail(detail,index)"
-                                                                >
-                                                                <v-icon>
-                                                                    mdi-close
-                                                                </v-icon>
-                                                            </v-btn>                                                            
-                                                        </div>                                      
-                                                        
-                                                    </v-col>
-                                                </v-row>
-                                            </v-expansion-panel-header>
-                                                <v-expansion-panel-content>
-                                                    {{detail.request_detail}}
+                                <!-- <v-expansion-panels 
+                                    v-model="panel"                             
+                                    multiple                                        
+                                    dense
+                                >
+                                    <v-expansion-panel
+                                        class="panel-detail"
+                                            v-for="(detail,index) in detail_list" :key="index">
+                                        <v-expansion-panel-header>
+                                            <template v-slot:actions>
+                                                <v-icon color="primary" large class="ml-2">
+                                                    mdi-arrow-down-drop-circle
+                                                </v-icon>
+                                            </template>
+                                            <v-row>
+                                                <v-col cols="10"><h4 style="color:#212121">ข้อที่ {{(index+1) + ' ' + (detail.type == 1 ? '(เรื่องทั่วไป)' : '(Policy Firewall)')}}</h4></v-col>
+                                                <v-col> 
+                                                    <div class=text-right>
+                                                        <v-btn
+                                                            class="mr-2"                                            
+                                                            outlined
+                                                            x-small
+                                                            fab
+                                                            color="indigo"
+                                                            v-if="detail.type == 1"
+                                                            @click="edit_detail(detail)"
+                                                            >
+                                                            <v-icon>mdi-pencil</v-icon>
+                                                        </v-btn>
+                                                        <show-policy :detail="detail" v-if="detail.type == 2"></show-policy>
+                                                        <v-btn   
+                                                            fab
+                                                            dark
+                                                            x-small
+                                                            color="error"
+                                                            v-if="form_edit.status <= 1"
+                                                            @click="delete_detail(detail,index)"
+                                                            >
+                                                            <v-icon>
+                                                                mdi-close
+                                                            </v-icon>
+                                                        </v-btn>                                                            
+                                                    </div>                                      
                                                     
-                                                </v-expansion-panel-content>
-                                        </v-expansion-panel>                                        
-                                    </v-expansion-panels>
+                                                </v-col>
+                                            </v-row>
+                                        </v-expansion-panel-header>
+                                            <v-expansion-panel-content>
+                                                {{detail.request_detail}}                                                    
+                                            </v-expansion-panel-content>
+                                    </v-expansion-panel>                                        
+                                </v-expansion-panels> -->
                             </v-col>
-                        </v-row> Oled Detail-->
+                        </v-row>
                         <v-row>
                             <v-col cols="3"></v-col>
                             <v-col cols="9">                                    
@@ -299,7 +255,7 @@
                         </v-row>
                         <v-row>    
                             <v-col cols="3">
-                                <p class="topic">เหตุผล :</p>
+                                <p class="topic">วัตถุประสงค์ :</p>
                             </v-col>     
                             <v-col cols="9">
                                 <validation-provider
@@ -366,7 +322,7 @@
                         <v-row>    
                             
                         </v-row>
-                        <v-row>    
+                        <!-- <v-row>    
                             <v-col cols="3">
                                 <p class="topic">ผู้เกี่ยวข้อง :</p>
                             </v-col>     
@@ -398,15 +354,15 @@
                                     </template>
                                 </v-combobox>
                             </v-col>
-                        </v-row>
+                        </v-row> -->
 
                     </v-card> 
             
                     <v-card class="mycard mb-5 mt-5">
                         <v-row>
-                            <v-col cols="12" >ส่วนที่ 2 สำหรับประเมินผลกระทบ</v-col>
+                            <v-col cols="12" >ส่วนที่ 2 ระบบงานที่เกี่ยวข้อง</v-col>
                         </v-row>
-                        <v-row>
+                        <!-- <v-row>
                             <v-col cols="3">
                                 <p class="topic">ประเภท :</p>
                             </v-col>     
@@ -442,7 +398,7 @@
                                     
                                 </v-radio-group>
                             </v-col>
-                        </v-row>
+                        </v-row> -->
                         <v-row>    
                             <v-col cols="3">
                                 <p class="topic">ระบบที่เกี่ยวข้อง :</p>
@@ -481,7 +437,7 @@
                         </v-row>
                         <v-row>
                             <v-col cols="3">
-                                <p class="topic">สภาพแวดล้อมที่มีผลกระทบ :</p>
+                                <p class="topic">สภาพแวดล้อม :</p>
                             </v-col>     
                             <v-col cols="9">
                                 <validation-provider
@@ -547,7 +503,7 @@
                                 </validation-provider>                          
                             </v-col>
                         </v-row>
-                        <v-row>    
+                        <!-- <v-row>    
                             <v-col cols="3">
                                 <p class="topic">ส่งผลกระทบต่อระบบ :</p>
                             </v-col>     
@@ -580,8 +536,8 @@
                                     </template>
                                 </v-combobox>
                             </v-col>
-                        </v-row>
-                        <v-row>
+                        </v-row> -->
+                        <!-- <v-row>
                             <v-col cols="3">
                                 <p class="topic">ระดับผลกระทบ :</p>
                             </v-col>     
@@ -619,10 +575,10 @@
                                 </v-radio-group>
                                 
                             </v-col>
-                        </v-row>
+                        </v-row> -->
                         <v-row>    
                             <v-col cols="3">
-                                <p class="topic">ช่วงวันทีดำเนินการ :</p>
+                                <p class="topic">วันที่มีผลบังคับใช้ :</p>
                             </v-col>
                             <v-col>
                                 <v-menu
@@ -981,15 +937,28 @@ export default {
             person_relate: [],
             change_type: 1,   
             system_relate: [],
+            // system_list: [
+            //     {value : 1, text: 'Data Center'},
+            //     // {value : 2, text: 'Backup System'},
+            //     {value : 3, text: 'Security System'},
+            //     {value : 4, text: 'Hardware'},
+            //     {value : 5, text: 'Network'},
+            //     {value : 6, text: 'Operation System'},
+            //     {value : 9, text: 'อื่น ๆ รายละเอียด'},                
+            // ], 
             system_list: [
-                {value : 1, text: 'Data Center'},
-                // {value : 2, text: 'Backup System'},
-                {value : 3, text: 'Security System'},
-                {value : 4, text: 'Hardware'},
-                {value : 5, text: 'Network'},
-                {value : 6, text: 'Operation System'},
-                {value : 9, text: 'อื่น ๆ รายละเอียด'},                
-            ],   
+                {value : 1, text: 'ระบบบำเหน็จบำนาญฯ (DPS)'},
+                {value : 2, text: 'ระบบจ่ายตรงเงินเดือนฯ (e-Payroll)'},
+                {value : 3, text: 'ระบบจัดซื้อจัดจ้างภาครัฐฯ (e-GP)'},
+                {value : 4, text: 'ระบบ Website Inter/Intra'},
+                {value : 5, text: 'ระบบฐานข้อมูลรักษาพยาบาล (MBDB)'},
+                {value : 6, text: 'ระบบบูรณาการฐานข้อมูลสวัสดิการสังคม (e-Social Welfare)'},
+                {value : 7, text: 'ระบบการรับชำระเงินกลางของบริการภาครัฐ (e-Payment)'},
+                {value : 8, text: 'ระบบเครื่องลูกข่ายบาทเนต (BAHTENT Client)'},
+                {value : 9, text: 'ระบบเครือข่าย'},                
+                {value : 10, text: 'ระบบรักษาความปลอดภัย'},                
+                {value : 99, text: 'อื่น ๆ ระบุรายละเอียด'},                
+            ],  
             env_impact: [],
             system_impact: [],
             impact_level: 1,
@@ -1709,6 +1678,29 @@ export default {
     background-color: rgb(255, 255, 255);
     padding: 5px;
     border-radius: 3px;
+}
+.request_detail{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-bottom: 10px;
+}
+.detail_top{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+.detail_menu{
+    width: 100%;
+    display: flex;    
+    justify-content: flex-end;
+    
+}
+.request_detail .detail{
+    width: 100%;
 }
 </style>>
 

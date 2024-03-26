@@ -17,7 +17,7 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn icon @click="$store.dispatch('fetchRequest')">
+      <v-btn icon @click="($route.path.includes('change')) ? $store.dispatch('fetchRequest') : $store.dispatch('fetchRemote')">
         <v-icon>mdi-refresh-circle</v-icon>
       </v-btn>
 

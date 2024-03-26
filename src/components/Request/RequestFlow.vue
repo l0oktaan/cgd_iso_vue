@@ -575,7 +575,7 @@
                     <v-col cols="8">{{getThaiDateTime(request_status.operate_save_date)}}</v-col>
                 </v-row>
                   <v-row>
-                      <v-col cols="4">โดย :</v-col>
+                      <v-col cols="4">ผู้ดำเนินการ :</v-col>
                       <v-col cols="8">{{request_status.operate_by}}</v-col>
                   </v-row>       
               </v-col>
@@ -663,7 +663,7 @@
                                         <v-text-field 
                                             v-model="operate.operator_name"
                                             hide-details="true" 
-                                            outlined dense label="โดย"
+                                            outlined dense label="ผู้ดำเนินการ"
                                         ></v-text-field>
                                     </v-col>
                                 </v-row>                      
@@ -761,14 +761,18 @@
           <v-row v-if="status > 6" >
               <v-col>
                   <v-row>
-                      <v-col cols="4">สถานะ :</v-col>
-                      <v-col cols="8">{{request_status.follow_status == 1 ? 'ดำเนินการแล้วเสร็จ' : ''}}
-                          <br>{{request_status.follow_impact == 1 ? 'ไม่มีผลกระทบ' : request_status.follow_impact == 0 ? 'มีผลกระทบ' : ''}}</v-col>
+                      <v-col cols="4">ผลการติดตาม :</v-col>
+                      <v-col cols="8">{{request_status.follow_impact == 1 ? 'ดำเนินการสำเร็จ' : request_status.follow_impact == 0 ? 'ดำเนินการไม่สำเร็จ' : ''}}</v-col>
                   </v-row>
+                  <v-row>
+                    <v-col cols="4">รายละเอียด :</v-col>
+                    <v-col cols="8">{{request_status.follow_detail}}</v-col>
+                </v-row>
                   <v-row>
                       <v-col cols="4">วันที่</v-col>
                       <v-col cols="8">{{getThaiDateTime(request_status.follow_date)}}</v-col>
                   </v-row>
+
                   <v-row>
                       <v-col cols="4">โดย :</v-col>
                       <v-col cols="8">{{request_status.follow_by}}</v-col>
@@ -785,18 +789,18 @@
                 <template v-slot:default="dialog">
                 <v-card>      
                     <v-card-title>
-                        <span>การติดตามผลการเปลี่ยนแปลง</span>
+                        <span>การติดตามผล{{$route.path.includes('remote') ? 'การดำเนินการ' : 'การเปลี่ยนแปลง'}}</span>
                     </v-card-title>                      
                     <v-card-text class="mt-4">
                         <v-row justify="center">  
-                            <v-col cols="12">
+                            <!-- <v-col cols="12">
                               <v-checkbox
                                 v-model="follow.status"
                                 label="ดำเนินการเสร็จแล้ว"
                                 hide-details="true"
                                 dense
                               ></v-checkbox>
-                            </v-col>       
+                            </v-col>        -->
                             <v-col cols="12">                                 
                                 <v-radio-group
                                 v-model="follow.impact"
@@ -804,11 +808,11 @@
                                 row
                                 >
                                 <v-radio
-                                    label="ไม่มีผลกระทบ"
+                                    label="ดำเนินการสำเร็จ"
                                     value="1"
                                 ></v-radio>
                                 <v-radio
-                                    label="มีผลกระทบ"
+                                    label="ดำเนินการไม่สำเร็จ"
                                     value="0"
                                 ></v-radio>
                                 
@@ -904,9 +908,13 @@
           <v-row  v-if="status > 7">
               <v-col>
                   <v-row>
-                      <v-col cols="4">สถานะ :</v-col>
+                      <v-col cols="4">ผลการตรวจสอบ :</v-col>
                       <v-col cols="8">{{request_status.check_status == 1 ? 'ดำเนินการตรวจสอบแล้ว' : 'ไม่สามารถตรวจสอบได้'}}</v-col>
                   </v-row>
+                  <v-row>
+                    <v-col cols="4">รายละเอียด :</v-col>
+                    <v-col cols="8">{{request_status.check_detail}}</v-col>
+                </v-row>
                   <v-row>
                       <v-col cols="4">วันที่ :</v-col>
                       <v-col cols="8">{{getThaiDateTime(request_status.check_date)}}</v-col>
@@ -927,7 +935,7 @@
                 <template v-slot:default="dialog">
                 <v-card>      
                     <v-card-title>
-                        <span>การตรวจสอบผลการเปลี่ยนแปลง</span>
+                        <span>การตรวจสอบผล{{$route.path.includes('remote') ? 'การดำเนินการ' : 'การเปลี่ยนแปลง'}}</span>
                     </v-card-title>                      
                     <v-card-text class="mt-4">
                         <v-row justify="center">  

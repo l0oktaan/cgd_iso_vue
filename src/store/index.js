@@ -15,14 +15,22 @@ const getDefaultState = () => {
     user: null,
     userToken: null,
     request_all: null,
-    remote_all: null,
+    
     request_ensure: null,
     request_consider: null,
     request_approve: null,
     request_operate: null,
     request_follow: null,
     request_expire: null,
-    request_check: null,   
+    request_check: null,  
+    remote_all: null,
+    remote_ensure: null,
+    remote_consider: null,
+    remote_approve: null,
+    remote_operate: null,
+    remote_follow: null,
+    remote_expire: null,
+    remote_check: null,  
     roles: ['admin','request','ensure','consider','approve','operate','follow','check','search']
   }
 }
@@ -58,9 +66,6 @@ export default new Vuex.Store({
     request_all ( state){
       return state.request_all
     },
-    remote_all ( state){
-      return state.remote_all
-    },
     request_ensure(state){
       return state.request_ensure
     },
@@ -81,6 +86,30 @@ export default new Vuex.Store({
     },
     request_operate(state){
       return state.request_operate
+    },
+    remote_all ( state){
+      return state.remote_all
+    },
+    remote_ensure(state){
+      return state.remote_ensure
+    },
+    remote_consider(state){
+      return state.remote_consider
+    },
+    remote_approve(state){
+      return state.remote_approve
+    },
+    remote_follow(state){
+      return state.remote_follow
+    },
+    remote_expire(state){
+      return state.remote_expire
+    },
+    remote_check(state){
+      return state.remote_check
+    },
+    remote_operate(state){
+      return state.remote_operate
     },
   },
   mutations: {
@@ -116,6 +145,14 @@ export default new Vuex.Store({
       state.request_follow = null
       state.request_expire = null
       state.request_check = null  
+      state.remote_all = null
+      state.remote_ensure = null
+      state.remote_consider = null
+      state.remote_approve = null
+      state.remote_operate = null
+      state.remote_follow = null
+      state.remote_expire = null
+      state.remote_check = null  
       state.group_cgd = null
       state.request_list = null
       state.group_id = null
@@ -125,9 +162,6 @@ export default new Vuex.Store({
     },
     request_all(state, data){
       state.request_all = data
-    },
-    remote_all(state, data){
-      state.remote_all = data
     },
     request_ensure(state, data){
       state.request_ensure = data
@@ -149,6 +183,30 @@ export default new Vuex.Store({
     },
     request_operate(state, data){
       state.request_operate = data
+    },
+    remote_all(state, data){
+      state.remote_all = data
+    },
+    remote_ensure(state, data){
+      state.remote_ensure = data
+    },
+    remote_consider(state, data){
+      state.remote_consider = data
+    },
+    remote_approve(state, data){
+      state.remote_approve = data
+    },
+    remote_follow(state, data){
+      state.remote_follow = data
+    },
+    remote_expire(state, data){
+      state.remote_expire = data
+    },
+    remote_check(state, data){
+      state.remote_check = data
+    },
+    remote_operate(state, data){
+      state.remote_operate = data
     },
     
   },
@@ -294,15 +352,34 @@ export default new Vuex.Store({
        
     
   },
+  async fetchRemote({dispatch}){
+    if (this.state.user.roles.includes('ensure')){
+      await dispatch('get_remote_ensure')
+    }
+    if (this.state.user.roles.includes('consider')){
+      await dispatch('get_remote_consider')
+    }
+    if (this.state.user.roles.includes('approve')){
+      await dispatch('get_remote_approve')
+    }
+    if (this.state.user.roles.includes('operate')){
+      await dispatch('get_remote_operate')
+    }
+    if (this.state.user.roles.includes('follow')){
+      await dispatch('get_remote_follow')
+    }
+    if (this.state.user.roles.includes('check')){
+      await dispatch('get_remote_check')
+    } 
+    
+    await dispatch('get_remote_expire')
+       
+    
+  },
   async get_request_all({commit}){
     let path = await '/api/request_forms'
     let response = await axios.get(path)
     await commit('request_all',response.data.data)
-  },
-  async get_remote_all({commit}){
-    let path = await '/api/remote_forms'
-    let response = await axios.get(path)
-    await commit('remote_all',response.data.data)
   },
   async get_request_ensure({commit}){
     let path = await '/api/request_form_ensure'
@@ -344,6 +421,53 @@ export default new Vuex.Store({
     let path = await `/api/request_form_check`
     let response = await axios.get(`${path}`)
     await commit('request_check',response.data.data)
+  },
+  async get_remote_all({commit}){
+    let path = await '/api/remote_forms'
+    let response = await axios.get(path)
+    await commit('remote_all',response.data.data)
+  },
+  async get_remote_ensure({commit}){
+    let path = await '/api/remote_form_ensure'
+    
+    let response = await axios.get(path)
+    
+    await commit('remote_ensure',response.data.data)
+  },
+  async get_remote_consider({commit}){
+    let path = await `/api/remote_form_consider`
+    let response = await axios.get(`${path}`)
+    console.log('consider length :' + response.data.data)
+    await commit('remote_consider',response.data.data)
+  },
+  async get_remote_approve({commit}){
+    let path = await `/api/remote_form_approve`
+    let response = await axios.get(`${path}`)
+    await commit('remote_approve',response.data.data)
+  },
+  async get_remote_operate({commit}){
+    let path = await `/api/remote_form_operate`
+    let response = await axios.get(`${path}`)
+    await commit('remote_operate',response.data.data)
+  },
+  async get_remote_follow({commit}){     
+
+    let path = await `/api/remote_form_follow`
+    let response = await axios.get(`${path}`)
+    
+    await commit('remote_follow',response.data.data)
+  },
+  async get_remote_expire({commit}){     
+
+    let path = await `/api/remote_form_expire`
+    let response = await axios.get(`${path}`)
+    console.log('expire length :' + response.data.data)
+    await commit('remote_expire',response.data.data)
+  },
+  async get_remote_check({commit}){
+    let path = await `/api/remote_form_check`
+    let response = await axios.get(`${path}`)
+    await commit('remote_check',response.data.data)
   },
   
 },

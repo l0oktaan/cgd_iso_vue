@@ -50,12 +50,21 @@ export default {
   },
   methods: {
     async fetchData(){
-      let path = await `/api/request_form_approve`;
-      let response = await axios.get(`${path}`);
-      this.request_list = await response.data.data;
-      path = await `/api/request_approved`;
-      let response2 = await axios.get(`${path}`);
-      this.old_list = await response2.data.data;
+      if (this.$route.path.includes('remote')){
+        let path = await `/api/remote_form_approve`;
+        let response = await axios.get(`${path}`);
+        this.request_list = await response.data.data;
+        path = await `/api/remote_approved`;
+        let response2 = await axios.get(`${path}`);
+        this.old_list = await response2.data.data;
+      }else{
+        let path = await `/api/request_form_approve`;
+        let response = await axios.get(`${path}`);
+        this.request_list = await response.data.data;
+        path = await `/api/request_approved`;
+        let response2 = await axios.get(`${path}`);
+        this.old_list = await response2.data.data;
+      }
     },
     getThaiDate(item){
       if (item){

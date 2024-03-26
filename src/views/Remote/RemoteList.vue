@@ -27,7 +27,7 @@
                 >
                   <v-toolbar-title>
                     <v-icon large>mdi-stack-exchange</v-icon>
-                    รายการเปลี่ยนแปลงข้อมูล</v-toolbar-title> 
+                    รายการ Policy Firewall / VPN</v-toolbar-title> 
                   <v-btn
                     class="ma-2"
                     rounded

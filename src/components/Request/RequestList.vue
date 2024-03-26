@@ -1,6 +1,6 @@
 <template>
 
-  <v-container>
+  <div>
    
     <v-row>
       <v-col>
@@ -22,7 +22,7 @@
                 >
                   <v-toolbar-title>
                     <v-icon large>mdi-stack-exchange</v-icon>
-                    {{'รายการเปลี่ยนแปลงที่' + getStatus(status)}}</v-toolbar-title> 
+                    {{($route.path.includes('change') ? 'รายการเปลี่ยนแปลงที่' : 'รายการ Policy Firewall / VPN ที่') + getStatus(status)}}</v-toolbar-title> 
                     
                   <v-spacer></v-spacer>        
                     <v-text-field
@@ -201,7 +201,7 @@
         </template>
     </v-dialog>
     <my-alert :AlertType="show_alert"></my-alert>
-  </v-container>
+  </div>
 
 </template>
 
@@ -230,7 +230,7 @@ export default {
             class: ['blue darken-3', 'white--text', 'head-text'],
             width: '15%'
         },
-        { text: 'เรื่อง', sortable: false, value: 'request_title', class: ['blue darken-3', 'white--text'],width: '30%'},       
+        { text: 'เรื่อง', sortable: false, value: 'request_title', class: ['blue darken-3', 'white--text'],width: '27'},       
         { text: 'ผู้ร้องขอ', sortable: false, value: 'user_id', class: ['blue darken-3', 'white--text'],width: '15%'},       
         { text: 'สถานะ', sortable: false, value: 'status', class: ['blue darken-3', 'white--text'],width: '15%'},      
         { text: 'Action', value: 'actions',class: ['blue darken-3', 'white--text'],width: '15%'}                        
