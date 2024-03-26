@@ -242,7 +242,7 @@ export default {
       navs: 
         {
           group_1: [
-            { title: "Dashboard", icon: "mdi-monitor-dashboard", route: "/change/" ,show : "all"},   
+            { title: "Dashboard", icon: "mdi-monitor-dashboard", route: "/change/dashboard" ,show : "all"},   
           //   { title: "รายการผู้ใช้ระบบ", icon: "mdi-account-tie", route: "/admin", show: "admin" }, 
           //   { title: "Master Data", icon: "mdi-vector-link", route: "/admin/master_data", show: "admin" },  
           //   { title: "Attach Files", icon: "mdi-paperclip", route: "/admin/attach", show: "admin" }, 

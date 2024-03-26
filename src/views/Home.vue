@@ -11,7 +11,9 @@
       <v-container fluid>
         <!-- If using vue-router -->
         <!-- <v-scroll-x-transition mode="in" hide-on-leave="true"> -->
+          
         <v-fade-transition mode="out-in">
+          
           <router-view />
         </v-fade-transition>
         <!-- </v-scroll-x-transition> -->

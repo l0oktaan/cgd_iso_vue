@@ -354,7 +354,7 @@ export default {
     },
     
     editItem(id){
-      this.$router.push("/request_change/form/" + id);
+      this.$router.push("/change/request_change/form/" + id);
     },
     close_dialog(){
       this.request_title = '';

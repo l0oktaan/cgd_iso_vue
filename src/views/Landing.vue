@@ -27,23 +27,31 @@
           id: 1,
           name : 'Request for Change',
           icon : 'mdi-directions-fork',
-          route : 'change',
+          route : 'change/dashboard',
           color : ''
         },
         {
           id : 2,
           name : 'Policy Firewall / VPN',
           icon : 'fas fa-network-wired',
-          route : 'remote',
+          route : 'remote/dashboard',
           color : ''
         },
         {
           id : 3,
+          name : 'Document',
+          icon : 'mdi-book-open-page-variant',
+          route : 'document/home',
+          color : ''
+        },
+        {
+          id : 4,
           name : 'Admin',
           icon : 'fas fa-user-cog',
-          route : 'admin',
+          route : 'admin/user',
           color : ''
-        }
+        },
+        
       ]
     }),
     methods:{

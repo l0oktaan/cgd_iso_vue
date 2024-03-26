@@ -12,7 +12,7 @@
           </v-avatar>
       </v-toolbar-title>
       <v-toolbar-title>
-        <strong>ISMS Portal</strong>
+        <strong>ISMS Portal {{ $route.path.includes('change')?'/ Request for Change': $route.path.includes('remote')?'/ Policy Firewall and VPN':$route.path.includes('admin')?'/ Admin' :''}}</strong>
       </v-toolbar-title>
 
       <v-spacer></v-spacer>

@@ -74,7 +74,7 @@ const routes = [
     },
     children: [
       {
-        path: "",
+        path: "dashboard",
         name: "remote-dashboard",
         component: RemoteDashboard,
       },
@@ -158,7 +158,7 @@ const routes = [
     },
     children: [
       {
-        path: "", 
+        path: "user", 
         name : "user",
         component: User,
       },
@@ -194,7 +194,7 @@ const routes = [
     children: [
       
       {
-        path: "",
+        path: "dashboard",
         name: "ISO",
         component: ISO,
       },

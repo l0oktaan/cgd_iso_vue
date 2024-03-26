@@ -298,6 +298,7 @@ export default {
       if (path.includes('remote')){
         this.$router.push("/remote/remote_list/remote_form/" + id);
       }else{
+        console.log('form : ' + path);
         this.$router.push("/change/request_change/form/" + id);
       }
       
