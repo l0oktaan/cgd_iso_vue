@@ -257,7 +257,7 @@ export default new Vuex.Store({
       const expirationDate = await new Date(now.getTime() + 1*60*60*1000)
 
       const userData = await response.data.user
-      console.log('userData :' + userData)   
+      
       await commit('authUser',userData)
       await localStorage.setItem('token', userData.token)
       await localStorage.setItem('expirationDate', expirationDate)      
@@ -299,11 +299,11 @@ export default new Vuex.Store({
       let now = new Date()
 
       if (now >= expirationDate){
-          console.log('expire')
+          //console.log('expire')
           commit('clearAuthData')
           return
       }else{
-        console.log('expire')
+        //console.log('expire')
       }
       expirationDate = new Date(now.getTime() + 1*60*60*1000)
       localStorage.setItem('expirationDate', expirationDate)
@@ -353,6 +353,7 @@ export default new Vuex.Store({
     
   },
   async fetchRemote({dispatch}){
+    //console.log('fetch remote');
     if (this.state.user.roles.includes('ensure')){
       await dispatch('get_remote_ensure')
     }
@@ -385,7 +386,7 @@ export default new Vuex.Store({
     let path = await '/api/request_form_ensure'
     
     let response = await axios.get(path)
-    console.log('ensure :' + response.data.data.length)
+    //console.log('ensure :' + response.data.data.length)
     await commit('request_ensure',response.data.data)
   },
   async get_request_consider({commit}){
@@ -407,14 +408,14 @@ export default new Vuex.Store({
 
     let path = await `/api/request_form_follow`
     let response = await axios.get(`${path}`)
-    console.log('follow length :' + response.data.data)
+    //console.log('follow length :' + response.data.data)
     await commit('request_follow',response.data.data)
   },
   async get_request_expire({commit}){     
 
     let path = await `/api/request_form_expire`
     let response = await axios.get(`${path}`)
-    console.log('expire length :' + response.data.data)
+    // console.log('expire length :' + response.data.data)
     await commit('request_expire',response.data.data)
   },
   async get_request_check({commit}){
@@ -437,7 +438,7 @@ export default new Vuex.Store({
   async get_remote_consider({commit}){
     let path = await `/api/remote_form_consider`
     let response = await axios.get(`${path}`)
-    console.log('consider length :' + response.data.data)
+    // console.log('consider length :' + response.data.data)
     await commit('remote_consider',response.data.data)
   },
   async get_remote_approve({commit}){
@@ -461,7 +462,7 @@ export default new Vuex.Store({
 
     let path = await `/api/remote_form_expire`
     let response = await axios.get(`${path}`)
-    console.log('expire length :' + response.data.data)
+    // console.log('remote expire length :' + response.data.data)
     await commit('remote_expire',response.data.data)
   },
   async get_remote_check({commit}){

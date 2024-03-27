@@ -1,11 +1,20 @@
 <template>
   <div class="myflex">
-    <div v-for="(item,index) in systems" :key="index" @click="onClick(item.route)" :class="'mycard ' + item.color" :data-text="item.name">
+    <div v-for="(item,index) in systems.filter(x=>x.status == 1)" :key="index" @click="onClick(item.route)" :class="'mycard ' + item.color " :data-text="item.name">
       
       <v-icon          
           class=""         
         >
           {{item.icon}}
+      </v-icon>
+       
+    </div>
+    <div @click="onClick(adminMenu.route)" :class="'mycard ' + adminMenu.color" :data-text="adminMenu.name" v-if="user.roles.includes('admin')" >
+      
+      <v-icon          
+          class=""         
+        >
+          {{adminMenu.icon}}
       </v-icon>
        
     </div>
@@ -21,13 +30,18 @@
   
     
   
-    data: () => ({
+    
+  data() {
+    return {
+      user: this.$store.getters.user,
       systems: [
         {
           id: 1,
           name : 'Request for Change',
           icon : 'mdi-directions-fork',
           route : 'change/dashboard',
+          role : ['it'],
+          status : 1,
           color : ''
         },
         {
@@ -35,6 +49,8 @@
           name : 'Policy Firewall / VPN',
           icon : 'fas fa-network-wired',
           route : 'remote/dashboard',
+          role : ['it'],
+          status : 1,
           color : ''
         },
         {
@@ -42,22 +58,28 @@
           name : 'Document',
           icon : 'mdi-book-open-page-variant',
           route : 'document/home',
+          role : ['isms'],
+          status : 0,
           color : ''
-        },
-        {
+        }       
+        
+      ],
+      adminMenu:{
           id : 4,
           name : 'Admin',
           icon : 'fas fa-user-cog',
           route : 'admin/user',
+          role : ['admin'],
+          status : 1,
           color : ''
         },
-        
-      ]
-    }),
+    }
+  },
     methods:{
       onClick(route){
         this.$router.push(route)
-      }
+      },
+      
     }
   };
   </script>

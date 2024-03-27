@@ -371,22 +371,22 @@ export default {
         
         switch (roles[i]) {
           case 'ensure':
-            this.$store.dispatch('get_request_ensure')
+            this.$store.dispatch('get_remote_ensure')
             break;
           case 'consider':
-            this.$store.dispatch('get_request_consider')
+            this.$store.dispatch('get_remote_consider')
             break;
           case 'approve':
-            this.$store.dispatch('get_request_approve')
+            this.$store.dispatch('get_remote_approve')
             break;
           case 'operate':
-            this.$store.dispatch('get_request_operate')
+            this.$store.dispatch('get_remote_operate')
             break;
           case 'follow':
-            this.$store.dispatch('get_request_follow')
+            this.$store.dispatch('get_remote_follow')
             break;
           case 'check':
-            this.$store.dispatch('get_request_check')
+            this.$store.dispatch('get_remote_check')
             break;
             
             

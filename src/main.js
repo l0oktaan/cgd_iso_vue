@@ -56,7 +56,7 @@ new Vue({
   },
   methods: {
     beforePageDestroyed: function () {
-        this.$store.dispatch('resetState');
+        // this.$store.dispatch('resetState');
     },
     getThaiDate(item){
       if (item){
