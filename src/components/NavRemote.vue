@@ -327,8 +327,9 @@ export default {
         }
     }
   },
-  mounted(){
-    this.getRequest();
+  async mounted(){
+    await this.getRequest();
+    await this.$store.dispatch('fetchRemote')
   },
   methods: {
     getMini(){

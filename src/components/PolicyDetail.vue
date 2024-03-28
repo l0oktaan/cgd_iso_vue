@@ -36,7 +36,7 @@
                                         flat
                                     >
                                         <v-toolbar-title>
-                                            <v-icon large>mdi-account-multiple</v-icon>
+                                            <v-icon large>mdi-lan</v-icon>
                                             Policy Firewall
                                         </v-toolbar-title>
                                             <v-btn

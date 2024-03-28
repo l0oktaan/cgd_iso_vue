@@ -34,18 +34,20 @@
                         >
                             {{ip}}
                         </v-chip>
+                        <v-chip small label color="primary" class="mt-1 mb-1">{{source.ldap}}</v-chip>
                     </div>
                 </v-col>
                 <v-col cols="1" class="text-center"><v-icon>mdi-arrow-right-thick</v-icon></v-col>
                 <v-col class="text-left">
                     <div v-for="(destination,j) in getArray(policy.destination)" :key="j">
-                        <v-chip small label dark color="grey darken-3" class="mt-1 mb-1">{{destination.asset}}</v-chip>
                         <v-chip small label outlined color="grey darken-3" 
                             v-for="(ip,x) in destination.ip_address" :key="x"
                             class="mt-1 mb-1"
                         >
                             {{ip}}
                         </v-chip>
+                        <v-chip small label dark color="grey darken-3" class="mt-1 mb-1">{{destination.asset}}</v-chip>
+                        
                     </div>
                 </v-col>
                 <v-col cols="2">

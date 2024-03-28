@@ -1,9 +1,10 @@
 <template>
  <div>
         <v-row justify="center">
-            <v-col>
-                <h4 class="text-center">แบบบันทึกการร้องขอการเปลี่ยนแปลงหรือแก้ไขระบบ (Request for Change)</h4>
+            <v-col  cols="9">
+                <h4 class="text-center">แบบฟอร์มขอดำเนินการที่เกี่ยวข้องกับ Policy Firewall / VPN</h4>
             </v-col>
+            <v-col></v-col>
         </v-row>
         <v-row>
             <v-col cols="9">

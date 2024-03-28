@@ -3,6 +3,7 @@
         :close-on-content-click="closeMenu"        
         :nudge-width="200"
         offset-x
+        :close-on-click = "false"
         >
         <template v-slot:activator="{ on, attrs }">
             <v-btn                                        

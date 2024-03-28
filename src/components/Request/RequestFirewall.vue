@@ -44,6 +44,7 @@
                                         >
                                             {{ip}}
                                         </v-chip>
+                                        <v-chip small label color="primary" class="mt-1 mb-1">{{source.ldap}}</v-chip>
                                     </div>
                                 </v-col>
                                 <v-col cols="1" class="text-center"><v-icon>mdi-arrow-right-thick</v-icon></v-col>
