@@ -165,24 +165,24 @@ export default {
                     align: 'start',
                     // sortable: false,
                     value: 'updated_date',
-                    class: ['blue darken-3', 'white--text', 'head-text'],
+                    class: ['red darken-4', 'white--text', 'head-text'],
                     width: '12%'
                 },
                 {
                     text: 'ชื่อรายการ',
                     align: 'start',                    
                     value: 'policy_name',
-                    class: ['blue darken-3', 'white--text', 'head-text'],
+                    class: ['red darken-4', 'white--text', 'head-text'],
                     width: '50%'
                 },
                 {
                     text: 'ผู้ปรับปรุง',
                     align: 'start',                    
                     value: 'updated_by',
-                    class: ['blue darken-3', 'white--text', 'head-text'],
+                    class: ['red darken-4', 'white--text', 'head-text'],
                     width: '20%'
                 },
-                { text: 'Action',align: 'center', sortable: false, value: 'actions',class: ['blue darken-3', 'white--text'],width: '20%'}                       
+                { text: 'Action',align: 'center', sortable: false, value: 'actions',class: ['red darken-4', 'white--text'],width: '20%'}                       
                             
             ],
             policy_template_list: [],

@@ -364,13 +364,13 @@ export default {
                     align: 'start',
                     // sortable: false,
                     value: 'equip_name',
-                    class: ['blue darken-3', 'white--text', 'head-text'],
+                    class: ['red darken-4', 'white--text', 'head-text'],
                     width: '20%'
                 },
-                { text: 'IP Address', value: 'ip_address', class: ['blue darken-3', 'white--text'],width: '30%'},       
-                { text: 'Port / Service', sortable: false, value: 'service_port', class: ['blue darken-3', 'white--text'],width: '20%'},       
-                { text: 'Tags', sortable: false, value: 'equip_tags', class: ['blue darken-3', 'white--text'],width: '20%'},
-                { text: 'Action', value: 'actions',class: ['blue darken-3', 'white--text']}                       
+                { text: 'IP Address', value: 'ip_address', class: ['red darken-4', 'white--text'],width: '30%'},       
+                { text: 'Port / Service', sortable: false, value: 'service_port', class: ['red darken-4', 'white--text'],width: '20%'},       
+                { text: 'Tags', sortable: false, value: 'equip_tags', class: ['red darken-4', 'white--text'],width: '20%'},
+                { text: 'Action', value: 'actions',class: ['red darken-4', 'white--text']}                       
                             
             ],
             equip_list: [],

@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer
-  class="indigo"
+  class="red darken-4"
     dark
     
     app
@@ -110,7 +110,7 @@
             <template v-slot:activator="{ on, attrs }">
               <v-badge
                 dot
-                color="error"
+                color="primary"
                 overlap
                 :value="countRequest(item.show)"
               >
@@ -187,7 +187,7 @@
         <v-list-item-content>
           <v-list-item-title>
             {{item.title }}
-            <v-chip class="text-right" color="error" x-small v-if="countRequest(item.show)>0">{{countRequest(item.show)}}</v-chip>
+            <v-chip class="text-right" color="primary" x-small v-if="countRequest(item.show)>0">{{countRequest(item.show)}}</v-chip>
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
@@ -207,7 +207,7 @@
             <template v-slot:activator="{ on, attrs }">
               <v-badge
                 dot
-                color="error"
+                color="primary"
                 overlap
                 :value="countRequest(item.show)"
               >
@@ -227,7 +227,7 @@
         <v-list-item-content>
           <v-list-item-title>
             {{ item.title }}            
-            <v-chip class="text-right" color="error" x-small v-if="countRequest(item.show)>0">{{countRequest(item.show)}}</v-chip>
+            <v-chip class="text-right" color="primary" x-small v-if="countRequest(item.show)>0">{{countRequest(item.show)}}</v-chip>
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>

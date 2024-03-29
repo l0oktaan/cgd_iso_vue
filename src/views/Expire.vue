@@ -1,6 +1,6 @@
 <template>
 
-  <request-list :list="request_list" :status="88">></request-list>
+  <request-list :list="request_list" :status="88" :h_color="$route.path.includes('remote')? 'red darken-4' : 'blue darken-3'"></request-list>
 
 </template>
 

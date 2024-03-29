@@ -6,7 +6,7 @@
       
       height="100"
       max-width="300"
-      color="default"
+      color="'default'"
       dask
       
     >
@@ -16,7 +16,7 @@
             
             height="50"
             max-width="50"
-            color="primary"
+            :color="$route.path.includes('change') ? 'primary' : 'deep-orange'"
             elevation="10"            
             >
             <v-card-text class="text-center ml-n1 mt-n1" >

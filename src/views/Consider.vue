@@ -1,6 +1,6 @@
 <template>
 
-  <request-list :list="request_list" :status="3" @getConsider="fetchData"></request-list>
+  <request-list :list="request_list" :status="3" @getConsider="fetchData" :h_color="$route.path.includes('remote')? 'red darken-4' : 'blue darken-3'"></request-list>
 
 </template>
 

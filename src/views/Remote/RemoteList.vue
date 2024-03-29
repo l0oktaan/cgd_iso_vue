@@ -204,23 +204,24 @@ export default {
   data(){
     return  {
       search: '',
+      h_color : 'red darken-4',
       headers: [
-        { text: 'วันที่จัดทำ', value: 'created_date', class: ['blue darken-3', 'white--text'],width: '10%'},
+        { text: 'วันที่จัดทำ', value: 'created_date', class: ['red darken-4', 'white--text'],width: '10%'},
         
         {
             text: 'เลขที่เอกสาร',
             align: 'start',
             // sortable: false,
             value: 'request_no',
-            class: ['blue darken-3', 'white--text', 'head-text'],
+            class: ['red darken-4', 'white--text', 'head-text'],
             width: '13%'
         },
-        { text: 'เรื่อง', sortable: false, value: 'request_title', class: ['blue darken-3', 'white--text'],width: '35%'},
+        { text: 'เรื่อง', sortable: false, value: 'request_title', class: ['red darken-4', 'white--text'],width: '35%'},
                
                
-        { text: 'ผู้ร้องขอ', sortable: true, value: 'fullname', class: ['blue darken-3', 'white--text'],width: '15%'},       
-        { text: 'สถานะ', sortable: true, value: 'status', class: ['blue darken-3', 'white--text'],width: '13%'},      
-        { text: 'Action', value: 'actions',class: ['blue darken-3', 'white--text'],width: '10%'}                        
+        { text: 'ผู้ร้องขอ', sortable: true, value: 'fullname', class: ['red darken-4', 'white--text'],width: '15%'},       
+        { text: 'สถานะ', sortable: true, value: 'status', class: ['red darken-4', 'white--text'],width: '13%'},      
+        { text: 'Action', value: 'actions',class: ['red darken-4', 'white--text'],width: '10%'}                        
                       
       ],
       request_list: [

@@ -384,7 +384,7 @@ export default {
                     align: 'start',
                     // sortable: false,
                     value: 'people_name',
-                    class: ['blue darken-3', 'white--text', 'head-text'],
+                    class: ['red darken-4', 'white--text', 'head-text'],
                     width: '20%'
                 },
                 {
@@ -392,14 +392,14 @@ export default {
                     align: 'start',
                     // sortable: false,
                     value: 'ldap_name',
-                    class: ['blue darken-3', 'white--text', 'head-text'],
+                    class: ['red darken-4', 'white--text', 'head-text'],
                     width: '10%'
                 },
-                { text: 'ประเภท', sortable: false, value: 'people_type', class: ['blue darken-3', 'white--text'],width: '10%'},       
-                { text: 'IP Address', value: 'ip_address', class: ['blue darken-3', 'white--text'],width: '15%'},                       
-                { text: 'หน่วยงาน', sortable: false, value: 'org_name', class: ['blue darken-3', 'white--text'],width: '20%'},
-                { text: 'Tags', sortable: false, value: 'people_tags', class: ['blue darken-3', 'white--text']},
-                { text: 'Action', value: 'actions',class: ['blue darken-3', 'white--text'],width: '15%'}                       
+                { text: 'ประเภท', sortable: false, value: 'people_type', class: ['red darken-4', 'white--text'],width: '10%'},       
+                { text: 'IP Address', value: 'ip_address', class: ['red darken-4', 'white--text'],width: '15%'},                       
+                { text: 'หน่วยงาน', sortable: false, value: 'org_name', class: ['red darken-4', 'white--text'],width: '20%'},
+                { text: 'Tags', sortable: false, value: 'people_tags', class: ['red darken-4', 'white--text']},
+                { text: 'Action', value: 'actions',class: ['red darken-4', 'white--text'],width: '15%'}                       
                             
             ],
             people_list: [],

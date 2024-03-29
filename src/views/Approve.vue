@@ -1,7 +1,7 @@
 <template>
   <div>
-    <request-list :list="request_list" :status="4"></request-list>
-    <request-list :list="old_list" :status="44">></request-list>
+    <request-list :list="request_list" :status="4" :h_color="$route.path.includes('remote')? 'red darken-4' : 'blue darken-3'"></request-list>
+    <request-list :list="old_list" :status="44"></request-list>
   </div>
 
 </template>
