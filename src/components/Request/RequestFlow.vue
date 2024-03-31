@@ -1169,10 +1169,20 @@ export default {
             let group = [];
             group = this.$store.getters.group_cgd;
             this.group_cgd = [];
-            for (let i=0;i<group.length;i++){
+            if (this.$route.path.includes('change')){
+                for (let i=0;i<group.length;i++){
+                    this.group_cgd.push({
+                        text: group[i].group_name,
+                        value: group[i].id
+                    })
+                }
+            }else{
                 this.group_cgd.push({
-                    text: group[i].group_name,
-                    value: group[i].id
+                    text: 'กลุ่มงานเครือข่ายและการสื่อสาร',
+                    value: 6
+                },{
+                    text: 'กลุ่มงานเครื่องคอมพิวเตอร์',
+                    value: 5
                 })
             }
 

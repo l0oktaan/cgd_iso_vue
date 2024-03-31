@@ -81,7 +81,7 @@
                   </template>
                   <span>บันทึกตรวจสอบ</span>
                 </v-tooltip>
-                <v-tooltip top>
+                <!-- <v-tooltip top>
                   <template v-slot:activator="{ on, attrs }">
                     <v-icon        
                       v-if="status==3"            
@@ -96,8 +96,8 @@
                     </v-icon>
                   </template>
                   <span>พิจารณา</span>
-                </v-tooltip>
-                <v-tooltip top>
+                </v-tooltip> -->
+                <!-- <v-tooltip top>
                   <template v-slot:activator="{ on, attrs }">
                     <v-icon        
                       v-if="status==3"            
@@ -112,7 +112,7 @@
                     </v-icon>
                   </template>
                   <span>ส่งต่อ ผอ.</span>
-                </v-tooltip>
+                </v-tooltip> -->
                 
 
                 <!-- <v-icon  

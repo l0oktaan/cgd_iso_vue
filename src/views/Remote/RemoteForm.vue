@@ -2,7 +2,7 @@
  <div>
         <v-row justify="center">
             <v-col  cols="9">
-                <h4 class="text-center">แบบฟอร์มขอดำเนินการที่เกี่ยวข้องกับ Policy Firewall / VPN</h4>
+                <h4 class="text-center">แบบฟอร์มขอตั้งค่า Policy Firewall / VPN</h4>
             </v-col>
             <v-col></v-col>
         </v-row>
@@ -18,7 +18,7 @@
                         class="mycard"
                     >             
                         <v-row>
-                            <v-col cols="12" >ส่วนที่ 1 รายละเอียดของการเปลี่ยนแปลงหรือแก้ไขระบบ</v-col>
+                            <v-col cols="12" >ส่วนที่ 1 รายละเอียดของการร้องขอตั้งค่า Policy Firewall / VPN</v-col>
                         </v-row>
                         <v-row>
                             <v-col cols="3">
