@@ -31,7 +31,7 @@
                   <v-btn
                     class="ma-2"
                     rounded
-                    color="success"
+                    color="primary"
                     @click="create_request"
                   >
                     <v-icon left>
