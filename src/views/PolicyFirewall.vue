@@ -61,7 +61,7 @@
                     <v-btn
                         class="ma-2"
                         rounded
-                        color="success" 
+                        color="primary" 
                         @click="addPolicy"                                               
                     >
                         <v-icon left>

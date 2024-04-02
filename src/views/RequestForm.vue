@@ -2,7 +2,7 @@
  <div>
         <v-row justify="center">
             <v-col>
-                <h4 class="text-center">แบบบันทึกการร้องขอการเปลี่ยนแปลงหรือแก้ไขระบบ (Request for Change)</h4>
+                <h4 class="text-center mt-4">แบบบันทึกการร้องขอการเปลี่ยนแปลงหรือแก้ไขระบบ (Request for Change)</h4>
             </v-col>
         </v-row>
         <v-row>
@@ -15,7 +15,7 @@
                     <v-card
                         elevation="4"
                         class="mycard"
-                    >             
+                    >
                         <v-row>
                             <v-col cols="12" >ส่วนที่ 1 รายละเอียดของการเปลี่ยนแปลงหรือแก้ไขระบบ</v-col>
                         </v-row>
@@ -488,9 +488,6 @@
                             <v-col cols="3">                                
                             </v-col>     
                             <v-col cols="9 pt-0 pl-0 mb-2">
-                                
-                                
-                                
                             </v-col>
                         </v-row>
                         <v-row>    
@@ -671,9 +668,6 @@
                                         </v-col>
                                         <v-spacer></v-spacer>
                                     </v-row>
-                                    
-                                    
-                                    
                                 </validation-provider>                          
                             </v-col>
                         </v-row>

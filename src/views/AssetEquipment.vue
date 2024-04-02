@@ -31,7 +31,7 @@
                                 <v-btn
                                     class="ma-2"
                                     rounded
-                                    color="success"
+                                    color="primary"
                                     v-bind="attrs"
                                     v-on="on"
                                 >
@@ -368,7 +368,7 @@ export default {
                     width: '20%'
                 },
                 { text: 'IP Address', value: 'ip_address', class: ['red darken-4', 'white--text'],width: '30%'},       
-                { text: 'Port / Service', sortable: false, value: 'service_port', class: ['red darken-4', 'white--text'],width: '20%'},       
+                { text: 'Port / Protocal', sortable: false, value: 'service_port', class: ['red darken-4', 'white--text'],width: '20%'},       
                 { text: 'Tags', sortable: false, value: 'equip_tags', class: ['red darken-4', 'white--text'],width: '20%'},
                 { text: 'Action', value: 'actions',class: ['red darken-4', 'white--text']}                       
                             

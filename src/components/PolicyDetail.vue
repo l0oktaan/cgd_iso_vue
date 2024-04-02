@@ -42,7 +42,7 @@
                                             <v-btn
                                                 class="ma-2"
                                                 rounded
-                                                color="success" 
+                                                color="primary" 
                                                 @click="create_new"                                               
                                             >
                                             <v-icon left>
@@ -107,7 +107,7 @@
                                             >
                                             <template v-slot:activator="{ on, attrs }">
                                                 <v-btn                                        
-                                                        color="success"
+                                                        color="primary"
                                                         fab
                                                         x-small
                                                         dark    
@@ -411,8 +411,8 @@ export default {
                     width: '35%'
                 },
                 { text: 'Destination',align: 'start', sortable: false, sortable: false, value: 'destination', class: ['blue darken-1', 'white--text'],width: '30%'},       
-                { text: 'Service/Port',align: 'start', sortable: false, value: 'service_port', class: ['blue darken-1', 'white--text'],width: '15%'},                       
-                { text: 'Tags', value: 'tags', sortable: false, class: ['blue darken-1', 'white--text'],width: '10%'},                       
+                { text: 'Port/Protocal',align: 'start', sortable: false, value: 'service_port', class: ['blue darken-1', 'white--text'],width: '15%'},                       
+                { text: 'Purpose', value: 'tags', sortable: false, class: ['blue darken-1', 'white--text'],width: '10%'},                       
                 { text: 'Action',align: 'center', sortable: false, value: 'actions',class: ['blue darken-1', 'white--text'],width: '15%'}                       
                             
             ],
@@ -422,27 +422,27 @@ export default {
                     align: 'start',
                     // sortable: false,
                     value: 'source',
-                    class: ['blue darken-3', 'white--text', 'head-text'],
+                    class: ['red darken-3', 'white--text', 'head-text'],
                     width: '35%'
                 },
-                { text: 'Destination', sortable: false, value: 'destination', class: ['blue darken-3', 'white--text'],width: '30%'},       
-                { text: 'Service/Port', value: 'service_port', sortable: false, class: ['blue darken-3', 'white--text'],width: '15%'},                       
-                { text: 'Tags', value: 'tags', sortable: false, class: ['blue darken-3', 'white--text'],width: '10%'},                       
-                { text: 'Action', value: 'actions', sortable: false,class: ['blue darken-3', 'white--text'],width: '15%'}                       
+                { text: 'Destination', sortable: false, value: 'destination', class: ['red darken-3', 'white--text'],width: '30%'},       
+                { text: 'Port/Protocal', value: 'service_port', sortable: false, class: ['red darken-3', 'white--text'],width: '15%'},                       
+                { text: 'Purpose', value: 'tags', sortable: false, class: ['red darken-3', 'white--text'],width: '10%'},                       
+                { text: 'Action', value: 'actions', sortable: false,class: ['red darken-3', 'white--text'],width: '15%'}                       
                             
             ],
             source_headers:[
-                { text: 'Asset', sortable: false, value: 'asset', class: ['blue darken-3', 'white--text']},
-                { text: 'LDAP', sortable: false, value: 'ldap', class: ['blue darken-3', 'white--text']},
-                { text: 'IP', sortable: false, value: 'ip_address', class: ['blue darken-3', 'white--text']},
-                { text: 'Tags', sortable: false, value: 'tags', class: ['blue darken-3', 'white--text']},
+                { text: 'Asset', sortable: false, value: 'asset', class: ['red darken-3', 'white--text']},
+                { text: 'LDAP', sortable: false, value: 'ldap', class: ['red darken-3', 'white--text']},
+                { text: 'IP', sortable: false, value: 'ip_address', class: ['red darken-3', 'white--text']},
+                { text: 'Tags', sortable: false, value: 'tags', class: ['red darken-3', 'white--text']},
 
             ],
             destination_headers:[
-                { text: 'Asset', sortable: false, value: 'asset', class: ['blue darken-3', 'white--text']},
-                { text: 'IP', sortable: false, value: 'ip_address', class: ['blue darken-3', 'white--text']},
-                { text: 'Port', sortable: false, value: 'service_port', class: ['blue darken-3', 'white--text']},
-                { text: 'Tags', sortable: false, value: 'tags', class: ['blue darken-3', 'white--text']},
+                { text: 'Asset', sortable: false, value: 'asset', class: ['red darken-3', 'white--text']},
+                { text: 'IP', sortable: false, value: 'ip_address', class: ['red darken-3', 'white--text']},
+                { text: 'Port', sortable: false, value: 'service_port', class: ['red darken-3', 'white--text']},
+                { text: 'Tags', sortable: false, value: 'tags', class: ['red darken-3', 'white--text']},
             ],
             policy_list_edit:[],
             policy_list:[],

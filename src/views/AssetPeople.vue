@@ -29,7 +29,7 @@
                                 <v-btn
                                     class="ma-2"
                                     rounded
-                                    color="success"
+                                    color="primary"
                                     v-bind="attrs"
                                     v-on="on"
                                 >

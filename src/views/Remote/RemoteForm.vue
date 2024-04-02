@@ -2,7 +2,7 @@
  <div>
         <v-row justify="center">
             <v-col  cols="9">
-                <h4 class="text-center">แบบฟอร์มขอตั้งค่า Policy Firewall / VPN</h4>
+                <h4 class="text-center mt-4">แบบฟอร์มขอตั้งค่า Policy Firewall / VPN</h4>
             </v-col>
             <v-col></v-col>
         </v-row>
@@ -73,7 +73,7 @@
                             <v-col cols="9" >                                
                                 
                                 <v-btn
-                                    color="success"
+                                    color="primary"
                                     rounded
                                     dark                                    
                                     class="mb-2"
