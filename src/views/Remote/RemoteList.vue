@@ -133,7 +133,7 @@
                       </v-col>
                     </v-row>
                     <v-row>
-                      <v-col cols="3" class="text-right">เหตุผล :</v-col>
+                      <v-col cols="3" class="text-right">วัตถุประสงค์ :</v-col>
                       <v-col>
                         <v-text-field
                           outlined                                

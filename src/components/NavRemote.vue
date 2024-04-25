@@ -260,7 +260,7 @@ export default {
           ],
         
           group_3: [
-            { title: "ขอดำเนินการ Policy Firewall/VPN", icon: "mdi-stack-exchange", route: "/remote/remote_list"},
+            { title: "ขอตั้งค่า Policy Firewall/VPN", icon: "mdi-stack-exchange", route: "/remote/remote_list"},
             { title: "รายการใกล้หมดอายุ", icon: "mdi-alarm", route: "/remote/remote_expire", show: "expire"},
           ],
           group_4: [            

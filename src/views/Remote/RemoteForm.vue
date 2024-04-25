@@ -79,6 +79,7 @@
                                     class="mb-2"
                                     dense
                                     @click="create_detail(2)"
+                                    v-if="form_edit.status <= 1"
                                 >
                                     <v-icon left>
                                         mdi-plus

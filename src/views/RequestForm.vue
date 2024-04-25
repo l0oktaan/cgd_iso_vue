@@ -273,7 +273,7 @@
                                     color="success"
                                     rounded
                                     dark
-                                    
+                                    v-if="form_edit.status <= 1"
                                     class="mb-2"
                                     dense
                                     @click="create_detail(1)"
@@ -303,7 +303,8 @@
                                                 v-if="detail.type == 1"
                                                 @click="edit_detail(detail)"
                                                 >
-                                                <v-icon>mdi-pencil</v-icon>
+                                                <v-icon v-if="form_edit.status <= 1">mdi-pencil</v-icon>
+                                                <v-icon v-else>mdi-magnify</v-icon>
                                             </v-btn>                                        
                                             <v-btn   
                                                 fab
