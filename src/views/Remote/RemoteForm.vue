@@ -457,27 +457,20 @@
                                                 :value="1"
                                             ></v-checkbox>
                                         </v-col>
-                                        <v-col cols="2">
+                                       
+                                        <v-col cols="3">
                                             <v-checkbox
                                                 :readonly="form_edit.status>1 ? true : false"
                                                 v-model="form_edit.env_impact"
-                                                label="Training"
-                                                :value="4"
+                                                label="Pre-Production"
+                                                :value="7"
                                             ></v-checkbox>
                                         </v-col>
                                         <v-col cols="2">
                                             <v-checkbox
                                                 :readonly="form_edit.status>1 ? true : false"
                                                 v-model="form_edit.env_impact"
-                                                label="UAT"
-                                                :value="5"
-                                            ></v-checkbox>
-                                        </v-col>
-                                        <v-col cols="2">
-                                            <v-checkbox
-                                                :readonly="form_edit.status>1 ? true : false"
-                                                v-model="form_edit.env_impact"
-                                                label="IWT"
+                                                label="UAT/IWT"
                                                 :value="6"
                                             ></v-checkbox>
                                         </v-col>
@@ -489,12 +482,20 @@
                                                 :value="3"
                                             ></v-checkbox>
                                         </v-col> -->
-                                        <v-col cols="2">
+                                        <v-col cols="3">
                                             <v-checkbox
                                                 :readonly="form_edit.status>1 ? true : false"
                                                 v-model="form_edit.env_impact"
                                                 label="Development"
                                                 :value="2"
+                                            ></v-checkbox>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-checkbox
+                                                :readonly="form_edit.status>1 ? true : false"
+                                                v-model="form_edit.env_impact"
+                                                label="Training"
+                                                :value="4"
                                             ></v-checkbox>
                                         </v-col>
                                         <v-spacer></v-spacer>

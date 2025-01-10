@@ -627,28 +627,21 @@
                                                 :value="1"
                                             ></v-checkbox>
                                         </v-col>
-                                        <v-col cols="2">
+                                        
+                                        <v-col cols="3">
                                             <v-checkbox
                                                 :readonly="form_edit.status>1 ? true : false"
                                                 v-model="form_edit.env_impact"
-                                                label="Training"
-                                                :value="4"
+                                                label="Pre-Production"
+                                                :value="7"
                                             ></v-checkbox>
                                         </v-col>
                                         <v-col cols="2">
                                             <v-checkbox
                                                 :readonly="form_edit.status>1 ? true : false"
                                                 v-model="form_edit.env_impact"
-                                                label="UAT"
+                                                label="UAT/IWT"
                                                 :value="5"
-                                            ></v-checkbox>
-                                        </v-col>
-                                        <v-col cols="2">
-                                            <v-checkbox
-                                                :readonly="form_edit.status>1 ? true : false"
-                                                v-model="form_edit.env_impact"
-                                                label="IWT"
-                                                :value="6"
                                             ></v-checkbox>
                                         </v-col>
                                         <!-- <v-col cols="4">
@@ -659,12 +652,20 @@
                                                 :value="3"
                                             ></v-checkbox>
                                         </v-col> -->
-                                        <v-col cols="2">
+                                        <v-col cols="3">
                                             <v-checkbox
                                                 :readonly="form_edit.status>1 ? true : false"
                                                 v-model="form_edit.env_impact"
                                                 label="Development"
                                                 :value="2"
+                                            ></v-checkbox>
+                                        </v-col>
+                                        <v-col cols="2">
+                                            <v-checkbox
+                                                :readonly="form_edit.status>1 ? true : false"
+                                                v-model="form_edit.env_impact"
+                                                label="Training"
+                                                :value="4"
                                             ></v-checkbox>
                                         </v-col>
                                         <v-spacer></v-spacer>
@@ -1014,15 +1015,13 @@
                 </validation-observer>    
                             
             </v-col>
-            <v-col cols="3">
-                
+            <v-col cols="3">                
                 <request-flow   
-
                     :request_id = "request_id" 
                     :status = "form_edit.status"
                     :group_id = "form_edit.group_id"  
                     :form = "form_edit"                  
-                    :user="user"                     
+                    :user="user"
                     v-if="show_status"
                     @fetchRequest="fetchData"
                 ></request-flow>
