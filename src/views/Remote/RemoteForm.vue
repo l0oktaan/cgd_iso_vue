@@ -471,7 +471,7 @@
                                                 :readonly="form_edit.status>1 ? true : false"
                                                 v-model="form_edit.env_impact"
                                                 label="UAT/IWT"
-                                                :value="6"
+                                                :value="5"
                                             ></v-checkbox>
                                         </v-col>
                                         <!-- <v-col cols="4">
