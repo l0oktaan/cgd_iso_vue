@@ -405,21 +405,27 @@ export default {
           val = 'รอการรับรอง'          
           break;
         case 3:
+          val = 'รอสอบทาน'          
+          break;
+        case 4:
             val = 'รอการพิจารณา'          
             break;
-        case 4:
+        case 5:
             val = 'รอการอนุมัติ'          
             break;
-        case 5:
-            val = 'รอดำเนินการ'          
-            break;
         case 6:
-            val = 'รอติดตามผล'          
+            val = 'มอบหมาย'          
             break;
         case 7:
-            val = 'รอตรวจสอบผล'          
+            val = 'รอดำเนินการ'          
             break;
         case 8:
+            val = 'รอติดตามผล'          
+            break;
+        case 9:
+            val = 'รอตรวจสอบผล'          
+            break;
+        case 99:
             val = 'เสร็จสิ้น'          
             break;
         default:
